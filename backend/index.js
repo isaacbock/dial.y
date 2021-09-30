@@ -20,9 +20,7 @@ app.post("/call", (req, res) => {
 
 app.post("/start", (req, res) => {
 	const response = new VoiceResponse();
-	response.say(
-		"Hi! I'm Siri, an automated tool calling on behalf of a customer with a question."
-	);
+	response.say("Hi! I'm calling on behalf of a customer with a question.");
 	response.redirect(
 		{
 			method: "POST",
@@ -40,12 +38,13 @@ app.post("/askQuestion", (req, res) => {
 	let question = "What are your hours today?";
 
 	const response = new VoiceResponse();
-	response.say("They're wondering");
+	response.pause({ length: 1 });
+	response.say("They're wondering,");
 	response.say(question);
 
 	const gather = response.gather({
 		action: "/recordAnswer",
-		method: "GET",
+		method: "POST",
 		numDigits: "1",
 		timeout: "6",
 		speechTimeout: "5",
@@ -53,12 +52,30 @@ app.post("/askQuestion", (req, res) => {
 		speechModel: "numbers_and_commands",
 		hints: "respond, repeat, cancel",
 	});
+	gather.say("I can record your answer to this question and send it to them.");
+	gather.pause({ length: 1 });
+	gather.say("To start recording your response, say Respond, or press 1.");
+	gather.pause({ length: 1 });
 	gather.say(
-		"To record a response to this question, say Respond, or press 1. I'll record a voicemail of your answer and transcribe it for the customer. To repeat the question, say Repeat, or press 2. To end the call, say Cancel, or press 3."
+		"To repeat their question again, say Repeat, or press 2. To end the call, say Cancel, or press 3."
 	);
+	gather.pause({ length: 1 });
 	gather.say(
-		"To record a response to this question, say Respond, or press 1. I'll record a voicemail of your answer and transcribe it for the customer. To repeat the question, say Repeat, or press 2. To end the call, say Cancel, or press 3."
+		"To end the call without recording a response, say Cancel, or press 3."
 	);
+	gather.pause({ length: 5 });
+	gather.say("I can record your answer to this question and send it to them.");
+	gather.pause({ length: 1 });
+	gather.say("To start recording your response, say Respond, or press 1.");
+	gather.pause({ length: 1 });
+	gather.say(
+		"To repeat their question again, say Repeat, or press 2. To end the call, say Cancel, or press 3."
+	);
+	gather.pause({ length: 1 });
+	gather.say(
+		"To end the call without recording a response, say Cancel, or press 3."
+	);
+	gather.pause({ length: 5 });
 
 	response.say("We didn't receive any input. Goodbye!");
 
@@ -78,7 +95,7 @@ app.post("/recordAnswer", (req, res) => {
 		response.play("https://api.twilio.com/cowbell.mp3");
 		response.record({
 			action: "/saveRecording",
-			timeout: 10,
+			timeout: 5,
 			transcribe: true,
 		});
 		let twiml = response.toString();
@@ -104,6 +121,14 @@ app.post("/recordAnswer", (req, res) => {
 
 app.post("/saveRecording", (req, res) => {
 	console.log("Recording URL: " + req.body.RecordingUrl);
+
+	const response = new VoiceResponse();
+	response.say(
+		"Your recording has been saved and sent to the customer. Thank you!"
+	);
+	let twiml = response.toString();
+	res.header("Content-Type", "application/xml");
+	res.send(twiml);
 });
 
 app.listen(port, () => {
