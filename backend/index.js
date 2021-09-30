@@ -64,27 +64,21 @@ app.post("/askQuestion", (req, res) => {
 		hints: "respond, repeat, cancel",
 	});
 	gather.say("I can record your answer to this question and send it to them.");
-	gather.pause({ length: 1 });
 	gather.say("To start recording your response, say Respond, or press 1.");
-	gather.pause({ length: 1 });
 	gather.say("To repeat their question again, say Repeat, or press 2.");
-	gather.pause({ length: 1 });
 	gather.say(
 		"To hang up without recording a response, say Cancel, or press 3."
 	);
 	gather.pause({ length: 5 });
 	gather.say("I can record your answer to this question and send it to them.");
-	gather.pause({ length: 1 });
 	gather.say("To start recording your response, say Respond, or press 1.");
-	gather.pause({ length: 1 });
 	gather.say("To repeat their question again, say Repeat, or press 2.");
-	gather.pause({ length: 1 });
 	gather.say(
 		"To hang up without recording a response, say Cancel, or press 3."
 	);
 	gather.pause({ length: 5 });
 
-	response.say("We didn't receive any input. Goodbye!");
+	response.say("Sorry, we didn't receive any input. Goodbye!");
 
 	let twiml = response.toString();
 	res.header("Content-Type", "application/xml");
@@ -104,10 +98,13 @@ app.post("/recordAnswer", (req, res) => {
 		req.body.SpeechResult.toLowerCase().includes("record")
 	) {
 		const response = new VoiceResponse();
-		response.say("Please record your response after the beep.");
+		response.say(
+			"Please record your response after the beep. When you're done recording, hang up, or press 1 to end the call."
+		);
+		response.pause({ length: 1 });
 		response.record({
 			action: "/saveRecording",
-			timeout: 5,
+			timeout: 3,
 			transcribe: true,
 			transcribeCallback: "/saveTranscription",
 		});
