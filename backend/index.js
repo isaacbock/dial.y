@@ -146,7 +146,8 @@ app.post("/saveRecording", (req, res) => {
 });
 
 app.post("/saveTranscription", (req, res) => {
-	console.log("Transcription: " + req.body.transcriptionText);
+	console.log("Transcription: " + req.body.TranscriptionText);
+	res.end();
 });
 
 app.listen(port, () => {
