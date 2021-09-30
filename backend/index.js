@@ -1,25 +1,31 @@
 const express = require("express");
-const app = express();
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
+const app = express();
+app.use(express.json());
+app.use(
+	express.urlencoded({
+		extended: true,
+	})
+);
 let port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
 	res.send("Hello world.");
 });
 
-app.get("/call", (req, res) => {
-	initiateCall(req.phoneNumber);
-	res.send("Calling " + req.phoneNumber);
+app.post("/call", (req, res) => {
+	initiateCall(req.body.phoneNumber);
+	res.send("Calling " + req.body.phoneNumber);
 });
 
-app.get("/start", (req, res) => {
+app.post("/start", (req, res) => {
 	const response = new VoiceResponse();
 	response.say(
 		"Hi! I'm Siri, an automated tool calling on behalf of a customer with a question."
 	);
 	response.redirect(
 		{
-			method: "GET",
+			method: "POST",
 		},
 		"/askQuestion"
 	);
@@ -29,7 +35,7 @@ app.get("/start", (req, res) => {
 	res.send(twiml);
 });
 
-app.get("/askQuestion", (req, res) => {
+app.post("/askQuestion", (req, res) => {
 	// hardcoded, needs to come from API later
 	let question = "What are your hours today?";
 
@@ -61,8 +67,11 @@ app.get("/askQuestion", (req, res) => {
 	res.send(twiml);
 });
 
-app.get("/recordAnswer", (req, res) => {
-	if (req.Digits == 1 || req.SpeechResult.toLowerCase().includes("record")) {
+app.post("/recordAnswer", (req, res) => {
+	if (
+		req.body.Digits == 1 ||
+		req.body.SpeechResult.toLowerCase().includes("record")
+	) {
 		const response = new VoiceResponse();
 		response.say("Please record your response after the beep.");
 		// change sound to beep
@@ -76,8 +85,8 @@ app.get("/recordAnswer", (req, res) => {
 		res.header("Content-Type", "application/xml");
 		res.send(twiml);
 	} else if (
-		req.Digits == 2 ||
-		req.SpeechResult.toLowerCase().includes("repeat")
+		req.body.Digits == 2 ||
+		req.body.SpeechResult.toLowerCase().includes("repeat")
 	) {
 		const response = new VoiceResponse();
 		response.say("That's okay. Goodbye!");
@@ -93,8 +102,8 @@ app.get("/recordAnswer", (req, res) => {
 	}
 });
 
-app.get("/saveRecording", (req, res) => {
-	console.log("Recording URL: " + req.RecordingUrl);
+app.post("/saveRecording", (req, res) => {
+	console.log("Recording URL: " + req.body.RecordingUrl);
 });
 
 app.listen(port, () => {
@@ -107,11 +116,12 @@ const authToken = "ba725ef7dddfa4a91a7e01b467b3a180";
 const client = require("twilio")(accountSid, authToken);
 
 function initiateCall(phoneNumber) {
+	console.log("+1" + phoneNumber);
 	client.calls
 		.create({
-			url: "/start",
+			url: "https://cse437s-phone.herokuapp.com/start",
 			to: "+1" + phoneNumber,
-			from: "+19204208162",
+			from: "+15153165732",
 		})
 		.then((call) => console.log(call.sid));
 }
