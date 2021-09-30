@@ -92,6 +92,13 @@ app.post("/askQuestion", (req, res) => {
 });
 
 app.post("/recordAnswer", (req, res) => {
+	if (req.body.Digits === undefined) {
+		req.body.Digits = 0;
+	}
+	if (req.body.SpeechResult === undefined) {
+		req.body.SpeechResult = "";
+	}
+
 	if (
 		req.body.Digits == "1" ||
 		req.body.SpeechResult.toLowerCase().includes("record")
