@@ -98,8 +98,6 @@ app.post("/recordAnswer", (req, res) => {
 	) {
 		const response = new VoiceResponse();
 		response.say("Please record your response after the beep.");
-		// change sound to beep
-		response.play("https://api.twilio.com/cowbell.mp3");
 		response.record({
 			action: "/saveRecording",
 			timeout: 5,
