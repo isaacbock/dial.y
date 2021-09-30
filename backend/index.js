@@ -48,7 +48,7 @@ app.post("/askQuestion", (req, res) => {
 		numDigits: "1",
 		timeout: "6",
 		speechTimeout: "5",
-		input: "dtmf speech",
+		input: "speech dtmf",
 		speechModel: "numbers_and_commands",
 		hints: "respond, repeat, cancel",
 	});
@@ -56,24 +56,20 @@ app.post("/askQuestion", (req, res) => {
 	gather.pause({ length: 1 });
 	gather.say("To start recording your response, say Respond, or press 1.");
 	gather.pause({ length: 1 });
-	gather.say(
-		"To repeat their question again, say Repeat, or press 2. To end the call, say Cancel, or press 3."
-	);
+	gather.say("To repeat their question again, say Repeat, or press 2.");
 	gather.pause({ length: 1 });
 	gather.say(
-		"To end the call without recording a response, say Cancel, or press 3."
+		"To hang up without recording a response, say Cancel, or press 3."
 	);
 	gather.pause({ length: 5 });
 	gather.say("I can record your answer to this question and send it to them.");
 	gather.pause({ length: 1 });
 	gather.say("To start recording your response, say Respond, or press 1.");
 	gather.pause({ length: 1 });
-	gather.say(
-		"To repeat their question again, say Repeat, or press 2. To end the call, say Cancel, or press 3."
-	);
+	gather.say("To repeat their question again, say Repeat, or press 2.");
 	gather.pause({ length: 1 });
 	gather.say(
-		"To end the call without recording a response, say Cancel, or press 3."
+		"To hang up without recording a response, say Cancel, or press 3."
 	);
 	gather.pause({ length: 5 });
 
@@ -86,7 +82,7 @@ app.post("/askQuestion", (req, res) => {
 
 app.post("/recordAnswer", (req, res) => {
 	if (
-		req.body.Digits == 1 ||
+		req.body.Digits == "1" ||
 		req.body.SpeechResult.toLowerCase().includes("record")
 	) {
 		const response = new VoiceResponse();
@@ -102,7 +98,7 @@ app.post("/recordAnswer", (req, res) => {
 		res.header("Content-Type", "application/xml");
 		res.send(twiml);
 	} else if (
-		req.body.Digits == 2 ||
+		req.body.Digits == "2" ||
 		req.body.SpeechResult.toLowerCase().includes("repeat")
 	) {
 		const response = new VoiceResponse();
