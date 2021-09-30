@@ -52,7 +52,15 @@ app.post("/askQuestion", (req, res) => {
 	response.say("They're wondering,");
 	response.say(question);
 	response.pause({ length: 1 });
+	response.redirect({ method: "POST" }, "/promptListener");
 
+	let twiml = response.toString();
+	res.header("Content-Type", "application/xml");
+	res.send(twiml);
+});
+
+app.post("/promptListener", (req, res) => {
+	const response = new VoiceResponse();
 	const gather = response.gather({
 		action: "/recordAnswer",
 		method: "POST",
@@ -95,7 +103,7 @@ app.post("/recordAnswer", (req, res) => {
 
 	if (
 		req.body.Digits == "1" ||
-		req.body.SpeechResult.toLowerCase().includes("record")
+		req.body.SpeechResult.toLowerCase().includes("respond")
 	) {
 		const response = new VoiceResponse();
 		response.say(
@@ -121,9 +129,20 @@ app.post("/recordAnswer", (req, res) => {
 		let twiml = response.toString();
 		res.header("Content-Type", "application/xml");
 		res.send(twiml);
-	} else {
+	} else if (
+		req.body.Digits == "3" ||
+		req.body.SpeechResult.toLowerCase().includes("cancel")
+	) {
 		const response = new VoiceResponse();
 		response.say("Okay! Goodbye!");
+		let twiml = response.toString();
+		res.header("Content-Type", "application/xml");
+		res.send(twiml);
+	} else {
+		const response = new VoiceResponse();
+		response.say("Sorry, I didn't understand that.");
+		response.redirect({ method: "POST" }, "promptListener");
+
 		let twiml = response.toString();
 		res.header("Content-Type", "application/xml");
 		res.send(twiml);
