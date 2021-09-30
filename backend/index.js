@@ -9,6 +9,21 @@ app.use(
 );
 let port = process.env.PORT || 3000;
 
+// Twilio init
+const accountSid = "ACe40dc0c6bc23bc4d12b60b154582ea33";
+const authToken = "ba725ef7dddfa4a91a7e01b467b3a180";
+const client = require("twilio")(accountSid, authToken);
+
+function initiateCall(phoneNumber) {
+	client.calls
+		.create({
+			url: "https://cse437s-phone.herokuapp.com/start",
+			to: "+1" + phoneNumber,
+			from: "+15153165732",
+		})
+		.then((call) => console.log("Call ID: " + call.sid));
+}
+
 app.get("/", (req, res) => {
 	res.send("Hello world.");
 });
@@ -21,12 +36,7 @@ app.post("/call", (req, res) => {
 app.post("/start", (req, res) => {
 	const response = new VoiceResponse();
 	response.say("Hi! I'm calling on behalf of a customer with a question.");
-	response.redirect(
-		{
-			method: "POST",
-		},
-		"/askQuestion"
-	);
+	response.redirect({ method: "POST" }, "/askQuestion");
 
 	let twiml = response.toString();
 	res.header("Content-Type", "application/xml");
@@ -102,7 +112,8 @@ app.post("/recordAnswer", (req, res) => {
 		req.body.SpeechResult.toLowerCase().includes("repeat")
 	) {
 		const response = new VoiceResponse();
-		response.say("That's okay. Goodbye!");
+		response.redirect({ method: "POST" }, "/askQuestion");
+
 		let twiml = response.toString();
 		res.header("Content-Type", "application/xml");
 		res.send(twiml);
@@ -128,21 +139,5 @@ app.post("/saveRecording", (req, res) => {
 });
 
 app.listen(port, () => {
-	console.log(`Listening on port http://localhost:${port}`);
+	console.log(`Listening on port ${port}.`);
 });
-
-// Twilio init
-const accountSid = "ACe40dc0c6bc23bc4d12b60b154582ea33";
-const authToken = "ba725ef7dddfa4a91a7e01b467b3a180";
-const client = require("twilio")(accountSid, authToken);
-
-function initiateCall(phoneNumber) {
-	console.log("+1" + phoneNumber);
-	client.calls
-		.create({
-			url: "https://cse437s-phone.herokuapp.com/start",
-			to: "+1" + phoneNumber,
-			from: "+15153165732",
-		})
-		.then((call) => console.log(call.sid));
-}
