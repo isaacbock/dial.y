@@ -7,6 +7,11 @@ app.get("/", (req, res) => {
 	res.send("Hello world.");
 });
 
+app.get("/call", (req, res) => {
+	initiateCall(req.phoneNumber);
+	res.send("Calling " + req.phoneNumber);
+});
+
 app.get("/start", (req, res) => {
 	const response = new VoiceResponse();
 	response.say(
