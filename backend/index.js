@@ -51,6 +51,7 @@ app.post("/askQuestion", (req, res) => {
 	response.pause({ length: 1 });
 	response.say("They're wondering,");
 	response.say(question);
+	response.pause({ length: 1 });
 
 	const gather = response.gather({
 		action: "/recordAnswer",
@@ -103,6 +104,7 @@ app.post("/recordAnswer", (req, res) => {
 			action: "/saveRecording",
 			timeout: 5,
 			transcribe: true,
+			transcribeCallback: "/saveTranscription",
 		});
 		let twiml = response.toString();
 		res.header("Content-Type", "application/xml");
@@ -136,6 +138,10 @@ app.post("/saveRecording", (req, res) => {
 	let twiml = response.toString();
 	res.header("Content-Type", "application/xml");
 	res.send(twiml);
+});
+
+app.post("/saveTranscription", (req, res) => {
+	console.log("Transcription: " + req.body.transcriptionText);
 });
 
 app.listen(port, () => {
