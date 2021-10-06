@@ -1,6 +1,6 @@
 require("dotenv").config();
+
 const express = require("express");
-const VoiceResponse = require("twilio").twiml.VoiceResponse;
 const app = express();
 app.use(express.json());
 app.use(
@@ -10,29 +10,64 @@ app.use(
 );
 let port = process.env.PORT || 3000;
 
-// Twilio init
+const VoiceResponse = require("twilio").twiml.VoiceResponse;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
-function initiateCall(phoneNumber) {
-	client.calls
-		.create({
-			url: "https://cse437s-phone.herokuapp.com/start",
-			to: "+1" + phoneNumber,
-			from: "+15153165732",
-		})
-		.then((call) => console.log("Call ID: " + call.sid));
-}
+const admin = require("firebase-admin");
+const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+});
+let db = admin.firestore();
 
 app.get("/", (req, res) => {
 	res.send("Hello world.");
 });
 
 app.post("/call", (req, res) => {
-	initiateCall(req.body.phoneNumber);
-	res.send("Calling " + req.body.phoneNumber);
+	let toPhoneNumber = "+1" + req.body.phoneNumber;
+	let questions = req.body.question;
+	let callSID = initiateCall(toPhoneNumber);
+	res.send(callSID);
+
+	let callQuestions = [];
+	for (question of questions) {
+		let newQuestion = {
+			question: question,
+			status: "Waiting",
+			answerAudio: null,
+			answerTranscript: null,
+		};
+		callQuestions.push(newQuestion);
+	}
+
+	const call = {
+		to: toPhoneNumber,
+		status: "Dialing",
+		date: new Date(),
+		questions: callQuestions,
+	};
+	return db
+		.collection("calls")
+		.doc(callSID)
+		.set(call)
+		.then(() => console.log("Call " + callSID + " added to database."));
 });
+
+function initiateCall(phoneNumber) {
+	client.calls
+		.create({
+			url: "https://cse437s-phone.herokuapp.com/start",
+			to: phoneNumber,
+			from: "+15153165732",
+		})
+		.then((call) => {
+			console.log("Call initiated. ID: " + call.sid);
+			return call.sid;
+		});
+}
 
 app.post("/start", (req, res) => {
 	const response = new VoiceResponse();
