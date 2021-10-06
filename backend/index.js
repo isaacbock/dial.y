@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 
 app.post("/call", (req, res) => {
 	let toPhoneNumber = "+1" + req.body.phoneNumber;
-	let questions = req.body.question;
+	let questions = JSON.parse(req.body.questions);
 	let callSID = initiateCall(toPhoneNumber);
 	res.send(callSID);
 
