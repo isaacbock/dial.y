@@ -93,14 +93,14 @@ app.post("/askQuestion", async (req, res) => {
 	const callRef = db.collection("calls").doc(callSID);
 	const call = await callRef.get();
 	if (!call.exists) {
-		console.log("Call " + callSid + " not found in database.");
+		console.log("Call " + callSID + " not found in database.");
 	} else {
 		const question = call.data().questions[0].question;
 
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Asking";
 		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSid + "-- Asking: " + question);
+			console.log("Call " + callSID + "-- Asking: " + question);
 
 			const response = new VoiceResponse();
 			response.pause({ length: 1 });
@@ -126,12 +126,12 @@ app.post("/promptListener", async (req, res) => {
 	const callRef = db.collection("calls").doc(callSID);
 	const call = await callRef.get();
 	if (!call.exists) {
-		console.log("Call " + callSid + " not found in database.");
+		console.log("Call " + callSID + " not found in database.");
 	} else {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Prompting";
 		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSid + "-- Prompting: " + question);
+			console.log("Call " + callSID + "-- Prompting: " + question);
 			const response = new VoiceResponse();
 			const gather = response.gather({
 				action: "/recordAnswer",
@@ -190,12 +190,12 @@ app.post("/recordAnswer", async (req, res) => {
 		const callRef = db.collection("calls").doc(callSID);
 		const call = await callRef.get();
 		if (!call.exists) {
-			console.log("Call " + callSid + " not found in database.");
+			console.log("Call " + callSID + " not found in database.");
 		} else {
 			let questionsUpdate = call.data().questions;
 			questionsUpdate[0].status = "Recording";
 			callRef.update({ questions: questionsUpdate }).then(() => {
-				console.log("Call " + callSid + "-- Recording answer.");
+				console.log("Call " + callSID + "-- Recording answer.");
 
 				const response = new VoiceResponse();
 				response.say(
@@ -230,10 +230,10 @@ app.post("/recordAnswer", async (req, res) => {
 		const callRef = db.collection("calls").doc(callSID);
 		const call = await callRef.get();
 		if (!call.exists) {
-			console.log("Call " + callSid + " not found in database.");
+			console.log("Call " + callSID + " not found in database.");
 		} else {
 			callRef.update({ status: "Hung Up" }).then(() => {
-				console.log("Call " + callSid + "-- Hung up by listener.");
+				console.log("Call " + callSID + "-- Hung up by listener.");
 
 				const response = new VoiceResponse();
 				response.say("Okay! Goodbye!");
@@ -259,13 +259,13 @@ app.post("/saveRecording", async (req, res) => {
 	const callRef = db.collection("calls").doc(callSID);
 	const call = await callRef.get();
 	if (!call.exists) {
-		console.log("Call " + callSid + " not found in database.");
+		console.log("Call " + callSID + " not found in database.");
 	} else {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Transcribing";
 		questionsUpdate[0].answerAudio = req.body.RecordingUrl;
 		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSid + "-- Recording: " + req.body.RecordingUrl);
+			console.log("Call " + callSID + "-- Recording: " + req.body.RecordingUrl);
 
 			const response = new VoiceResponse();
 			response.say(
@@ -284,7 +284,7 @@ app.post("/saveTranscription", async (req, res) => {
 	const callRef = db.collection("calls").doc(callSID);
 	const call = await callRef.get();
 	if (!call.exists) {
-		console.log("Call " + callSid + " not found in database.");
+		console.log("Call " + callSID + " not found in database.");
 	} else {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Completed";
@@ -297,7 +297,7 @@ app.post("/saveTranscription", async (req, res) => {
 			.then(() => {
 				console.log(
 					"Call " +
-						callSid +
+						callSID +
 						"-- Answer transcribed: " +
 						req.body.TranscriptionText
 				);
