@@ -99,7 +99,7 @@ app.post("/askQuestion", async (req, res) => {
 
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Asking";
-		call.update({ questions: questionsUpdate }).then(() => {
+		callRef.update({ questions: questionsUpdate }).then(() => {
 			console.log("Call " + callSid + "-- Asking: " + question);
 
 			const response = new VoiceResponse();
@@ -130,7 +130,7 @@ app.post("/promptListener", async (req, res) => {
 	} else {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Prompting";
-		call.update({ questions: questionsUpdate }).then(() => {
+		callRef.update({ questions: questionsUpdate }).then(() => {
 			console.log("Call " + callSid + "-- Prompting: " + question);
 			const response = new VoiceResponse();
 			const gather = response.gather({
@@ -194,7 +194,7 @@ app.post("/recordAnswer", async (req, res) => {
 		} else {
 			let questionsUpdate = call.data().questions;
 			questionsUpdate[0].status = "Recording";
-			call.update({ questions: questionsUpdate }).then(() => {
+			callRef.update({ questions: questionsUpdate }).then(() => {
 				console.log("Call " + callSid + "-- Recording answer.");
 
 				const response = new VoiceResponse();
@@ -232,7 +232,7 @@ app.post("/recordAnswer", async (req, res) => {
 		if (!call.exists) {
 			console.log("Call " + callSid + " not found in database.");
 		} else {
-			call.update({ status: "Hung Up" }).then(() => {
+			callRef.update({ status: "Hung Up" }).then(() => {
 				console.log("Call " + callSid + "-- Hung up by listener.");
 
 				const response = new VoiceResponse();
@@ -264,7 +264,7 @@ app.post("/saveRecording", async (req, res) => {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Transcribing";
 		questionsUpdate[0].answerAudio = req.body.RecordingUrl;
-		call.update({ questions: questionsUpdate }).then(() => {
+		callRef.update({ questions: questionsUpdate }).then(() => {
 			console.log("Call " + callSid + "-- Recording: " + req.body.RecordingUrl);
 
 			const response = new VoiceResponse();
@@ -289,7 +289,7 @@ app.post("/saveTranscription", async (req, res) => {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Completed";
 		questionsUpdate[0].answerTranscript = req.body.TranscriptionText;
-		call
+		callRef
 			.update({
 				status: "Completed",
 				questions: questionsUpdate,
