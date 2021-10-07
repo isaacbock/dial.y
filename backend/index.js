@@ -72,7 +72,7 @@ app.post("/start", (req, res) => {
 
 	db.collection("calls")
 		.doc(callSID)
-		.update([{ status: "In Progress" }])
+		.update({ status: "In Progress" })
 		.then(() => {
 			console.log("Call " + callSID + " in progress.");
 
@@ -97,7 +97,9 @@ app.post("/askQuestion", async (req, res) => {
 	} else {
 		const question = call.data().questions[0].question;
 
-		call.update([{ "questions[0].status": "Asking" }]).then(() => {
+		let questionsUpdate = call.data().questions;
+		questionsUpdate[0].status = "Asking";
+		call.update({ questions: questionsUpdate }).then(() => {
 			console.log("Call " + callSid + "-- Asking: " + question);
 
 			const response = new VoiceResponse();
@@ -126,7 +128,9 @@ app.post("/promptListener", async (req, res) => {
 	if (!call.exists) {
 		console.log("Call " + callSid + " not found in database.");
 	} else {
-		call.update([{ "questions[0].status": "Prompting" }]).then(() => {
+		let questionsUpdate = call.data().questions;
+		questionsUpdate[0].status = "Prompting";
+		call.update({ questions: questionsUpdate }).then(() => {
 			console.log("Call " + callSid + "-- Prompting: " + question);
 			const response = new VoiceResponse();
 			const gather = response.gather({
@@ -188,7 +192,9 @@ app.post("/recordAnswer", async (req, res) => {
 		if (!call.exists) {
 			console.log("Call " + callSid + " not found in database.");
 		} else {
-			call.update([{ "questions[0].status": "Recording" }]).then(() => {
+			let questionsUpdate = call.data().questions;
+			questionsUpdate[0].status = "Recording";
+			call.update({ questions: questionsUpdate }).then(() => {
 				console.log("Call " + callSid + "-- Recording answer.");
 
 				const response = new VoiceResponse();
@@ -226,7 +232,7 @@ app.post("/recordAnswer", async (req, res) => {
 		if (!call.exists) {
 			console.log("Call " + callSid + " not found in database.");
 		} else {
-			call.update([{ status: "Hung Up" }]).then(() => {
+			call.update({ status: "Hung Up" }).then(() => {
 				console.log("Call " + callSid + "-- Hung up by listener.");
 
 				const response = new VoiceResponse();
@@ -255,26 +261,20 @@ app.post("/saveRecording", async (req, res) => {
 	if (!call.exists) {
 		console.log("Call " + callSid + " not found in database.");
 	} else {
-		call
-			.update([
-				{
-					"questions[0].status": "Transcribing",
-					"questions[0].answerAudio": req.body.RecordingUrl,
-				},
-			])
-			.then(() => {
-				console.log(
-					"Call " + callSid + "-- Recording: " + req.body.RecordingUrl
-				);
+		let questionsUpdate = call.data().questions;
+		questionsUpdate[0].status = "Transcribing";
+		questionsUpdate[0].answerAudio = req.body.RecordingUrl;
+		call.update({ questions: questionsUpdate }).then(() => {
+			console.log("Call " + callSid + "-- Recording: " + req.body.RecordingUrl);
 
-				const response = new VoiceResponse();
-				response.say(
-					"Your recording has been saved and sent to the customer. Thank you!"
-				);
-				let twiml = response.toString();
-				res.header("Content-Type", "application/xml");
-				res.send(twiml);
-			});
+			const response = new VoiceResponse();
+			response.say(
+				"Your recording has been saved and sent to the customer. Thank you!"
+			);
+			let twiml = response.toString();
+			res.header("Content-Type", "application/xml");
+			res.send(twiml);
+		});
 	}
 });
 
@@ -286,14 +286,14 @@ app.post("/saveTranscription", async (req, res) => {
 	if (!call.exists) {
 		console.log("Call " + callSid + " not found in database.");
 	} else {
+		let questionsUpdate = call.data().questions;
+		questionsUpdate[0].status = "Completed";
+		questionsUpdate[0].answerTranscript = req.body.TranscriptionText;
 		call
-			.update([
-				{
-					status: "Completed",
-					"questions[0].status": "Completed",
-					"questions[0].answerTranscript": req.body.TranscriptionText,
-				},
-			])
+			.update({
+				status: "Completed",
+				questions: questionsUpdate,
+			})
 			.then(() => {
 				console.log(
 					"Call " +
