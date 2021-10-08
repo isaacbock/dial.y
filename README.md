@@ -1,4 +1,6 @@
-## Install Guide
+# Text-to-Call App
+
+## Backend Local Setup
 
 ### Pre-requisites
 
@@ -7,8 +9,7 @@
 
 ### Download Instructions
 
-Download the repository by executing the following command in a folder titled
-_CSE437S-Software-Engineering-Workshop_ on your machine:
+Download the repository by executing the following command on your machine:
 
 ```
 git clone https://github.com/isaacbock/CSE437S-Software-Engineering-Workshop.git
@@ -28,9 +29,7 @@ Set the required environment variables (obfuscated API keys) through a .env file
 
 1. Create a file named _.env_ at the root of the project.
 2. Copy the contents of _.env.example_ into the newly created _.env_ file.
-3. Enter your TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN.
-
-These environment variables are required only for local development, as they've already been securely deployed to Heroku.
+3. Enter your TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and GOOGLE_APPLICATION_CREDENTIALS.
 
 ## Heroku Backend: Node.js & Express.js
 
@@ -51,5 +50,3 @@ To display a running live-stream of logs via the command line, execute:
 ```
 heroku logs -a cse437s-phone --tail
 ```
-
-When you are done, press Ctrl+C to return to the prompt.
