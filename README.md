@@ -15,6 +15,7 @@ git clone https://github.com/isaacbock/CSE437S-Software-Engineering-Workshop.git
 ```
 
 ### Install Dependencies
+
 Execute the following command at the root of the repository:
 
 ```
