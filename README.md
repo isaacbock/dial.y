@@ -9,10 +9,10 @@
 
 ### Download Instructions
 
-Download the repository by executing the following command on your machine:
+Download the repository:
 
 ```
-git clone https://github.com/isaacbock/CSE437S-Software-Engineering-Workshop.git
+git clone https://github.com/isaacbock/text-to-call-app.git
 ```
 
 ### Install Dependencies
