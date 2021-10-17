@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: __dirname + `/../.env` });
 
 const express = require("express");
 const app = express();
@@ -308,8 +308,7 @@ app.post("/saveTranscription", async (req, res) => {
 });
 
 app.get("/status", async (req, res) => {
-	const callSID = req.body.id;
-
+	const callSID = req.query.id;
 	const callRef = db.collection("calls").doc(callSID);
 	const call = await callRef.get();
 	if (!call.exists) {
