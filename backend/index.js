@@ -307,8 +307,8 @@ app.post("/saveTranscription", async (req, res) => {
 	}
 });
 
-app.get("/status", async (req, res) => {
-	const callSID = req.query.id;
+app.post("/status", async (req, res) => {
+	const callSID = req.body.id;
 	const callRef = db.collection("calls").doc(callSID);
 	const call = await callRef.get();
 	if (!call.exists) {
