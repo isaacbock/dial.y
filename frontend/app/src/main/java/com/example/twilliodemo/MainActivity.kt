@@ -11,6 +11,17 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import java.util.HashMap
 
 private const val REQUEST_MICROPHONE_CODE = 100
 
@@ -41,6 +52,9 @@ class MainActivity : AppCompatActivity() {
                 onCallButton(phoneNumberString, questionTextEdit.text.toString())
             }
         }
+
+        //TODO: DELETE!!
+        test()
 
 
     }
@@ -92,6 +106,59 @@ class MainActivity : AppCompatActivity() {
                             .show()
                 }
             }
+        }
+    }
+
+    fun test(){
+        try{
+            val constants = Constants()
+            val requestQueue: RequestQueue = Volley.newRequestQueue(this)
+            val URL = constants.herokuappStatusUrl
+            val jsonObject = JSONObject()
+            val id = "id"
+            val callId = "CA2245eabf5c7f79fda673db01b3fda20f"
+            jsonObject.put(id, callId)
+//            val requestBody = jsonObject.toString().toByteArray()
+            val requestBody = jsonObject.toString().toByteArray()
+
+
+            val stringRequest = object : StringRequest(
+                Method.POST,
+                URL,
+                Response.Listener { response ->
+                    Log.i("Response from GET", response.toString())
+                    val jsonResponse = JSONObject(response.toString())
+                    Log.e("CALL STATUS", jsonResponse["status"].toString())
+
+                    val questionArray = JSONArray(jsonResponse["questions"].toString())
+                    val questionArrayObject = JSONObject(questionArray[0].toString())
+                    val answerTranscript = questionArrayObject["answerTranscript"].toString()
+                    Log.e("Answer transcript", answerTranscript)
+                },
+                Response.ErrorListener { error ->
+                    Log.e("GET ERROR", "Error :" + error.toString())
+                }){
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+
+//                override fun getPostParams(): MutableMap<String, String> {
+//                    var map = HashMap<String,String>()
+//                    map["id"] = callId
+//                    return map
+//                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    return requestBody
+                }
+
+            }
+
+            requestQueue!!.add(stringRequest!!)
+
+        }catch (e: JSONException){
+            Log.e("JSONExeption", e.toString())
         }
     }
 }

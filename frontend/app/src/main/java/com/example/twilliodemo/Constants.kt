@@ -1,5 +1,7 @@
 package com.example.twilliodemo
 
 class Constants {
-    val herokuappUrl = "https://cse437s-phone.herokuapp.com/call"
+    val herokuappCallUrl = "https://cse437s-phone.herokuapp.com/call"
+
+    val herokuappStatusUrl = "https://cse437s-phone.herokuapp.com/status"
 }
