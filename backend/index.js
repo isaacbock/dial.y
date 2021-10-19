@@ -131,7 +131,7 @@ app.post("/promptListener", async (req, res) => {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Prompting";
 		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSID + "-- Prompting: " + question);
+			console.log("Call " + callSID + "-- Prompting: " + questionsUpdate[0].question);
 			const response = new VoiceResponse();
 			const gather = response.gather({
 				action: "/recordAnswer",
