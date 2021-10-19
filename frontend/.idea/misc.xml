@@ -6,7 +6,10 @@
         <entry key="app/src/main/res/drawable/circle.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/circleFilled.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/circle_filled.xml" value="0.2359375" />
-        <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.3759228038836498" />
+        <entry key="app/src/main/res/drawable/company_answer.xml" value="0.2359375" />
+        <entry key="app/src/main/res/drawable/user_question.xml" value="0.2359375" />
+        <entry key="app/src/main/res/layout/actionbar.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.6868814383390467" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2838246140576283" />
       </map>
     </option>

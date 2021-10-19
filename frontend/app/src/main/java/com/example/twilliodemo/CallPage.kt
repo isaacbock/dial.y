@@ -1,5 +1,6 @@
 package com.example.twilliodemo
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.widget.FrameLayout
@@ -16,6 +17,8 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+import android.graphics.drawable.ColorDrawable
+import android.widget.ImageView
 
 
 class CallPage : AppCompatActivity() {
@@ -24,17 +27,18 @@ class CallPage : AppCompatActivity() {
     lateinit var questionString: String
 
     lateinit var callId: String
-    lateinit var callStatus: TextView
 
-    lateinit var dialingStatus: FrameLayout
-    lateinit var askingStatus: FrameLayout
-    lateinit var recordingStatus: FrameLayout
+    lateinit var dialingStatus: ImageView
+    lateinit var askingStatus: ImageView
+    lateinit var recordingStatus: ImageView
+    lateinit var dialingStatusText: TextView
+    lateinit var askingStatusText: TextView
+    lateinit var recordingStatusText: TextView
 
     lateinit var playButton: ImageButton
 
     lateinit var callResult: TextView
     lateinit var audioLink: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,18 +48,19 @@ class CallPage : AppCompatActivity() {
         questionString = intent.getStringExtra("QUESTION_STRING")!!
         Log.e("Number got from home", phoneNumber)
 
-        findViewById<TextView>(R.id.inProgressNumber).text = phoneNumber
         findViewById<TextView>(R.id.questionText).text = questionString
 
-        dialingStatus = findViewById<FrameLayout>(R.id.dialingStatus)
-        askingStatus = findViewById<FrameLayout>(R.id.askingStatus)
-        recordingStatus = findViewById<FrameLayout>(R.id.recordingStatus)
+        dialingStatus = findViewById<ImageView>(R.id.dialingStatus)
+        askingStatus = findViewById<ImageView>(R.id.askingStatus)
+        recordingStatus = findViewById<ImageView>(R.id.recordingStatus)
+        dialingStatusText = findViewById<TextView>(R.id.dialingStatusText)
+        askingStatusText = findViewById<TextView>(R.id.askingStatusText)
+        recordingStatusText = findViewById<TextView>(R.id.recordingStatusText)
 
         playButton = findViewById<ImageButton>(R.id.playButton)
-
-        callStatus = findViewById<TextView>(R.id.callStatus)
         callResult = findViewById<TextView>(R.id.callResult)
 
+        setTitle(phoneNumber);
 
         makeCallRequest()
 
@@ -66,7 +71,6 @@ class CallPage : AppCompatActivity() {
         }, 0, 2000)
 
     }
-
 
     fun makeCallRequest(){
         var jsonArray = JSONArray()
@@ -85,7 +89,7 @@ class CallPage : AppCompatActivity() {
                 URL,
                 Response.Listener { response ->
                     runOnUiThread {
-                        callStatus.text = "In Progress"
+                        setTitle(phoneNumber + "  (In Progress)");
                     }
                     Log.i("Call ID From Twilio", response.toString())
                     callId = response.toString()
@@ -141,18 +145,30 @@ class CallPage : AppCompatActivity() {
                         Log.e("Answer transcript", answerTranscript)
 
                         runOnUiThread {
-                            callStatus.text = jsonResponse["status"].toString();
+                            setTitle(phoneNumber + "  (" + jsonResponse["status"].toString() + ")");
+                            if (jsonResponse["status"].toString() == "Dialing") {
+                                dialingStatus.setImageResource(R.drawable.dialing_complete)
+                                dialingStatusText.setTypeface(null, Typeface.BOLD);
+                                dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                            }
                         }
 
-                        when(questionArrayObject["status"].toString()){
+                        when(questionArrayObject["status"].toString()) {
                             "Asking" -> {
                                 runOnUiThread {
-                                    askingStatus.setBackgroundResource(R.drawable.circle_filled);
+                                    askingStatus.setImageResource(R.drawable.asking_complete)
+                                    askingStatusText.setTypeface(null, Typeface.BOLD);
+                                    askingStatusText.setTextColor(getResources().getColor(R.color.black))
+                                    dialingStatusText.setTypeface(null, Typeface.NORMAL)
                                 }
                             }
                             "Recording" -> {
                                 runOnUiThread {
-                                    recordingStatus.setBackgroundResource(R.drawable.circle_filled);
+                                    recordingStatus.setImageResource(R.drawable.recording_complete);
+                                    recordingStatusText.setTypeface(null, Typeface.BOLD);
+                                    recordingStatusText.setTextColor(getResources().getColor(R.color.black))
+                                    askingStatusText.setTypeface(null, Typeface.NORMAL)
                                 }
                             }
                         }
@@ -164,7 +180,9 @@ class CallPage : AppCompatActivity() {
                                 playButton.setOnClickListener() {
                                     playAudio();
                                 }
-                                callResult.text = "Transcribing..."
+                                callResult.setVisibility(View.VISIBLE)
+                                callResult.text = "..."
+                                recordingStatusText.setTypeface(null, Typeface.NORMAL)
                             }
                         }
                         else if (answerAudio != "null" && answerTranscript != "null"){
