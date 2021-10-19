@@ -22,6 +22,10 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.HashMap
+import android.telephony.PhoneNumberFormattingTextWatcher
+
+
+
 
 private const val REQUEST_MICROPHONE_CODE = 100
 
@@ -38,18 +42,29 @@ class MainActivity : AppCompatActivity() {
         var phoneNumber = findViewById<TextView>(R.id.phoneNumber)
         var questionTextEdit = findViewById<TextView>(R.id.questionTextEdit)
 
+        if (phoneNumber != null) {
+            phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        }
+        if (questionTextEdit != null) {
+            questionTextEdit.setHorizontallyScrolling(false);
+            questionTextEdit.setMaxLines(4);
+        }
+
         callButton.setOnClickListener(){
-            Log.e("Button", "CLicked!!")
+            Log.e("Button", "Clicked!!")
 
 
             val phoneNumberString = phoneNumber.text.toString()
+            val questionTextString = questionTextEdit.text.toString()
             Log.e("number", phoneNumberString)
 
             //TODO: Check if it is number only
-            if (phoneNumberString == "" || phoneNumberString.length != 10){
-                alertDialog("Phone number", "Please enter a valid phone number", "Okay")
-            }else{
-                onCallButton(phoneNumberString, questionTextEdit.text.toString())
+            if (phoneNumberString == "" || phoneNumberString.length != 14){
+                alertDialog("Sorry...", "Please enter a valid phone number.", "Okay")
+            } else if (questionTextString == "") {
+                alertDialog("Sorry...", "Please ask a question.", "Okay")
+            } else {
+                onCallButton(phoneNumberString, questionTextString)
             }
         }
 
