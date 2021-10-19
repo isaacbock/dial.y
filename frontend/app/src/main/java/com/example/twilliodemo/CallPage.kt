@@ -2,10 +2,14 @@ package com.example.twilliodemo
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.FrameLayout
 import android.widget.TextView
+import android.media.*
+import android.net.Uri
+import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.*
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
@@ -22,8 +26,14 @@ class CallPage : AppCompatActivity() {
     lateinit var callId: String
     lateinit var callStatus: TextView
 
+    lateinit var dialingStatus: FrameLayout
+    lateinit var askingStatus: FrameLayout
+    lateinit var recordingStatus: FrameLayout
+
+    lateinit var playButton: ImageButton
+
     lateinit var callResult: TextView
-    lateinit var transcriptionStatus: TextView
+    lateinit var audioLink: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +45,17 @@ class CallPage : AppCompatActivity() {
         Log.e("Number got from home", phoneNumber)
 
         findViewById<TextView>(R.id.inProgressNumber).text = phoneNumber
-        findViewById<TextView>(R.id.questionText).text = "Question:\n$questionString"
+        findViewById<TextView>(R.id.questionText).text = questionString
+
+        dialingStatus = findViewById<FrameLayout>(R.id.dialingStatus)
+        askingStatus = findViewById<FrameLayout>(R.id.askingStatus)
+        recordingStatus = findViewById<FrameLayout>(R.id.recordingStatus)
+
+        playButton = findViewById<ImageButton>(R.id.playButton)
 
         callStatus = findViewById<TextView>(R.id.callStatus)
         callResult = findViewById<TextView>(R.id.callResult)
-        transcriptionStatus = findViewById<TextView>(R.id.transcriptionStatus)
+
 
         makeCallRequest()
 
@@ -69,8 +85,7 @@ class CallPage : AppCompatActivity() {
                 URL,
                 Response.Listener { response ->
                     runOnUiThread {
-                        var callStatus = findViewById<TextView>(R.id.callStatus)
-                        callStatus.text = "Call in progress"
+                        callStatus.text = "In Progress"
                     }
                     Log.i("Call ID From Twilio", response.toString())
                     callId = response.toString()
@@ -90,7 +105,7 @@ class CallPage : AppCompatActivity() {
 
             requestQueue!!.add(stringRequest!!)
         }catch (e: JSONException){
-            Log.e("JSONExeption", e.toString())
+            Log.e("JSONException", e.toString())
         }
     }
 
@@ -113,10 +128,6 @@ class CallPage : AppCompatActivity() {
                     Request.Method.POST,
                     URL,
                     Response.Listener { response ->
-//                    runOnUiThread {
-//                        var callStatus = findViewById<TextView>(R.id.callStatus)
-//                        callStatus.text = "Call in progress"
-//                    }
                         Log.i("Response from GET", response.toString())
                         val jsonResponse = JSONObject(response.toString())
                         Log.e("CALL STATUS", jsonResponse["status"].toString())
@@ -129,39 +140,38 @@ class CallPage : AppCompatActivity() {
                         val answerStatus = questionArrayObject["status"].toString()
                         Log.e("Answer transcript", answerTranscript)
 
-                        when(jsonResponse["status"].toString()){
-                            "Hung Up" -> {
+                        runOnUiThread {
+                            callStatus.text = jsonResponse["status"].toString();
+                        }
+
+                        when(questionArrayObject["status"].toString()){
+                            "Asking" -> {
                                 runOnUiThread {
-                                    callStatus.text = "Hung Up"
+                                    askingStatus.setBackgroundResource(R.drawable.circle_filled);
                                 }
                             }
-                            "Dialing" ->{
+                            "Recording" -> {
                                 runOnUiThread {
-                                    callStatus.text = "Dialing"
-                                }
-                            }
-                            "In Progress" ->{
-                                runOnUiThread {
-                                    callStatus.text = "In progress"
-                                }
-                            }
-                            "Completed" -> {
-                                runOnUiThread {
-                                    callStatus.text = "Completed"
+                                    recordingStatus.setBackgroundResource(R.drawable.circle_filled);
                                 }
                             }
                         }
 
-                        runOnUiThread {
-                            transcriptionStatus.text = answerStatus
+                        if (answerAudio != "null" && answerTranscript == "null"){
+                            runOnUiThread{
+                                audioLink = answerAudio
+                                playButton.setVisibility(View.VISIBLE)
+                                playButton.setOnClickListener() {
+                                    playAudio();
+                                }
+                                callResult.text = "Transcribing..."
+                            }
                         }
-                        if (answerTranscript != "null"){
+                        else if (answerAudio != "null" && answerTranscript != "null"){
                             runOnUiThread{
                                 callResult.text = answerTranscript
                             }
                         }
-
-
                     },
                     Response.ErrorListener { error ->
                         Log.i("GET ERROR", "Error :" + error.toString())
@@ -195,9 +205,26 @@ class CallPage : AppCompatActivity() {
 //
 //                requestQueue!!.add(jsonObjectRequest!!)
             }catch (e: JSONException){
-                Log.e("JSONExeption", e.toString())
+                Log.e("JSONException", e.toString())
             }
         }
 
+    }
+
+    fun playAudio() {
+        if (audioLink != null) {
+            val uri = Uri.parse(audioLink)
+            val mediaPlayer = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                setDataSource(applicationContext, uri)
+                prepare()
+                start()
+            }
+        }
     }
 }
