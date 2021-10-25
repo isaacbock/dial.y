@@ -299,7 +299,10 @@ app.post("/saveRecording", async (req, res) => {
 					const config = {
 						encoding: encoding,
 						languageCode: languageCode,
+						sampleRateHertz: sampleRateHertz,
 						enableAutomaticPunctuation: true,
+						useEnhanced: true,
+						model: "phone_call",
 					};
 
 					const audio = {
