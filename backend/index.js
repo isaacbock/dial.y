@@ -13,11 +13,26 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 const admin = require("firebase-admin");
-const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+const serviceAccount = JSON.parse(
+	process.env.GOOGLE_APPLICATION_CREDENTIALS_FIREBASE
+);
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 });
 let db = admin.firestore();
+
+const fs = require("fs");
+const fetch = require("node-fetch");
+const speech = require("@google-cloud/speech");
+// save google speech credentials to file with correct name
+try {
+	fs.writeFileSync(
+		process.env.GOOGLE_APPLICATION_CREDENTIALS,
+		process.env.GOOGLE_APPLICATION_CREDENTIALS_SPEECH
+	);
+} catch (err) {
+	console.log("Error initializing google speech credentials: " + err);
+}
 
 app.listen(port, () => {
 	console.log(`Listening on port ${port}.`);
@@ -131,7 +146,9 @@ app.post("/promptListener", async (req, res) => {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Prompting";
 		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSID + "-- Prompting: " + questionsUpdate[0].question);
+			console.log(
+				"Call " + callSID + "-- Prompting: " + questionsUpdate[0].question
+			);
 			const response = new VoiceResponse();
 			const gather = response.gather({
 				action: "/recordAnswer",
@@ -190,8 +207,6 @@ app.post("/recordAnswer", async (req, res) => {
 				response.record({
 					action: "/saveRecording",
 					timeout: 3,
-					transcribe: true,
-					transcribeCallback: "/saveTranscription",
 				});
 				let twiml = response.toString();
 				res.header("Content-Type", "application/xml");
@@ -236,15 +251,18 @@ app.post("/saveRecording", async (req, res) => {
 	const callSID = req.body.CallSid;
 
 	const callRef = db.collection("calls").doc(callSID);
-	const call = await callRef.get();
+	let call = await callRef.get();
 	if (!call.exists) {
 		console.log("Call " + callSID + " not found in database.");
+		res.end();
 	} else {
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Transcribing";
 		questionsUpdate[0].answerAudio = req.body.RecordingUrl;
 		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSID + "-- Recording: " + req.body.RecordingUrl);
+			console.log(
+				"Call " + callSID + "-- Recording URL: " + req.body.RecordingUrl
+			);
 
 			const response = new VoiceResponse();
 			response.say(
@@ -254,34 +272,77 @@ app.post("/saveRecording", async (req, res) => {
 			res.header("Content-Type", "application/xml");
 			res.send(twiml);
 		});
-	}
-});
 
-app.post("/saveTranscription", async (req, res) => {
-	const callSID = req.body.CallSid;
+		// Transcribe audio recording
+		const url = req.body.RecordingUrl;
+		const path = toString(callSID) + ".wav";
 
-	const callRef = db.collection("calls").doc(callSID);
-	const call = await callRef.get();
-	if (!call.exists) {
-		console.log("Call " + callSID + " not found in database.");
-	} else {
-		let questionsUpdate = call.data().questions;
-		questionsUpdate[0].status = "Completed";
-		questionsUpdate[0].answerTranscript = req.body.TranscriptionText;
-		callRef
-			.update({
-				status: "Completed",
-				questions: questionsUpdate,
+		const file = fs.createWriteStream(path);
+		// download audio recording
+		fetch(url)
+			.then((res) => res.buffer())
+			.then((buffer) => {
+				return fs.promises.writeFile(path, buffer);
 			})
 			.then(() => {
-				console.log(
-					"Call " +
-						callSID +
-						"-- Answer transcribed: " +
-						req.body.TranscriptionText
-				);
+				console.log("Audio file downloaded.");
 
-				res.end();
+				// transcribe audio recording
+				async function transcribe() {
+					// Creates a client
+					const client = new speech.SpeechClient();
+
+					const encoding = "LINEAR16";
+					const sampleRateHertz = 8000;
+					const languageCode = "en-US";
+
+					const config = {
+						encoding: encoding,
+						languageCode: languageCode,
+						enableAutomaticPunctuation: true,
+					};
+
+					const audio = {
+						content: fs.readFileSync(path).toString("base64"),
+					};
+
+					const request = {
+						config: config,
+						audio: audio,
+					};
+
+					// Detects speech in the audio file
+					const [response] = await client.recognize(request);
+					const transcription = response.results
+						.map((result) => result.alternatives[0].transcript)
+						.join("\n");
+
+					// Update call in database to include transcription
+					call = await callRef.get();
+					if (!call.exists) {
+						console.log("Call " + callSID + " not found in database.");
+					} else {
+						let questionsUpdate = call.data().questions;
+						questionsUpdate[0].status = "Completed";
+						questionsUpdate[0].answerTranscript = transcription;
+						callRef
+							.update({
+								status: "Completed",
+								questions: questionsUpdate,
+							})
+							.then(() => {
+								console.log(
+									"Call " + callSID + "-- Transcription: " + transcription
+								);
+							});
+					}
+					// delete audio recording file
+					fs.unlinkSync(path);
+				}
+				transcribe();
+			})
+			.catch((err) => {
+				console.log(err);
 			});
 	}
 });
