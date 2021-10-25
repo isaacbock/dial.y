@@ -271,82 +271,82 @@ app.post("/saveRecording", async (req, res) => {
 			let twiml = response.toString();
 			res.header("Content-Type", "application/xml");
 			res.send(twiml);
-		});
 
-		// Transcribe audio recording
-		const url = req.body.RecordingUrl;
-		const path = toString(callSID) + ".wav";
+			// Transcribe audio recording
+			const url = req.body.RecordingUrl;
+			const path = toString(callSID) + ".wav";
 
-		const file = fs.createWriteStream(path);
-		// download audio recording
-		fetch(url)
-			.then((res) => res.buffer())
-			.then((buffer) => {
-				return fs.promises.writeFile(path, buffer);
-			})
-			.then(() => {
-				console.log("Audio file downloaded.");
+			const file = fs.createWriteStream(path);
+			// download audio recording
+			fetch(url)
+				.then((res) => res.buffer())
+				.then((buffer) => {
+					return fs.promises.writeFile(path, buffer);
+				})
+				.then(() => {
+					console.log("Audio file downloaded.");
 
-				// transcribe audio recording
-				async function transcribe() {
-					// Creates a client
-					const client = new speech.SpeechClient();
+					// transcribe audio recording
+					async function transcribe() {
+						// Creates a client
+						const client = new speech.SpeechClient();
 
-					const encoding = "LINEAR16";
-					const sampleRateHertz = 8000;
-					const languageCode = "en-US";
+						const encoding = "LINEAR16";
+						const sampleRateHertz = 8000;
+						const languageCode = "en-US";
 
-					const config = {
-						encoding: encoding,
-						languageCode: languageCode,
-						sampleRateHertz: sampleRateHertz,
-						enableAutomaticPunctuation: true,
-						useEnhanced: true,
-						model: "phone_call",
-					};
+						const config = {
+							encoding: encoding,
+							languageCode: languageCode,
+							sampleRateHertz: sampleRateHertz,
+							enableAutomaticPunctuation: true,
+							useEnhanced: true,
+							model: "phone_call",
+						};
 
-					const audio = {
-						content: fs.readFileSync(path).toString("base64"),
-					};
+						const audio = {
+							content: fs.readFileSync(path).toString("base64"),
+						};
 
-					const request = {
-						config: config,
-						audio: audio,
-					};
+						const request = {
+							config: config,
+							audio: audio,
+						};
 
-					// Detects speech in the audio file
-					const [response] = await client.recognize(request);
-					const transcription = response.results
-						.map((result) => result.alternatives[0].transcript)
-						.join("\n");
+						// Detects speech in the audio file
+						const [response] = await client.recognize(request);
+						const transcription = response.results
+							.map((result) => result.alternatives[0].transcript)
+							.join("\n");
 
-					// Update call in database to include transcription
-					call = await callRef.get();
-					if (!call.exists) {
-						console.log("Call " + callSID + " not found in database.");
-					} else {
-						let questionsUpdate = call.data().questions;
-						questionsUpdate[0].status = "Completed";
-						questionsUpdate[0].answerTranscript = transcription;
-						callRef
-							.update({
-								status: "Completed",
-								questions: questionsUpdate,
-							})
-							.then(() => {
-								console.log(
-									"Call " + callSID + "-- Transcription: " + transcription
-								);
-							});
+						// Update call in database to include transcription
+						call = await callRef.get();
+						if (!call.exists) {
+							console.log("Call " + callSID + " not found in database.");
+						} else {
+							let questionsUpdate = call.data().questions;
+							questionsUpdate[0].status = "Completed";
+							questionsUpdate[0].answerTranscript = transcription;
+							callRef
+								.update({
+									status: "Completed",
+									questions: questionsUpdate,
+								})
+								.then(() => {
+									console.log(
+										"Call " + callSID + "-- Transcription: " + transcription
+									);
+								});
+						}
+						// delete audio recording file
+						fs.unlinkSync(path);
 					}
-					// delete audio recording file
-					fs.unlinkSync(path);
-				}
-				transcribe();
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+					transcribe();
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
 	}
 });
 
