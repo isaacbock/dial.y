@@ -281,12 +281,16 @@ app.post("/saveRecording", async (req, res) => {
 			fetch(url)
 				.then((res) => res.buffer())
 				.then((buffer) => {
-					return fs.promises.writeFile(path, buffer);
-				})
-				.then(() => {
-					console.log("Audio file downloaded.");
+					await fs.promises.writeFile(path, buffer);
+					let stats = fs.statSync(path);
+					let fileSizeInBytes = stats["size"];
+					console.log(
+						"Audio file downloaded for transcription: " +
+							fileSizeInBytes +
+							" bytes"
+					);
 
-					// transcribe audio recording
+					// Transcribe audio recording
 					async function transcribe() {
 						// Creates a client
 						const client = new speech.SpeechClient();
