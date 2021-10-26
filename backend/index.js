@@ -336,6 +336,10 @@ app.post("/saveRecording", async (req, res) => {
 									console.log(
 										"Call " + callSID + "-- Transcription: " + transcription
 									);
+									if (transcription == "") {
+										console.log("No transcript detected.");
+										console.log(response);
+									}
 								});
 						}
 						// delete audio recording file

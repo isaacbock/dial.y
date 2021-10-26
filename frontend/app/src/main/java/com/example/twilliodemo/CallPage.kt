@@ -187,7 +187,18 @@ class CallPage : AppCompatActivity() {
                         }
                         else if (answerAudio != "null" && answerTranscript != "null"){
                             runOnUiThread{
-                                callResult.text = answerTranscript
+                                audioLink = answerAudio
+                                playButton.setVisibility(View.VISIBLE)
+                                playButton.setOnClickListener() {
+                                    playAudio();
+                                }
+                                callResult.setVisibility(View.VISIBLE)
+                                if (answerTranscript == "") {
+                                    callResult.text = "Sorry, transcription is not available for this call."
+                                }
+                                else {
+                                    callResult.text = answerTranscript
+                                }
                             }
                         }
                     },
