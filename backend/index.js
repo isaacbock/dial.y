@@ -276,12 +276,11 @@ app.post("/saveRecording", async (req, res) => {
 			const url = req.body.RecordingUrl;
 			const path = toString(callSID) + ".wav";
 
-			const file = fs.createWriteStream(path);
 			// download audio recording
 			fetch(url)
 				.then((res) => res.buffer())
-				.then(async (buffer) => {
-					await fs.promises.writeFile(path, buffer);
+				.then((buffer) => {
+					writeFileSync(path, buffer);
 					let stats = fs.statSync(path);
 					let fileSizeInBytes = stats["size"];
 					console.log(
@@ -289,6 +288,15 @@ app.post("/saveRecording", async (req, res) => {
 							fileSizeInBytes +
 							" bytes"
 					);
+					// Console log failed files (for some reason always exactly 359 bytes) for debugging
+					if (fileSizeInBytes == 359) {
+						fs.readFile(path, (error, data) => {
+							if (error) {
+								throw error;
+							}
+							console.log(data.toString());
+						});
+					}
 
 					// Transcribe audio recording
 					async function transcribe() {
