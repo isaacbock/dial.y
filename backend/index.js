@@ -280,7 +280,7 @@ app.post("/saveRecording", async (req, res) => {
 			fetch(url)
 				.then((res) => res.buffer())
 				.then((buffer) => {
-					writeFileSync(path, buffer);
+					fs.writeFileSync(path, buffer);
 					let stats = fs.statSync(path);
 					let fileSizeInBytes = stats["size"];
 					console.log(
