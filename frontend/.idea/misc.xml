@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/maliv/OneDrive/Desktop/437S-Project/text-to-call-app/frontend/app/src/main/res/layout/activity_call_page.xml" value="0.1490036231884058" />
+        <entry key="..\:/Users/maliv/OneDrive/Desktop/437S-Project/text-to-call-app/frontend/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/circleFilled.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/circle_filled.xml" value="0.2359375" />
@@ -14,7 +16,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -11,12 +11,38 @@
         android:id="@+id/callButton"
         android:layout_width="174dp"
         android:layout_height="54dp"
-        android:layout_marginTop="30dp"
-        android:text="Ask Now!"
+        android:layout_marginTop="16dp"
+        android:text="Ask now!"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/questionTextEdit" />
+
+    <CheckBox
+        android:id="@+id/frenchButton"
+        android:layout_width="98dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="214dp"
+        android:layout_marginTop="296dp"
+        android:layout_marginEnd="99dp"
+        android:text="Francais"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/spanishButton"
+        android:layout_width="98dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="296dp"
+        android:layout_marginEnd="214dp"
+        android:text="Español"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/phoneNumber"
