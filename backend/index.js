@@ -280,7 +280,7 @@ app.post("/saveRecording", async (req, res) => {
 			// download audio recording
 			fetch(url)
 				.then((res) => res.buffer())
-				.then((buffer) => {
+				.then(async (buffer) => {
 					await fs.promises.writeFile(path, buffer);
 					let stats = fs.statSync(path);
 					let fileSizeInBytes = stats["size"];
