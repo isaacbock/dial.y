@@ -1,5 +1,11 @@
 require("dotenv").config({ path: __dirname + `/../.env` });
 
+// Imports the Google Cloud client library
+const {Translate} = require('@google-cloud/translate').v2;
+
+// Creates a client
+const translate = new Translate();
+
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -330,7 +336,26 @@ app.post("/saveRecording", async (req, res) => {
 							} else {
 								let questionsUpdate = call.data().questions;
 								questionsUpdate[0].status = "Completed";
-								questionsUpdate[0].answerTranscript = transcription;
+
+								// test google translate api
+								const text = transcription;
+								const target = 'es';
+
+								async function translateText() {
+									// Translates the text into the target language. "text" can be a string for
+									// translating a single piece of text, or an array of strings for translating
+									// multiple texts.
+									let [translations] = await translate.translate(text, target);
+									translations = Array.isArray(translations) ? translations : [translations];
+									console.log('Translations:');
+									translations.forEach((translation, i) => {
+									console.log(`${text[i]} => (${target}) ${translation}`);
+									});
+								}
+								
+								translateText();
+
+								questionsUpdate[0].answerTranscript = transcription + " // " + text;
 								callRef
 									.update({
 										status: "Completed",
