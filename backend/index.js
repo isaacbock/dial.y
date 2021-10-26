@@ -277,7 +277,7 @@ app.post("/saveRecording", async (req, res) => {
 			const path = toString(callSID) + ".wav";
 
 			// download audio recording (wait small delay first to ensure that it is available on Twilio)
-			let delay = 250;
+			let delay = 1000;
 			setTimeout(function () {
 				fetch(url)
 					.then((res) => res.buffer())
