@@ -276,92 +276,85 @@ app.post("/saveRecording", async (req, res) => {
 			const url = req.body.RecordingUrl;
 			const path = toString(callSID) + ".wav";
 
-			// download audio recording
-			fetch(url)
-				.then((res) => res.buffer())
-				.then((buffer) => {
-					fs.writeFileSync(path, buffer);
-					let stats = fs.statSync(path);
-					let fileSizeInBytes = stats["size"];
-					console.log(
-						"Audio file downloaded for transcription: " +
-							fileSizeInBytes +
-							" bytes"
-					);
-					// Console log failed files (for some reason always exactly 359 bytes) for debugging
-					if (fileSizeInBytes == 359) {
-						fs.readFile(path, (error, data) => {
-							if (error) {
-								throw error;
+			// download audio recording (wait small delay first to ensure that it is available on Twilio)
+			let delay = 250;
+			setTimeout(function () {
+				fetch(url)
+					.then((res) => res.buffer())
+					.then((buffer) => {
+						fs.writeFileSync(path, buffer);
+						let stats = fs.statSync(path);
+						let fileSizeInBytes = stats["size"];
+						console.log(
+							"Audio file downloaded for transcription: " +
+								fileSizeInBytes +
+								" bytes"
+						);
+						// Transcribe audio recording
+						async function transcribe() {
+							// Creates a client
+							const client = new speech.SpeechClient();
+
+							const encoding = "LINEAR16";
+							const sampleRateHertz = 8000;
+							const languageCode = "en-US";
+
+							const config = {
+								encoding: encoding,
+								languageCode: languageCode,
+								sampleRateHertz: sampleRateHertz,
+								enableAutomaticPunctuation: true,
+								useEnhanced: true,
+								model: "phone_call",
+							};
+
+							const audio = {
+								content: fs.readFileSync(path).toString("base64"),
+							};
+
+							const request = {
+								config: config,
+								audio: audio,
+							};
+
+							// Detects speech in the audio file
+							const [response] = await client.recognize(request);
+							const transcription = response.results
+								.map((result) => result.alternatives[0].transcript)
+								.join("\n");
+
+							// Update call in database to include transcription
+							call = await callRef.get();
+							if (!call.exists) {
+								console.log("Call " + callSID + " not found in database.");
+							} else {
+								let questionsUpdate = call.data().questions;
+								questionsUpdate[0].status = "Completed";
+								questionsUpdate[0].answerTranscript = transcription;
+								callRef
+									.update({
+										status: "Completed",
+										questions: questionsUpdate,
+									})
+									.then(() => {
+										console.log(
+											"Call " + callSID + "-- Transcription: " + transcription
+										);
+										if (transcription == "") {
+											console.log("No transcript detected.");
+											console.log(response);
+										}
+									});
 							}
-							console.log(data.toString());
-						});
-					}
-
-					// Transcribe audio recording
-					async function transcribe() {
-						// Creates a client
-						const client = new speech.SpeechClient();
-
-						const encoding = "LINEAR16";
-						const sampleRateHertz = 8000;
-						const languageCode = "en-US";
-
-						const config = {
-							encoding: encoding,
-							languageCode: languageCode,
-							sampleRateHertz: sampleRateHertz,
-							enableAutomaticPunctuation: true,
-							useEnhanced: true,
-							model: "phone_call",
-						};
-
-						const audio = {
-							content: fs.readFileSync(path).toString("base64"),
-						};
-
-						const request = {
-							config: config,
-							audio: audio,
-						};
-
-						// Detects speech in the audio file
-						const [response] = await client.recognize(request);
-						const transcription = response.results
-							.map((result) => result.alternatives[0].transcript)
-							.join("\n");
-
-						// Update call in database to include transcription
-						call = await callRef.get();
-						if (!call.exists) {
-							console.log("Call " + callSID + " not found in database.");
-						} else {
-							let questionsUpdate = call.data().questions;
-							questionsUpdate[0].status = "Completed";
-							questionsUpdate[0].answerTranscript = transcription;
-							callRef
-								.update({
-									status: "Completed",
-									questions: questionsUpdate,
-								})
-								.then(() => {
-									console.log(
-										"Call " + callSID + "-- Transcription: " + transcription
-									);
-									if (transcription == "") {
-										console.log("No transcript detected.");
-										console.log(response);
-									}
-								});
+							// delete audio recording file
+							fs.unlinkSync(path);
 						}
-						// delete audio recording file
-						fs.unlinkSync(path);
-					}
-					transcribe();
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+						transcribe();
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			}, delay);
 		});
 	}
 });
