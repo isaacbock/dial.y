@@ -339,7 +339,7 @@ app.post("/saveRecording", async (req, res) => {
 
 								// test google translate api
 								const text = transcription;
-								const target = "es";
+								const target = "ko";
 
 								async function translateText() {
 									// Translates the text into the target language. "text" can be a string for
