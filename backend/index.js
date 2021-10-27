@@ -351,7 +351,7 @@ app.post("/saveRecording", async (req, res) => {
 									translations.forEach((translation, i) => {
 									console.log(`${text[i]} => (${target}) ${translation}`);
 									});
-									return translations[0]
+									return translations
 								}
 								
 								let translatedText = translateText();
