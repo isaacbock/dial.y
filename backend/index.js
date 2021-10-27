@@ -351,11 +351,12 @@ app.post("/saveRecording", async (req, res) => {
 									translations.forEach((translation, i) => {
 									console.log(`${text[i]} => (${target}) ${translation}`);
 									});
+									return translations[0]
 								}
 								
-								translateText();
+								let translatedText = translateText();
 
-								questionsUpdate[0].answerTranscript = transcription + " // " + text;
+								questionsUpdate[0].answerTranscript = transcription + " // " + translatedText;
 								callRef
 									.update({
 										status: "Completed",
