@@ -1,7 +1,7 @@
 require("dotenv").config({ path: __dirname + `/../.env` });
 
 // Imports the Google Cloud client library
-const {Translate} = require('@google-cloud/translate').v2;
+const { Translate } = require("@google-cloud/translate").v2;
 
 // Creates a client
 const translate = new Translate();
@@ -339,38 +339,40 @@ app.post("/saveRecording", async (req, res) => {
 
 								// test google translate api
 								const text = transcription;
-								const target = 'es';
+								const target = "es";
 
 								async function translateText() {
 									// Translates the text into the target language. "text" can be a string for
 									// translating a single piece of text, or an array of strings for translating
 									// multiple texts.
 									let [translations] = await translate.translate(text, target);
-									translations = Array.isArray(translations) ? translations : [translations];
-									console.log('Translations:');
+									translations = Array.isArray(translations)
+										? translations
+										: [translations];
+									console.log("Translations:");
 									translations.forEach((translation, i) => {
-									console.log(`${text[i]} => (${target}) ${translation}`);
+										console.log(`${text[i]} => (${target}) ${translation}`);
 									});
-									return translations
-								}
-								
-								let translatedText = translateText();
 
-								questionsUpdate[0].answerTranscript = transcription + " // " + translatedText;
-								callRef
-									.update({
-										status: "Completed",
-										questions: questionsUpdate,
-									})
-									.then(() => {
-										console.log(
-											"Call " + callSID + "-- Transcription: " + transcription
-										);
-										if (transcription == "") {
-											console.log("No transcript detected.");
-											console.log(response);
-										}
-									});
+									questionsUpdate[0].answerTranscript =
+										transcription + " // " + translations[0];
+									callRef
+										.update({
+											status: "Completed",
+											questions: questionsUpdate,
+										})
+										.then(() => {
+											console.log(
+												"Call " + callSID + "-- Transcription: " + transcription
+											);
+											if (transcription == "") {
+												console.log("No transcript detected.");
+												console.log(response);
+											}
+										});
+								}
+
+								translateText();
 							}
 							// delete audio recording file
 							fs.unlinkSync(path);
