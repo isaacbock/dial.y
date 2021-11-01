@@ -70,7 +70,6 @@ class CallPage : AppCompatActivity() {
         try {
             //This address is the way you can connect to localhost with AVD(Android Virtual Device)
             mSocket = IO.socket(constants.herokuSocketUrl)
-            Log.d("Socket.io", mSocket.id())
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("Socket.io", "Failed to connect.")
