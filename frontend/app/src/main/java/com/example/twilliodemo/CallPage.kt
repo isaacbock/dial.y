@@ -19,6 +19,8 @@ import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
+import io.socket.client.IO
+import io.socket.client.Socket
 
 
 class CallPage : AppCompatActivity() {
