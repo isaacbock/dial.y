@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //TODO: DELETE!!
-        test()
+//        test()
 
 
     }

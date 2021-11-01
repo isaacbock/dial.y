@@ -42,6 +42,10 @@ class CallPage : AppCompatActivity() {
     lateinit var callResult: TextView
     lateinit var audioLink: String
 
+    private var socket = IO.socket("")
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call_page)
@@ -73,6 +77,7 @@ class CallPage : AppCompatActivity() {
         }, 0, 2000)
 
     }
+
 
     fun makeCallRequest(){
         var jsonArray = JSONArray()

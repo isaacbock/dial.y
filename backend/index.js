@@ -6,11 +6,16 @@ const { Translate } = require("@google-cloud/translate").v2;
 // Creates a client
 const translate = new Translate();
 
+//Imports the Socket io library
+const { Socket } = require("socket.io");
+const io = new Socket();
+
 const express = require("express");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 let port = process.env.PORT || 3000;
 
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
@@ -398,3 +403,10 @@ app.post("/status", async (req, res) => {
 		res.send(data);
 	}
 });
+
+io.on('connection', function (socket) {
+	socket.emit('news', { hello: 'world' });
+	socket.on('my other event', function (data) {
+	  console.log(data);
+	});
+  });
