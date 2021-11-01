@@ -6,10 +6,6 @@ const { Translate } = require("@google-cloud/translate").v2;
 // Creates a client
 const translate = new Translate();
 
-//Imports the Socket io library
-const { Socket } = require("socket.io");
-const io = new Socket();
-
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -17,6 +13,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 let port = process.env.PORT || 3000;
+
+//Imports the Socket.io library
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+server.listen(port, () => {
+	console.log(`Listening on port ${port}.`);
+});
 
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -44,10 +49,6 @@ try {
 } catch (err) {
 	console.log("Error initializing google speech credentials: " + err);
 }
-
-app.listen(port, () => {
-	console.log(`Listening on port ${port}.`);
-});
 
 app.get("/", (req, res) => {
 	res.send("Hello world.");
@@ -404,9 +405,11 @@ app.post("/status", async (req, res) => {
 	}
 });
 
-io.on('connection', function (socket) {
-	socket.emit('news', { hello: 'world' });
-	socket.on('my other event', function (data) {
-	  console.log(data);
+// Socket.io: receive new connections
+io.on("connection", (socket) => {
+	console.log("A user connected.");
+	socket.emit("news", { hello: "world" });
+	socket.on("my other event", function (data) {
+		console.log(data);
 	});
-  });
+});

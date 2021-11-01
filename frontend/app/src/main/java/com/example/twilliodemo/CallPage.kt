@@ -42,9 +42,7 @@ class CallPage : AppCompatActivity() {
     lateinit var callResult: TextView
     lateinit var audioLink: String
 
-    private var socket = IO.socket("")
-
-
+    lateinit var mSocket: Socket;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +65,20 @@ class CallPage : AppCompatActivity() {
         callResult = findViewById<TextView>(R.id.callResult)
 
         setTitle(phoneNumber);
+
+        // Socket.IO Connection
+        try {
+            //This address is the way you can connect to localhost with AVD(Android Virtual Device)
+            mSocket = IO.socket(constants.herokuSocketUrl)
+            Log.d("Socket.io", mSocket.id())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("Socket.io", "Failed to connect.")
+        }
+        mSocket.connect()
+        mSocket.on(Socket.EVENT_CONNECT)  {
+            Log.d("Socket.io", "Connected!")
+        };
 
         makeCallRequest()
 
