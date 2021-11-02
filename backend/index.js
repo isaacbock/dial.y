@@ -409,10 +409,52 @@ app.post("/status", async (req, res) => {
 io.on("connection", (socket) => {
 	console.log("A user connected.");
 	socket.emit("news", { hello: "world" });
+
 	socket.on("call", function(data){
+		console.log("callData below")
 		console.log(data);
+
+		let toPhoneNumber = "+1" + data.phoneNumber;
+		let questions = data.questions;
+	
+		callSID = await client.calls
+			.create({
+				url: "https://cse437s-phone.herokuapp.com/start",
+				to: toPhoneNumber,
+				from: "+15153165732",
+			})
+			.then((call) => {
+				console.log("Call " + call.sid + " initiated.");
+				return call.sid;
+			});
+	
+		let callQuestions = [];
+		for (question of questions) {
+			let newQuestion = {
+				question: question,
+				status: "Waiting",
+				answerAudio: null,
+				answerTranscript: null,
+			};
+			callQuestions.push(newQuestion);
+		}
+		const call = {
+			to: toPhoneNumber,
+			status: "Dialing",
+			date: new Date(),
+			questions: callQuestions,
+		};
+		db.collection("calls")
+			.doc(callSID)
+			.set(call)
+			.then(() => {
+				console.log("Call " + callSID + " added to database.");
+				res.send(callSID);
+			});
 	});
-	socket.on("my other event", function (data) {
+
+
+	socket.on("others", function (data) {
 		console.log(data);
 	});
 });

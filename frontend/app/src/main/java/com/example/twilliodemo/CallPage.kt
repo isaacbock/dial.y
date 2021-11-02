@@ -66,7 +66,7 @@ class CallPage : AppCompatActivity() {
 
         setTitle(phoneNumber);
 
-        makeCallRequest()
+//        makeCallRequest()
 
         // Socket.IO Connection
         try {
