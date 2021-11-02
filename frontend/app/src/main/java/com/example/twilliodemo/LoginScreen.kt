@@ -62,14 +62,14 @@ class LoginScreen : AppCompatActivity() {
     fun updateUI(account: GoogleSignInAccount?) {
         if (account!=null) {
             SavedPreferences.setEmail(this,account.email.toString())
-            SavedPreferences.setUsername(this,account.displayName.toString())
+            SavedPreferences.setDisplayName(this,account.displayName.toString())
             val intent = Intent(this, StartCall::class.java)
             startActivity(intent)
             finish()
         }
         else {
             SavedPreferences.setEmail(this,account?.email.toString())
-            SavedPreferences.setUsername(this,account?.displayName.toString())
+            SavedPreferences.setDisplayName(this,account?.displayName.toString())
         }
     }
 

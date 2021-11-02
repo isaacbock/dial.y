@@ -8,9 +8,9 @@
     <application
         android:allowBackup="true"
         android:background="@color/background"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/dialing"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/dialing"
         android:supportsRtl="true"
         android:theme="@style/Theme.TwillioDemo" >
         <activity android:name=".LoginScreen">

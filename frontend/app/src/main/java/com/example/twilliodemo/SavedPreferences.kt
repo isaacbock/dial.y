@@ -9,7 +9,7 @@ import android.preference.PreferenceManager
 object SavedPreferences {
 
     const val EMAIL= "email"
-    const val USERNAME="username"
+    const val DISPLAYNAME="displayName"
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -32,14 +32,14 @@ object SavedPreferences {
         )
     }
 
-    fun getUsername(context: Context) = getSharedPreference(
+    fun getDisplayName(context: Context) = getSharedPreference(
         context
-    )?.getString(USERNAME,"")
-    fun setUsername(context: Context, username:String){
+    )?.getString(DISPLAYNAME,"")
+    fun setDisplayName(context: Context, displayName:String){
         editor(
             context,
-            USERNAME,
-            username
+            DISPLAYNAME,
+            displayName
         )
     }
 

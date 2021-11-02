@@ -60,6 +60,7 @@ app.get("/", (req, res) => {
 app.post("/call", async (req, res) => {
 	let toPhoneNumber = "+1" + req.body.phoneNumber;
 	let questions = req.body.questions;
+	let user = req.body.user;
 
 	// Start call via Twilio
 	callSID = await client.calls
@@ -86,6 +87,7 @@ app.post("/call", async (req, res) => {
 	}
 	const call = {
 		to: toPhoneNumber,
+		user: user,
 		status: "Dialing",
 		date: new Date(),
 		questions: callQuestions,

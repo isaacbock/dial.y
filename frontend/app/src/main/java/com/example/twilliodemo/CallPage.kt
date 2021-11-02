@@ -99,6 +99,7 @@ class CallPage : AppCompatActivity() {
             val jsonBody = JSONObject()
             jsonBody.put("phoneNumber", phoneNumber)
             jsonBody.put("questions", jsonArray)
+            jsonBody.put("user", SavedPreferences.getEmail(this))
             val requestBody = jsonBody.toString().toByteArray()
 
             val stringRequest = object : StringRequest(

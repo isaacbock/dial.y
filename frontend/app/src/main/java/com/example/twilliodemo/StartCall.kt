@@ -20,17 +20,31 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.MenuItem
+import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import android.view.Menu
+
+
 
 
 
 class StartCall : AppCompatActivity() {
 
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    private val auth by lazy {
+        FirebaseAuth.getInstance()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_call)
 
-        setTitle("Hi " + SavedPreferences.getUsername(this) +"!");
+        setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
 
         var callButton = findViewById<Button>(R.id.callButton)
         var phoneNumber = findViewById<TextView>(R.id.phoneNumber)
@@ -79,6 +93,32 @@ class StartCall : AppCompatActivity() {
             putExtra("QUESTION_STRING", question)
         }
         startActivity(intent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_start_call_actions, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.log_out -> {
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
+            mGoogleSignInClient.signOut().addOnCompleteListener {
+                val intent= Intent(this, LoginScreen::class.java)
+                Toast.makeText(this,"Logging Out",Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
+            }
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
 }
