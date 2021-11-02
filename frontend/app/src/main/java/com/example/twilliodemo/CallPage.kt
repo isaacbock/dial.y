@@ -66,6 +66,8 @@ class CallPage : AppCompatActivity() {
 
         setTitle(phoneNumber);
 
+        makeCallRequest()
+
         // Socket.IO Connection
         try {
             mSocket = IO.socket(constants.herokuSocketUrl)
@@ -76,9 +78,23 @@ class CallPage : AppCompatActivity() {
         mSocket.connect()
         mSocket.on(Socket.EVENT_CONNECT)  {
             Log.d("Socket.io", "Connected!")
-        };
+        }
 
-        makeCallRequest()
+        //Socket.IO Receiving
+        mSocket.on("news") { args ->
+            if (args[0] != null){
+                val jsonObject = args[0] as JSONObject
+                Log.e("I", jsonObject.toString())
+            }
+        }
+
+        //Socket.IO Sending data
+        var jsonArray = JSONArray()
+        jsonArray.put(questionString)
+        val jsonBody = JSONObject()
+        jsonBody.put("phoneNumber", phoneNumber)
+        jsonBody.put("questions", jsonArray)
+        mSocket.emit("call", jsonBody)
 
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {

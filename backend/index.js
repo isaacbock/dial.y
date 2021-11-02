@@ -409,7 +409,11 @@ app.post("/status", async (req, res) => {
 io.on("connection", (socket) => {
 	console.log("A user connected.");
 	socket.emit("news", { hello: "world" });
+	socket.on("call", function(data){
+		console.log(data);
+	});
 	socket.on("my other event", function (data) {
 		console.log(data);
 	});
 });
+
