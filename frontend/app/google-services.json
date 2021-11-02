@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "984298290533",
+    "project_id": "phone-app-806de",
+    "storage_bucket": "phone-app-806de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984298290533:android:974597294ad86ed7fbf58c",
+        "android_client_info": {
+          "package_name": "com.example.twilliodemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984298290533-4hqf6oj0gqmk0jkjpg65f7u577t9flg6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbwaUpfVY-reEU4wghUJ5-q4nTe4Uz7Bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984298290533-4hqf6oj0gqmk0jkjpg65f7u577t9flg6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -12,16 +12,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.HashMap
 import android.telephony.PhoneNumberFormattingTextWatcher
 
 
@@ -29,12 +26,12 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 
 private const val REQUEST_MICROPHONE_CODE = 100
 
-class MainActivity : AppCompatActivity() {
+class StartCall : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_start_call)
 
         checkMicrophonePermission()
 

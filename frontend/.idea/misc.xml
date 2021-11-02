@@ -5,13 +5,16 @@
       <map>
         <entry key="..\:/Users/maliv/OneDrive/Desktop/437S-Project/text-to-call-app/frontend/app/src/main/res/layout/activity_call_page.xml" value="0.1490036231884058" />
         <entry key="..\:/Users/maliv/OneDrive/Desktop/437S-Project/text-to-call-app/frontend/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23697916666666666" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/circleFilled.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/circle_filled.xml" value="0.2359375" />
         <entry key="app/src/main/res/drawable/company_answer.xml" value="0.2359375" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.23697916666666666" />
         <entry key="app/src/main/res/drawable/user_question.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/actionbar.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.32002782999909" />
+        <entry key="app/src/main/res/layout/activity_login_screen.xml" value="0.23860549934295025" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2838246140576283" />
       </map>
     </option>
