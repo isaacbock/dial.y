@@ -461,7 +461,10 @@ app.post("/callHistory", async (req, res) => {
 
 		let callHistory = [];
 		const callRef = db.collection("calls");
-		const calls = await callRef.where("user", "==", userID).get();
+		const calls = await callRef
+			.where("user", "==", userID)
+			.orderBy("date")
+			.get();
 		if (calls.empty) {
 			console.log("No calls for user " + userID + " found in database.");
 		}
