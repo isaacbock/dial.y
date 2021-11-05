@@ -501,20 +501,3 @@ io.on("connection", (socket) => {
 		console.log(data);
 	});
 });
-
-let token =
-	"eyJhbGciOiJSUzI1NiIsImtpZCI6IjY5NGNmYTAxOTgyMDNlMjgwN2Q4MzRkYmE2MjBlZjczZjI4ZTRlMmMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSXNhYWMgQm9jayIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQU9oMTRHaVJZeEFSMFAycmVYVUZObFBDZF9XMHd6V0FRTWlsMDhtVXItb3g5QT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9waG9uZS1hcHAtODA2ZGUiLCJhdWQiOiJwaG9uZS1hcHAtODA2ZGUiLCJhdXRoX3RpbWUiOjE2MzYwODI0MjMsInVzZXJfaWQiOiJXWlNWR0oweTlHV0FJUEhZQVJLSzJTVnRaZlYyIiwic3ViIjoiV1pTVkdKMHk5R1dBSVBIWUFSS0syU1Z0WmZWMiIsImlhdCI6MTYzNjA4MjQyMywiZXhwIjoxNjM2MDg2MDIzLCJlbWFpbCI6ImlzYWFjYm9ja0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMTE1MDIzNzg3MjI1MjMwMDQzMCJdLCJlbWFpbCI6WyJpc2FhY2JvY2tAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.FKntyVAuIlZXZZLZFDxpXC1Z07tfcL2e7gs8SnwGb4fChf6U9SQH7OU_M6m5KpTER-oq4PLlIJvU41CAT8xJdlhrBZ4YihcRbV740WiRdpWMACMMU6_FiZ_13lBJnEFaAjgpy7pQEt7BZLLFtEkm35Uw4tp4PtaBWRgzJD_ZK-CCexrLEWiQGX54HQaM5JP-Bmr1BpC03_xRA9bBCQGwJRtgLZmXNJduonzc0p--uKtwUXS0o3xU5yVm2fh2gRAgS0PVmuBGXBmw7mgiHXeWpbE3af8GvGfhSaUnG-B7rGVimuMXyFGgDn_fjCesTn8F_W6L7T7z4UAdgEl_L2ngGg";
-const { OAuth2Client } = require("google-auth-library");
-let CLIENT_ID =
-	"984298290533-4hqf6oj0gqmk0jkjpg65f7u577t9flg6.apps.googleusercontent.com";
-const clientOAUTH = new OAuth2Client(CLIENT_ID);
-async function verify() {
-	const ticket = await clientOAUTH.verifyIdToken({
-		idToken: token,
-		audience: CLIENT_ID,
-	});
-	const payload = ticket.getPayload();
-	const userid = payload["sub"];
-	console.log("USERID: " + userid);
-}
-verify(token).catch(console.error);
