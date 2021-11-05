@@ -85,6 +85,7 @@ app.post("/call", async (req, res) => {
 				url: "https://cse437s-phone.herokuapp.com/start",
 				to: toPhoneNumber,
 				from: "+15153165732",
+				machineDetection: "Enable",
 			})
 			.then((call) => {
 				console.log("Call " + call.sid + " initiated.");
@@ -126,24 +127,47 @@ app.post("/call", async (req, res) => {
 // API Call: Provide Twilio with the call introduction script
 app.post("/start", (req, res) => {
 	const callSID = req.body.CallSid;
+	const answeredBy = req.body.answered_by;
 
-	// Find correct call in database & update status
-	db.collection("calls")
-		.doc(callSID)
-		.update({ status: "In Progress" })
-		.then(() => {
-			console.log("Call " + callSID + " in progress.");
+	if (answeredBy == "human") {
+		// Find correct call in database & update status
+		db.collection("calls")
+			.doc(callSID)
+			.update({ status: "In Progress" })
+			.then(() => {
+				console.log("Call " + callSID + " in progress — Answered by human.");
 
-			// Return starting script
-			const response = new VoiceResponse();
-			response.pause({ length: 2 });
-			response.say("Hi! I'm calling on behalf of a customer with a question.");
-			response.redirect({ method: "POST" }, "/askQuestion");
+				// Return starting script
+				const response = new VoiceResponse();
+				// response.pause({ length: 2 });
+				response.say(
+					"Hi! I'm calling on behalf of a customer with a question."
+				);
+				response.redirect({ method: "POST" }, "/askQuestion");
 
-			let twiml = response.toString();
-			res.header("Content-Type", "application/xml");
-			res.send(twiml);
-		});
+				let twiml = response.toString();
+				res.header("Content-Type", "application/xml");
+				res.send(twiml);
+			});
+	}
+	// If answered by machine, end the call.
+	else {
+		db.collection("calls")
+			.doc(callSID)
+			.update({ status: "No Answer" })
+			.then(() => {
+				console.log("Call " + callSID + " in progress — Machine answer.");
+				console.log("Call " + callSID + " ended automatically.");
+
+				// End call
+				const response = new VoiceResponse();
+				response.hangup();
+
+				let twiml = response.toString();
+				res.header("Content-Type", "application/xml");
+				res.send(twiml);
+			});
+	}
 });
 
 // API Call: Provide Twilio with the script to ask a question
@@ -224,6 +248,7 @@ app.post("/promptListener", async (req, res) => {
 			gather.pause({ length: 10 });
 
 			response.say("Sorry, we didn't receive any input. Goodbye!");
+			response.redirect({ method: "POST" }, "/recordAnswer");
 
 			let twiml = response.toString();
 			res.header("Content-Type", "application/xml");
@@ -236,10 +261,22 @@ app.post("/promptListener", async (req, res) => {
 app.post("/recordAnswer", async (req, res) => {
 	const callSID = req.body.CallSid;
 
+	// If no buttons were pressed, the user has hung up by now.
 	if (req.body.Digits === undefined) {
-		req.body.Digits = 0;
-	}
+		db.collection("calls")
+			.doc(callSID)
+			.update({ status: "Hung up" })
+			.then(() => {
+				console.log("Call " + callSID + "-- Hung up.");
 
+				const response = new VoiceResponse();
+				response.hangup();
+
+				let twiml = response.toString();
+				res.header("Content-Type", "application/xml");
+				res.send(twiml);
+			});
+	}
 	// If user is ready to record: update call status and start recording
 	if (req.body.Digits == "1") {
 		const callRef = db.collection("calls").doc(callSID);
@@ -266,16 +303,18 @@ app.post("/recordAnswer", async (req, res) => {
 				res.send(twiml);
 			});
 		}
-		// If user wants to repeat the question: redirect back to /askQuestion
-	} else if (req.body.Digits == "2") {
+	}
+	// If user wants to repeat the question: redirect back to /askQuestion
+	else if (req.body.Digits == "2") {
 		const response = new VoiceResponse();
 		response.redirect({ method: "POST" }, "/askQuestion");
 
 		let twiml = response.toString();
 		res.header("Content-Type", "application/xml");
 		res.send(twiml);
-		// If user wants to hang up, end the call and save to Firebase
-	} else if (req.body.Digits == "3") {
+	}
+	// If user wants to hang up, end the call and save to Firebase
+	else if (req.body.Digits == "3") {
 		const callRef = db.collection("calls").doc(callSID);
 		const call = await callRef.get();
 		if (!call.exists) {
@@ -291,8 +330,9 @@ app.post("/recordAnswer", async (req, res) => {
 				res.send(twiml);
 			});
 		}
-		// Else prompt the user to re-input their choice
-	} else {
+	}
+	// Else prompt the user to re-input their choice
+	else {
 		const response = new VoiceResponse();
 		response.say("Sorry, I didn't understand that.");
 		response.redirect({ method: "POST" }, "promptListener");
@@ -463,6 +503,7 @@ app.post("/callHistory", async (req, res) => {
 		const callRef = db.collection("calls");
 		const calls = await callRef
 			.where("user", "==", userID)
+			.orderBy("user")
 			.orderBy("date")
 			.get();
 		if (calls.empty) {

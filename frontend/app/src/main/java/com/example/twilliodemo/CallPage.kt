@@ -110,12 +110,6 @@ class CallPage : AppCompatActivity() {
         jsonBody.put("questions", jsonArray)
         mSocket.emit("call", jsonBody)
 
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                makeStatusRequest()
-            }
-        }, 0, 2000)
-
     }
 
 
@@ -141,6 +135,7 @@ class CallPage : AppCompatActivity() {
                     }
                     Log.i("Call ID From Twilio", response.toString())
                     callId = response.toString()
+                    makeStatusRequest()
                 },
                 Response.ErrorListener { error ->
                     Log.i("POST ERROR", "Error :" + error.toString())
@@ -216,18 +211,37 @@ class CallPage : AppCompatActivity() {
         phoneNumber = callData["to"].toString()
         questionString = questionArrayObject["question"].toString()
 
-
         runOnUiThread {
-            setTitle(phoneNumber + "  (" + callData["status"].toString() + ")");
             findViewById<TextView>(R.id.questionText).text = questionString
-            if (callData["status"].toString() == "Dialing") {
+        }
+
+        // If the call is still in progress, continue requesting future updates
+        if(callData["status"].toString() != "Completed" && callData["status"].toString() != "Hung Up" && callData["status"].toString() != "No Answer") {
+            Timer().scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    makeStatusRequest()
+                }
+            }, 2000, 0)
+        }
+        // If the call was hung up or was not answered, tell the user.
+        else if (callData["status"].toString() != "No Answer") {
+            callResult.setVisibility(View.VISIBLE)
+            callResult.text = "Sorry, nobody answered the phone. Try again later!"
+        }
+        else if (callData["status"].toString() != "Hung Up") {
+            callResult.setVisibility(View.VISIBLE)
+            callResult.text = "Sorry, nobody had an answer for your question and the call was ended."
+        }
+
+        // When the call is ongoing, update the progress visualization accordingly.
+        if (callData["status"].toString() == "Dialing") {
+            runOnUiThread {
                 dialingStatus.setImageResource(R.drawable.dialing_complete)
                 dialingStatusText.setTypeface(null, Typeface.BOLD);
                 dialingStatusText.setTextColor(getResources().getColor(R.color.black))
-
             }
-        }
 
+        }
         when(questionArrayObject["status"].toString()) {
             "Asking" -> {
                 runOnUiThread {
