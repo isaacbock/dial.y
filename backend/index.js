@@ -446,6 +446,36 @@ app.post("/status", async (req, res) => {
 	}
 });
 
+// API Call: Return call history of current user
+app.post("/callHistory", async (req, res) => {
+	let userToken = req.body.userToken;
+	// Authenticate user logged into Android app by converting their userToken into their actual user ID
+	try {
+		const ticket = await clientOAUTH.verifyIdToken({
+			idToken: userToken,
+			audience: CLIENT_ID,
+		});
+		const payload = ticket.getPayload();
+		const userID = payload["sub"].toString();
+		console.log("Getting call history of user " + userID + ".");
+
+		let callHistory = [];
+		const callRef = db.collection("calls");
+		const calls = await callRef.where("user", "==", userID).get();
+		if (calls.empty) {
+			console.log("No calls for user " + userID + " found in database.");
+		}
+		calls.forEach((call) => {
+			callHistory.push(call.data());
+		});
+		console.log("Call history:");
+		console.log(callHistory);
+		res.send(callHistory);
+	} catch (error) {
+		console.log(error);
+	}
+});
+
 // Socket.io: receive new connections
 io.on("connection", (socket) => {
 	console.log("A user connected.");
