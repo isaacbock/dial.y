@@ -19,6 +19,7 @@ import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import io.socket.client.IO
 import io.socket.client.Socket
 
@@ -30,6 +31,8 @@ class CallPage : AppCompatActivity() {
     lateinit var idToken: String
 
     lateinit var callId: String
+
+    lateinit var callData: JSONObject
 
     lateinit var dialingStatus: ImageView
     lateinit var askingStatus: ImageView
@@ -49,13 +52,6 @@ class CallPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call_page)
 
-        phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
-        questionString = intent.getStringExtra("QUESTION_STRING")!!
-        idToken = SavedPreferences.getIDToken(this).toString()
-        Log.e("Number got from home", phoneNumber)
-
-        findViewById<TextView>(R.id.questionText).text = questionString
-
         dialingStatus = findViewById<ImageView>(R.id.dialingStatus)
         askingStatus = findViewById<ImageView>(R.id.askingStatus)
         recordingStatus = findViewById<ImageView>(R.id.recordingStatus)
@@ -66,9 +62,25 @@ class CallPage : AppCompatActivity() {
         playButton = findViewById<ImageButton>(R.id.playButton)
         callResult = findViewById<TextView>(R.id.callResult)
 
-        setTitle(phoneNumber);
+        // if the call already occurred, display this previous data
+        if (intent.getStringExtra("CALL")!=null) {
+            callData = JSONObject(intent.getStringExtra("CALL"))
+            updateUI()
+        }
 
-        makeCallRequest()
+        //else if the call is new, initiate the call
+        if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null) {
+            phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
+            questionString = intent.getStringExtra("QUESTION_STRING")!!
+
+            setTitle(phoneNumber);
+            findViewById<TextView>(R.id.questionText).text = questionString
+
+            idToken = GoogleSignIn.getLastSignedInAccount(this).idToken
+            Log.v("Calling ", phoneNumber)
+
+            makeCallRequest()
+        }
 
         // Socket.IO Connection
         try {
@@ -159,11 +171,6 @@ class CallPage : AppCompatActivity() {
                 val requestBody = jsonObject.toString().toByteArray()
                 Log.e("jsonObject", jsonObject.toString())
 
-//                val id = "id"
-//                val requestBody = "{$id:$callId}".toByteArray()
-//                Log.e("RequestBody", "{$id:$callId}")
-
-
                 val stringRequest = object : StringRequest(
                     Request.Method.POST,
                     URL,
@@ -172,71 +179,8 @@ class CallPage : AppCompatActivity() {
                         val jsonResponse = JSONObject(response.toString())
                         Log.e("CALL STATUS", jsonResponse["status"].toString())
 
-                        val questionArray = JSONArray(jsonResponse["questions"].toString())
-                        val questionArrayObject = JSONObject(questionArray[0].toString())
-
-                        val answerTranscript = questionArrayObject["answerTranscript"].toString()
-                        val answerAudio = questionArrayObject["answerAudio"].toString()
-                        val answerStatus = questionArrayObject["status"].toString()
-                        Log.e("Answer transcript", answerTranscript)
-
-                        runOnUiThread {
-                            setTitle(phoneNumber + "  (" + jsonResponse["status"].toString() + ")");
-                            if (jsonResponse["status"].toString() == "Dialing") {
-                                dialingStatus.setImageResource(R.drawable.dialing_complete)
-                                dialingStatusText.setTypeface(null, Typeface.BOLD);
-                                dialingStatusText.setTextColor(getResources().getColor(R.color.black))
-
-                            }
-                        }
-
-                        when(questionArrayObject["status"].toString()) {
-                            "Asking" -> {
-                                runOnUiThread {
-                                    askingStatus.setImageResource(R.drawable.asking_complete)
-                                    askingStatusText.setTypeface(null, Typeface.BOLD);
-                                    askingStatusText.setTextColor(getResources().getColor(R.color.black))
-                                    dialingStatusText.setTypeface(null, Typeface.NORMAL)
-                                }
-                            }
-                            "Recording" -> {
-                                runOnUiThread {
-                                    recordingStatus.setImageResource(R.drawable.recording_complete);
-                                    recordingStatusText.setTypeface(null, Typeface.BOLD);
-                                    recordingStatusText.setTextColor(getResources().getColor(R.color.black))
-                                    askingStatusText.setTypeface(null, Typeface.NORMAL)
-                                }
-                            }
-                        }
-
-                        if (answerAudio != "null" && answerTranscript == "null"){
-                            runOnUiThread{
-                                audioLink = answerAudio
-                                playButton.setVisibility(View.VISIBLE)
-                                playButton.setOnClickListener() {
-                                    playAudio();
-                                }
-                                callResult.setVisibility(View.VISIBLE)
-                                callResult.text = "..."
-                                recordingStatusText.setTypeface(null, Typeface.NORMAL)
-                            }
-                        }
-                        else if (answerAudio != "null" && answerTranscript != "null"){
-                            runOnUiThread{
-                                audioLink = answerAudio
-                                playButton.setVisibility(View.VISIBLE)
-                                playButton.setOnClickListener() {
-                                    playAudio();
-                                }
-                                callResult.setVisibility(View.VISIBLE)
-                                if (answerTranscript == "") {
-                                    callResult.text = "Sorry, transcription is not available for this call."
-                                }
-                                else {
-                                    callResult.text = answerTranscript
-                                }
-                            }
-                        }
+                        callData = jsonResponse
+                        updateUI()
                     },
                     Response.ErrorListener { error ->
                         Log.i("GET ERROR", "Error :" + error.toString())
@@ -253,27 +197,118 @@ class CallPage : AppCompatActivity() {
 
                 requestQueue!!.add(stringRequest!!)
 
-//                val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, URL, jsonObject,
-//                    { response ->
-//                        try {
-//                            //TODO: Handle your response here
-//                            Log.i("Response from GET", response.toString())
-//                        } catch (e: Exception) {
-//                            e.printStackTrace()
-//
-//                        }
-//                        print(response)
-//                    }) { error -> // TODO: Handle error
-//                    Log.i("GET ERROR", "Error :" + error.toString())
-//                    error.printStackTrace()
-//                }
-//
-//                requestQueue!!.add(jsonObjectRequest!!)
             }catch (e: JSONException){
                 Log.e("JSONException", e.toString())
             }
         }
 
+    }
+
+    fun updateUI() {
+        val questionArray = JSONArray(callData["questions"].toString())
+        val questionArrayObject = JSONObject(questionArray[0].toString())
+
+        val answerTranscript = questionArrayObject["answerTranscript"].toString()
+        val answerAudio = questionArrayObject["answerAudio"].toString()
+        val answerStatus = questionArrayObject["status"].toString()
+        Log.e("Answer transcript", answerTranscript)
+
+        phoneNumber = callData["to"].toString()
+        questionString = questionArrayObject["question"].toString()
+
+
+        runOnUiThread {
+            setTitle(phoneNumber + "  (" + callData["status"].toString() + ")");
+            findViewById<TextView>(R.id.questionText).text = questionString
+            if (callData["status"].toString() == "Dialing") {
+                dialingStatus.setImageResource(R.drawable.dialing_complete)
+                dialingStatusText.setTypeface(null, Typeface.BOLD);
+                dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+            }
+        }
+
+        when(questionArrayObject["status"].toString()) {
+            "Asking" -> {
+                runOnUiThread {
+                    dialingStatus.setImageResource(R.drawable.dialing_complete)
+                    dialingStatusText.setTypeface(null, Typeface.NORMAL)
+                    dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                    askingStatus.setImageResource(R.drawable.asking_complete)
+                    askingStatusText.setTypeface(null, Typeface.BOLD);
+                    askingStatusText.setTextColor(getResources().getColor(R.color.black))
+                }
+            }
+            "Recording" -> {
+                runOnUiThread {
+                    dialingStatus.setImageResource(R.drawable.dialing_complete)
+                    dialingStatusText.setTypeface(null, Typeface.NORMAL)
+                    dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                    askingStatus.setImageResource(R.drawable.asking_complete)
+                    askingStatusText.setTypeface(null, Typeface.NORMAL);
+                    askingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                    recordingStatus.setImageResource(R.drawable.recording_complete);
+                    recordingStatusText.setTypeface(null, Typeface.BOLD);
+                    recordingStatusText.setTextColor(getResources().getColor(R.color.black))
+                }
+            }
+        }
+
+        if (answerAudio != "null" && answerTranscript == "null"){
+            runOnUiThread{
+                dialingStatus.setImageResource(R.drawable.dialing_complete)
+                dialingStatusText.setTypeface(null, Typeface.NORMAL)
+                dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                askingStatus.setImageResource(R.drawable.asking_complete)
+                askingStatusText.setTypeface(null, Typeface.NORMAL);
+                askingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                recordingStatus.setImageResource(R.drawable.recording_complete);
+                recordingStatusText.setTypeface(null, Typeface.NORMAL);
+                recordingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                audioLink = answerAudio
+                playButton.setVisibility(View.VISIBLE)
+                playButton.setOnClickListener() {
+                    playAudio();
+                }
+                callResult.setVisibility(View.VISIBLE)
+                callResult.text = "..."
+                recordingStatusText.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+        else if (answerAudio != "null" && answerTranscript != "null"){
+            runOnUiThread{
+                dialingStatus.setImageResource(R.drawable.dialing_complete)
+                dialingStatusText.setTypeface(null, Typeface.NORMAL)
+                dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                askingStatus.setImageResource(R.drawable.asking_complete)
+                askingStatusText.setTypeface(null, Typeface.NORMAL);
+                askingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                recordingStatus.setImageResource(R.drawable.recording_complete);
+                recordingStatusText.setTypeface(null, Typeface.NORMAL);
+                recordingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+                audioLink = answerAudio
+                playButton.setVisibility(View.VISIBLE)
+                playButton.setOnClickListener() {
+                    playAudio();
+                }
+                callResult.setVisibility(View.VISIBLE)
+                if (answerTranscript == "") {
+                    callResult.text = "Sorry, transcription is not available for this call."
+                }
+                else {
+                    callResult.text = answerTranscript
+                }
+            }
+        }
     }
 
     fun playAudio() {
@@ -286,7 +321,7 @@ class CallPage : AppCompatActivity() {
                         .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
                         .build()
                 )
-                setDataSource(applicationContext, uri)
+                setDataSource(audioLink)
                 prepare()
                 start()
             }

@@ -3,6 +3,7 @@ package com.example.twilliodemo
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.util.Log
 
 // Referenced from https://medium.com/swlh/google-login-and-logout-in-android-with-firebase-kotlin-implementation-73cf6a5a989e w/ permission
 
@@ -10,7 +11,6 @@ object SavedPreferences {
 
     const val EMAIL = "email"
     const val DISPLAYNAME ="displayName"
-    const val IDTOKEN ="idToken"
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -26,6 +26,7 @@ object SavedPreferences {
         context
     )?.getString(EMAIL,"")
     fun setEmail(context: Context, email: String){
+        Log.v("User email", email)
         editor(
             context,
             EMAIL,
@@ -37,21 +38,11 @@ object SavedPreferences {
         context
     )?.getString(DISPLAYNAME,"")
     fun setDisplayName(context: Context, displayName:String){
+        Log.v("User", displayName)
         editor(
             context,
             DISPLAYNAME,
             displayName
-        )
-    }
-
-    fun getIDToken(context: Context) = getSharedPreference(
-        context
-    )?.getString(IDTOKEN,"")
-    fun setIDToken(context: Context, idToken:String){
-        editor(
-            context,
-            IDTOKEN,
-            idToken
         )
     }
 

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.twilliodemo" >
-
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.example.twilliodemo">
 
     <application
         android:allowBackup="true"
@@ -12,20 +9,28 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/dialing"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TwillioDemo" >
+        android:theme="@style/Theme.TwillioDemo">
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".CallPage" />
-        <activity android:name=".StartCall" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+        <activity android:name=".StartCall">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 </manifest>

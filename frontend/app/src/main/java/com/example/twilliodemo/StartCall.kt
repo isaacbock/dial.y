@@ -36,10 +36,6 @@ class StartCall : AppCompatActivity() {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    private val auth by lazy {
-        FirebaseAuth.getInstance()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start_call)
@@ -102,7 +98,6 @@ class StartCall : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.log_out -> {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
             mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
@@ -115,8 +110,7 @@ class StartCall : AppCompatActivity() {
             true
         }
         else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
+            // Else the user's action was not recognized.
             super.onOptionsItemSelected(item)
         }
     }
