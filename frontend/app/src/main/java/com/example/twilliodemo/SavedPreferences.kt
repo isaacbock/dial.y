@@ -8,8 +8,9 @@ import android.preference.PreferenceManager
 
 object SavedPreferences {
 
-    const val EMAIL= "email"
-    const val DISPLAYNAME="displayName"
+    const val EMAIL = "email"
+    const val DISPLAYNAME ="displayName"
+    const val IDTOKEN ="idToken"
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -40,6 +41,17 @@ object SavedPreferences {
             context,
             DISPLAYNAME,
             displayName
+        )
+    }
+
+    fun getIDToken(context: Context) = getSharedPreference(
+        context
+    )?.getString(IDTOKEN,"")
+    fun setIDToken(context: Context, idToken:String){
+        editor(
+            context,
+            IDTOKEN,
+            idToken
         )
     }
 

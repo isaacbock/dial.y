@@ -15,6 +15,11 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
+// Import Google OAuth
+const { OAuth2Client } = require("google-auth-library");
+let CLIENT_ID =
+	"984298290533-4hqf6oj0gqmk0jkjpg65f7u577t9flg6.apps.googleusercontent.com";
+
 // Import Firebase
 const admin = require("firebase-admin");
 const serviceAccount = JSON.parse(
@@ -56,51 +61,65 @@ const translate = new Translate();
 app.get("/", (req, res) => {
 	res.send("Hello world.");
 });
+
 // API Call: Start a new call
 app.post("/call", async (req, res) => {
 	let toPhoneNumber = "+1" + req.body.phoneNumber;
 	let questions = req.body.questions;
-	let user = req.body.user;
+	let userToken = req.body.userToken;
 
-	// Start call via Twilio
-	callSID = await client.calls
-		.create({
-			url: "https://cse437s-phone.herokuapp.com/start",
+	try {
+		// Authenticate user logged into Android app by converting their userToken into their actual user ID
+		const ticket = await clientOAUTH.verifyIdToken({
+			idToken: userToken,
+			audience: CLIENT_ID,
+		});
+		const payload = ticket.getPayload();
+		const userID = payload["sub"];
+		console.log("Call created from User ID: " + userID);
+
+		// Start call via Twilio
+		callSID = await client.calls
+			.create({
+				url: "https://cse437s-phone.herokuapp.com/start",
+				to: toPhoneNumber,
+				from: "+15153165732",
+			})
+			.then((call) => {
+				console.log("Call " + call.sid + " initiated.");
+				return call.sid;
+			});
+
+		// Create data structure to track and store call
+		let callQuestions = [];
+		for (question of questions) {
+			let newQuestion = {
+				question: question,
+				status: "Waiting",
+				answerAudio: null,
+				answerTranscript: null,
+			};
+			callQuestions.push(newQuestion);
+		}
+		const call = {
 			to: toPhoneNumber,
-			from: "+15153165732",
-		})
-		.then((call) => {
-			console.log("Call " + call.sid + " initiated.");
-			return call.sid;
-		});
-
-	// Create data structure to track and store call
-	let callQuestions = [];
-	for (question of questions) {
-		let newQuestion = {
-			question: question,
-			status: "Waiting",
-			answerAudio: null,
-			answerTranscript: null,
+			user: userID,
+			status: "Dialing",
+			date: new Date(),
+			questions: callQuestions,
 		};
-		callQuestions.push(newQuestion);
-	}
-	const call = {
-		to: toPhoneNumber,
-		user: user,
-		status: "Dialing",
-		date: new Date(),
-		questions: callQuestions,
-	};
 
-	// Save call to Firebase
-	db.collection("calls")
-		.doc(callSID)
-		.set(call)
-		.then(() => {
-			console.log("Call " + callSID + " added to database.");
-			res.send(callSID);
-		});
+		// Save call to Firebase
+		db.collection("calls")
+			.doc(callSID)
+			.set(call)
+			.then(() => {
+				console.log("Call " + callSID + " added to database.");
+				res.send(callSID);
+			});
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 // API Call: Provide Twilio with the call introduction script
@@ -431,16 +450,16 @@ io.on("connection", (socket) => {
 	console.log("A user connected.");
 	socket.emit("news", { hello: "world" });
 
-	socket.on("call", function(data){
-		console.log("callData below")
+	socket.on("call", function (data) {
+		console.log("callData below");
 		console.log(data);
 
 		let toPhoneNumber = "+1" + data.phoneNumber;
-		console.log("phone number from socket")
-		console.log(toPhoneNumber)
+		console.log("phone number from socket");
+		console.log(toPhoneNumber);
 		let questions = data.questions;
-		console.log("Questions from socket")
-		console.log(questions)
+		console.log("Questions from socket");
+		console.log(questions);
 
 		// callSID = await client.calls
 		// .create({
@@ -478,9 +497,24 @@ io.on("connection", (socket) => {
 		// 	});
 	});
 
-
 	socket.on("others", function (data) {
 		console.log(data);
 	});
 });
 
+let token =
+	"eyJhbGciOiJSUzI1NiIsImtpZCI6IjY5NGNmYTAxOTgyMDNlMjgwN2Q4MzRkYmE2MjBlZjczZjI4ZTRlMmMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSXNhYWMgQm9jayIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQU9oMTRHaVJZeEFSMFAycmVYVUZObFBDZF9XMHd6V0FRTWlsMDhtVXItb3g5QT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9waG9uZS1hcHAtODA2ZGUiLCJhdWQiOiJwaG9uZS1hcHAtODA2ZGUiLCJhdXRoX3RpbWUiOjE2MzYwODI0MjMsInVzZXJfaWQiOiJXWlNWR0oweTlHV0FJUEhZQVJLSzJTVnRaZlYyIiwic3ViIjoiV1pTVkdKMHk5R1dBSVBIWUFSS0syU1Z0WmZWMiIsImlhdCI6MTYzNjA4MjQyMywiZXhwIjoxNjM2MDg2MDIzLCJlbWFpbCI6ImlzYWFjYm9ja0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMTE1MDIzNzg3MjI1MjMwMDQzMCJdLCJlbWFpbCI6WyJpc2FhY2JvY2tAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.FKntyVAuIlZXZZLZFDxpXC1Z07tfcL2e7gs8SnwGb4fChf6U9SQH7OU_M6m5KpTER-oq4PLlIJvU41CAT8xJdlhrBZ4YihcRbV740WiRdpWMACMMU6_FiZ_13lBJnEFaAjgpy7pQEt7BZLLFtEkm35Uw4tp4PtaBWRgzJD_ZK-CCexrLEWiQGX54HQaM5JP-Bmr1BpC03_xRA9bBCQGwJRtgLZmXNJduonzc0p--uKtwUXS0o3xU5yVm2fh2gRAgS0PVmuBGXBmw7mgiHXeWpbE3af8GvGfhSaUnG-B7rGVimuMXyFGgDn_fjCesTn8F_W6L7T7z4UAdgEl_L2ngGg";
+const { OAuth2Client } = require("google-auth-library");
+let CLIENT_ID =
+	"984298290533-4hqf6oj0gqmk0jkjpg65f7u577t9flg6.apps.googleusercontent.com";
+const clientOAUTH = new OAuth2Client(CLIENT_ID);
+async function verify() {
+	const ticket = await clientOAUTH.verifyIdToken({
+		idToken: token,
+		audience: CLIENT_ID,
+	});
+	const payload = ticket.getPayload();
+	const userid = payload["sub"];
+	console.log("USERID: " + userid);
+}
+verify(token).catch(console.error);

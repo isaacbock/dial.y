@@ -27,6 +27,7 @@ class CallPage : AppCompatActivity() {
     val constants = Constants()
     lateinit var phoneNumber:String
     lateinit var questionString: String
+    lateinit var idToken: String
 
     lateinit var callId: String
 
@@ -50,6 +51,7 @@ class CallPage : AppCompatActivity() {
 
         phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
         questionString = intent.getStringExtra("QUESTION_STRING")!!
+        idToken = SavedPreferences.getIDToken(this).toString()
         Log.e("Number got from home", phoneNumber)
 
         findViewById<TextView>(R.id.questionText).text = questionString
@@ -66,7 +68,7 @@ class CallPage : AppCompatActivity() {
 
         setTitle(phoneNumber);
 
-//        makeCallRequest()
+        makeCallRequest()
 
         // Socket.IO Connection
         try {
@@ -115,7 +117,7 @@ class CallPage : AppCompatActivity() {
             val jsonBody = JSONObject()
             jsonBody.put("phoneNumber", phoneNumber)
             jsonBody.put("questions", jsonArray)
-            jsonBody.put("user", SavedPreferences.getEmail(this))
+            jsonBody.put("userToken", idToken)
             val requestBody = jsonBody.toString().toByteArray()
 
             val stringRequest = object : StringRequest(

@@ -9,7 +9,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import android.R.id
 import android.util.Log
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -34,6 +33,7 @@ class LoginScreen : AppCompatActivity() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
@@ -61,15 +61,17 @@ class LoginScreen : AppCompatActivity() {
 
     fun updateUI(account: GoogleSignInAccount?) {
         if (account!=null) {
-            SavedPreferences.setEmail(this,account.email.toString())
-            SavedPreferences.setDisplayName(this,account.displayName.toString())
+            SavedPreferences.setEmail(this,account?.email)
+            SavedPreferences.setDisplayName(this,account?.displayName)
+            SavedPreferences.setIDToken(this,account?.idToken)
             val intent = Intent(this, StartCall::class.java)
             startActivity(intent)
             finish()
         }
         else {
-            SavedPreferences.setEmail(this,account?.email.toString())
-            SavedPreferences.setDisplayName(this,account?.displayName.toString())
+            SavedPreferences.setEmail(this,"email")
+            SavedPreferences.setDisplayName(this,"displayName")
+            SavedPreferences.setIDToken(this,"idToken")
         }
     }
 
