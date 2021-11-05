@@ -501,17 +501,14 @@ app.post("/callHistory", async (req, res) => {
 
 		let callHistory = [];
 		const callRef = db.collection("calls");
-		const calls = await callRef
-			.where("user", "==", userID)
-			.orderBy("user")
-			.orderBy("date")
-			.get();
+		const calls = await callRef.where("user", "==", userID).get();
 		if (calls.empty) {
 			console.log("No calls for user " + userID + " found in database.");
 		}
 		calls.forEach((call) => {
 			callHistory.push(call.data());
 		});
+		callHistory.sort((a, b) => b.toDate() - a.toDate());
 		console.log("Call history:");
 		console.log(callHistory);
 		res.send(callHistory);
