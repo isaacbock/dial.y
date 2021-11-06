@@ -1,14 +1,12 @@
 package com.example.twilliodemo
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import android.widget.FrameLayout
-import android.widget.TextView
 import android.media.*
 import android.net.Uri
 import android.view.View
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
@@ -18,14 +16,18 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.ColorDrawable
-import android.widget.ImageView
+import android.widget.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import io.socket.client.IO
 import io.socket.client.Socket
+import kotlin.concurrent.schedule
 
 
 class CallPage : AppCompatActivity() {
     val constants = Constants()
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+
     lateinit var phoneNumber:String
     lateinit var questionString: String
     lateinit var idToken: String
@@ -52,6 +54,8 @@ class CallPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call_page)
 
+        mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
+
         dialingStatus = findViewById<ImageView>(R.id.dialingStatus)
         askingStatus = findViewById<ImageView>(R.id.askingStatus)
         recordingStatus = findViewById<ImageView>(R.id.recordingStatus)
@@ -76,10 +80,19 @@ class CallPage : AppCompatActivity() {
             setTitle(phoneNumber);
             findViewById<TextView>(R.id.questionText).text = questionString
 
-            idToken = GoogleSignIn.getLastSignedInAccount(this).idToken
-            Log.v("Calling ", phoneNumber)
-
-            makeCallRequest()
+            idToken = SavedPreferences.getIDToken(this)
+            if (idToken=="expired") {
+                mGoogleSignInClient.signOut().addOnCompleteListener {
+                    val intent= Intent(this, LoginScreen::class.java)
+                    Toast.makeText(this,"Session expired.", Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            else {
+                Log.v("Calling ", phoneNumber)
+                makeCallRequest()
+            }
         }
 
         // Socket.IO Connection
@@ -130,9 +143,6 @@ class CallPage : AppCompatActivity() {
                 Request.Method.POST,
                 URL,
                 Response.Listener { response ->
-                    runOnUiThread {
-                        setTitle(phoneNumber + "  (In Progress)");
-                    }
                     Log.i("Call ID From Twilio", response.toString())
                     callId = response.toString()
                     makeStatusRequest()
@@ -214,21 +224,19 @@ class CallPage : AppCompatActivity() {
         runOnUiThread {
             findViewById<TextView>(R.id.questionText).text = questionString
         }
-
-        // If the call is still in progress, continue requesting future updates
-        if(callData["status"].toString() != "Completed" && callData["status"].toString() != "Hung Up" && callData["status"].toString() != "No Answer") {
-            Timer().scheduleAtFixedRate(object : TimerTask() {
-                override fun run() {
-                    makeStatusRequest()
-                }
-            }, 2000, 0)
+//
+//        // If the call is still in progress, continue requesting future updates
+        if(callData["status"].toString()!="Completed" && callData["status"].toString()!="Hung Up" && callData["status"].toString()!="No Answer") {
+            Timer().schedule(2000) {
+                makeStatusRequest()
+            }
         }
         // If the call was hung up or was not answered, tell the user.
-        else if (callData["status"].toString() != "No Answer") {
+        if (callData["status"].toString() == "No Answer") {
             callResult.setVisibility(View.VISIBLE)
             callResult.text = "Sorry, nobody answered the phone. Try again later!"
         }
-        else if (callData["status"].toString() != "Hung Up") {
+        else if (callData["status"].toString() == "Hung Up") {
             callResult.setVisibility(View.VISIBLE)
             callResult.text = "Sorry, nobody had an answer for your question and the call was ended."
         }

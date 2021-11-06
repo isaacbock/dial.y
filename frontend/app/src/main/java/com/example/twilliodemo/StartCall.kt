@@ -42,6 +42,8 @@ class StartCall : AppCompatActivity() {
 
         setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
 
+        mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
+
         var callButton = findViewById<Button>(R.id.callButton)
         var phoneNumber = findViewById<TextView>(R.id.phoneNumber)
         var questionTextEdit = findViewById<TextView>(R.id.questionTextEdit)
@@ -97,10 +99,6 @@ class StartCall : AppCompatActivity() {
     }
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.log_out -> {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-            mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
             mGoogleSignInClient.signOut().addOnCompleteListener {
                 val intent= Intent(this, LoginScreen::class.java)
                 Toast.makeText(this,"Logging Out",Toast.LENGTH_SHORT).show()

@@ -34,14 +34,14 @@ class MainActivity : AppCompatActivity() {
 
     val constants = Constants()
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var idToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
+
         setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
-        idToken = GoogleSignIn.getLastSignedInAccount(this).idToken
 
         var callButton = findViewById<CardView>(R.id.createNewCall)
         callButton.setOnClickListener(){
@@ -62,71 +62,80 @@ class MainActivity : AppCompatActivity() {
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
         val URL = constants.herokuappCallHistoryUrl
         val jsonObject = JSONObject()
-        jsonObject.put("userToken", idToken)
-        val requestBody = jsonObject.toString().toByteArray()
-        Log.e("jsonObject", jsonObject.toString())
 
-
-        val stringRequest = object : StringRequest(
-            Request.Method.POST,
-            URL,
-            Response.Listener { response ->
-                Log.i("Response from POST", response.toString())
-                val callHistory = JSONArray(response.toString())
-
-                if (callHistory.length()!=0) {
-
-                    // clear outdated calls
-                    val callHistoryLayout = findViewById<View>(R.id.callHistory) as FlexboxLayout
-                    runOnUiThread {
-                        callHistoryLayout.removeAllViews()
-                    }
-
-                    // create card for each new call
-                    for (i in 0 until callHistory.length()) {
-                        val callObject = callHistory.getJSONObject(i)
-                        val callTo = callObject["to"].toString()
-                        val questionObject = JSONArray(callObject["questions"].toString())
-                        val question = JSONObject(questionObject[0].toString())["question"].toString()
-                        Log.v("Call History", question)
-
-                        runOnUiThread {
-                            val inflater = LayoutInflater.from(this)
-                            val previousCallCard = inflater.inflate(
-                                R.layout.previous_call,
-                                callHistoryLayout,
-                                false
-                            ) as CardView
-                            previousCallCard.setOnClickListener {
-                                val intent = Intent(this, CallPage::class.java).apply{
-                                    putExtra("CALL", callObject.toString())
-                                }
-                                startActivity(intent)
-                            }
-                            previousCallCard.findViewById<TextView>(R.id.previousCallNumber).text = callTo
-                            previousCallCard.findViewById<TextView>(R.id.previousCallQuestion).text = question
-                            callHistoryLayout.addView(previousCallCard)
-
-                        }
-                    }
-                }
-
-            },
-            Response.ErrorListener { error ->
-                Log.i("GET ERROR", "Error :" + error.toString())
-            }){
-            override fun getBodyContentType(): String {
-                return "application/json"
-            }
-
-            @Throws(AuthFailureError::class)
-            override fun getBody(): ByteArray {
-                return requestBody
+        val idToken = SavedPreferences.getIDToken(this)
+        if (idToken=="expired") {
+            mGoogleSignInClient.signOut().addOnCompleteListener {
+                val intent= Intent(this, LoginScreen::class.java)
+                Toast.makeText(this,"Session expired.", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
             }
         }
+        else {
+            jsonObject.put("userToken", idToken)
+            val requestBody = jsonObject.toString().toByteArray()
 
-        requestQueue!!.add(stringRequest!!)
+            val stringRequest = object : StringRequest(
+                Request.Method.POST,
+                URL,
+                Response.Listener { response ->
+                    Log.i("Response from POST", response.toString())
+                    val callHistory = JSONArray(response.toString())
 
+                    if (callHistory.length()!=0) {
+
+                        // clear outdated calls
+                        val callHistoryLayout = findViewById<View>(R.id.callHistory) as FlexboxLayout
+                        runOnUiThread {
+                            callHistoryLayout.removeAllViews()
+                        }
+
+                        // create card for each new call
+                        for (i in 0 until callHistory.length()) {
+                            val callObject = callHistory.getJSONObject(i)
+                            val callTo = callObject["to"].toString()
+                            val questionObject = JSONArray(callObject["questions"].toString())
+                            val question = JSONObject(questionObject[0].toString())["question"].toString()
+                            Log.v("Call History", question)
+
+                            runOnUiThread {
+                                val inflater = LayoutInflater.from(this)
+                                val previousCallCard = inflater.inflate(
+                                    R.layout.previous_call,
+                                    callHistoryLayout,
+                                    false
+                                ) as CardView
+                                previousCallCard.setOnClickListener {
+                                    val intent = Intent(this, CallPage::class.java).apply{
+                                        putExtra("CALL", callObject.toString())
+                                    }
+                                    startActivity(intent)
+                                }
+                                previousCallCard.findViewById<TextView>(R.id.previousCallNumber).text = callTo
+                                previousCallCard.findViewById<TextView>(R.id.previousCallQuestion).text = question
+                                callHistoryLayout.addView(previousCallCard)
+
+                            }
+                        }
+                    }
+
+                },
+                Response.ErrorListener { error ->
+                    Log.i("GET ERROR", "Error :" + error.toString())
+                }){
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    return requestBody
+                }
+            }
+
+            requestQueue!!.add(stringRequest!!)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -135,10 +144,6 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.log_out -> {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-            mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
             mGoogleSignInClient.signOut().addOnCompleteListener {
                 val intent= Intent(this, LoginScreen::class.java)
                 Toast.makeText(this,"Logging Out", Toast.LENGTH_SHORT).show()

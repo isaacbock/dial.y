@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 // Referenced from https://medium.com/swlh/google-login-and-logout-in-android-with-firebase-kotlin-implementation-73cf6a5a989e w/ permission
 
@@ -11,6 +13,8 @@ object SavedPreferences {
 
     const val EMAIL = "email"
     const val DISPLAYNAME ="displayName"
+
+    lateinit var mGoogleSignInClient: GoogleSignInClient
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -44,6 +48,18 @@ object SavedPreferences {
             DISPLAYNAME,
             displayName
         )
+    }
+
+    fun saveClient(client: GoogleSignInClient) {
+        mGoogleSignInClient = client
+    }
+    fun getIDToken(context: Context): String {
+        if (GoogleSignIn.getLastSignedInAccount(context).isExpired) {
+            return "Expired"
+        }
+        else {
+            return GoogleSignIn.getLastSignedInAccount(context).idToken
+        }
     }
 
 }

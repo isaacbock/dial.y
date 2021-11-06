@@ -127,7 +127,7 @@ app.post("/call", async (req, res) => {
 // API Call: Provide Twilio with the call introduction script
 app.post("/start", (req, res) => {
 	const callSID = req.body.CallSid;
-	const answeredBy = req.body.answered_by;
+	const answeredBy = req.body.AnsweredBy;
 
 	if (answeredBy == "human") {
 		// Find correct call in database & update status
@@ -508,7 +508,7 @@ app.post("/callHistory", async (req, res) => {
 		calls.forEach((call) => {
 			callHistory.push(call.data());
 		});
-		callHistory.sort((a, b) => b.toDate() - a.toDate());
+		callHistory.sort((a, b) => b["date"].toDate() - a["date"].toDate());
 		console.log("Call history:");
 		console.log(callHistory);
 		res.send(callHistory);

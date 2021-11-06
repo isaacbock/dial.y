@@ -39,6 +39,7 @@ class LoginScreen : AppCompatActivity() {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        SavedPreferences.saveClient(mGoogleSignInClient)
 
         var signInButton = findViewById(R.id.sign_in_button) as CardView
         signInButton.setOnClickListener {
