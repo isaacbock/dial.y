@@ -364,4 +364,9 @@ class CallPage : AppCompatActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+        mSocket.disconnect()
+        finish()
+    }
 }

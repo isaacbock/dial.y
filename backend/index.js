@@ -518,7 +518,9 @@ app.post("/callHistory", async (req, res) => {
 });
 
 // Socket.io: receive new connections
+let socketClients = new Map();
 io.on("connection", (socket) => {
+	socketClients.set(socket, socket.id);
 	console.info(`Client connected! [id=${socket.id}]`);
 	socket.emit("news", { hello: "world" });
 
@@ -533,43 +535,14 @@ io.on("connection", (socket) => {
 		console.log("Questions from socket");
 		console.log(questions);
 
-		// callSID = await client.calls
-		// .create({
-		// 	url: "https://cse437s-phone.herokuapp.com/start",
-		// 	to: toPhoneNumber,
-		// 	from: "+15153165732",
-		// })
-		// .then((call) => {
-		// 	console.log("Call " + call.sid + " initiated.");
-		// 	return call.sid;
-		// });
-
-		// let callQuestions = [];
-		// for (question of questions) {
-		// 	let newQuestion = {
-		// 		question: question,
-		// 		status: "Waiting",
-		// 		answerAudio: null,
-		// 		answerTranscript: null,
-		// 	};
-		// 	callQuestions.push(newQuestion);
-		// }
-		// const call = {
-		// 	to: toPhoneNumber,
-		// 	status: "Dialing",
-		// 	date: new Date(),
-		// 	questions: callQuestions,
-		// };
-		// db.collection("calls")
-		// 	.doc(callSID)
-		// 	.set(call)
-		// 	.then(() => {
-		// 		console.log("Call " + callSID + " added to database.");
-		// 		socket.emit("callId", callSID)
-		// 	});
 	});
 
-	socket.on("disconnect", () => {
+	socket.on("callId", function (data){
+		socketClients.set(socket, data.phoneId);
+	});
+
+	socket.on("disconnect", ()=> {
+		socketClients.delete(socket);
         console.info(`Client gone [id=${socket.id}]`);
     });
 
@@ -577,3 +550,17 @@ io.on("connection", (socket) => {
 		console.log(data);
 	});
 });
+
+setInterval(() => {
+	for (const[client, callId] of socketClients.entries()){
+		const callSID = req.body.id;
+		const callRef = db.collection("calls").doc(callSID);
+		const call = await callRef.get();
+		if (!call.exists) {
+			console.log("Call " + callSID + " not found in database.");
+		} else {
+		let data = call.data();
+		client.emit("status", data);
+		}
+	}
+}, 3000);
