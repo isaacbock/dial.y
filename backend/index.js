@@ -520,7 +520,6 @@ app.post("/callHistory", async (req, res) => {
 // Socket.io: receive new connections
 let socketClients = new Map();
 io.on("connection", (socket) => {
-	socketClients.set(socket, socket.id);
 	console.info(`Client connected! [id=${socket.id}]`);
 	socket.emit("news", { hello: "world" });
 
