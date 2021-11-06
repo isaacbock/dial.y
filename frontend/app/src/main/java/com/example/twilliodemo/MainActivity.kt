@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         val jsonObject = JSONObject()
 
         val idToken = SavedPreferences.getIDToken(this)
-        if (idToken=="expired") {
+        if (idToken=="Expired") {
             mGoogleSignInClient.signOut().addOnCompleteListener {
                 val intent= Intent(this, LoginScreen::class.java)
                 Toast.makeText(this,"Session expired.", Toast.LENGTH_SHORT).show()

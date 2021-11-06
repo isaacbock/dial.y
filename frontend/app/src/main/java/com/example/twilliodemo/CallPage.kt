@@ -81,7 +81,7 @@ class CallPage : AppCompatActivity() {
             findViewById<TextView>(R.id.questionText).text = questionString
 
             idToken = SavedPreferences.getIDToken(this)
-            if (idToken=="expired") {
+            if (idToken=="Expired") {
                 mGoogleSignInClient.signOut().addOnCompleteListener {
                     val intent= Intent(this, LoginScreen::class.java)
                     Toast.makeText(this,"Session expired.", Toast.LENGTH_SHORT).show()
@@ -221,24 +221,17 @@ class CallPage : AppCompatActivity() {
         phoneNumber = callData["to"].toString()
         questionString = questionArrayObject["question"].toString()
 
+        setTitle(phoneNumber);
+
         runOnUiThread {
             findViewById<TextView>(R.id.questionText).text = questionString
         }
-//
-//        // If the call is still in progress, continue requesting future updates
+
+        // If the call is still in progress, continue requesting future updates
         if(callData["status"].toString()!="Completed" && callData["status"].toString()!="Hung Up" && callData["status"].toString()!="No Answer") {
             Timer().schedule(2000) {
                 makeStatusRequest()
             }
-        }
-        // If the call was hung up or was not answered, tell the user.
-        if (callData["status"].toString() == "No Answer") {
-            callResult.setVisibility(View.VISIBLE)
-            callResult.text = "Sorry, nobody answered the phone. Try again later!"
-        }
-        else if (callData["status"].toString() == "Hung Up") {
-            callResult.setVisibility(View.VISIBLE)
-            callResult.text = "Sorry, nobody had an answer for your question and the call was ended."
         }
 
         // When the call is ongoing, update the progress visualization accordingly.
@@ -251,7 +244,7 @@ class CallPage : AppCompatActivity() {
 
         }
         when(questionArrayObject["status"].toString()) {
-            "Asking" -> {
+            "Asking", "Prompting" -> {
                 runOnUiThread {
                     dialingStatus.setImageResource(R.drawable.dialing_complete)
                     dialingStatusText.setTypeface(null, Typeface.NORMAL)
@@ -330,6 +323,28 @@ class CallPage : AppCompatActivity() {
                     callResult.text = answerTranscript
                 }
             }
+        }
+
+        // If the call was hung up or was not answered, tell the user.
+        if (callData["status"].toString() == "No Answer") {
+            callResult.setVisibility(View.VISIBLE)
+            callResult.text = "Sorry, nobody answered the phone. Try again later!"
+
+            dialingStatus.setImageResource(R.drawable.dialing_complete)
+            dialingStatusText.setTypeface(null, Typeface.NORMAL);
+            dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+        }
+        else if (callData["status"].toString() == "Hung Up") {
+            callResult.setVisibility(View.VISIBLE)
+            callResult.text = "Sorry, nobody had an answer for your question and the call was ended."
+
+            dialingStatus.setImageResource(R.drawable.dialing_complete)
+            dialingStatusText.setTypeface(null, Typeface.NORMAL)
+            dialingStatusText.setTextColor(getResources().getColor(R.color.black))
+
+            askingStatus.setImageResource(R.drawable.asking_complete)
+            askingStatusText.setTypeface(null, Typeface.NORMAL);
+            askingStatusText.setTextColor(getResources().getColor(R.color.black))
         }
     }
 

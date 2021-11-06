@@ -55,9 +55,11 @@ object SavedPreferences {
     }
     fun getIDToken(context: Context): String {
         if (GoogleSignIn.getLastSignedInAccount(context).isExpired) {
+            Log.e("Token expired", "Logging out.")
             return "Expired"
         }
         else {
+            Log.v("Token", GoogleSignIn.getLastSignedInAccount(context).idToken)
             return GoogleSignIn.getLastSignedInAccount(context).idToken
         }
     }
