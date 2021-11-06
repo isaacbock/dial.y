@@ -31,6 +31,7 @@ Windows:
 keytool -list -v \
 -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
 ```
+The default password for the debug keystore is "android".
 
 Once generated, add your SHA-1 certificate fingerprint to the project via https://console.firebase.google.com/u/0/project/phone-app-806de/settings/general/android:com.example.twilliodemo.
 
