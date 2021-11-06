@@ -109,7 +109,7 @@ class CallPage : AppCompatActivity() {
         }
 
         //Socket.IO Receiving
-        mSocket.on("news") { args ->
+        mSocket.on("status") { args ->
             if (args[0] != null){
                 val jsonObject = args[0] as JSONObject
                 Log.e("I", jsonObject.toString())
