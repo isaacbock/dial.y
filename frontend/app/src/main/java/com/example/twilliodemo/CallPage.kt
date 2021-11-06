@@ -17,6 +17,7 @@ import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.ColorDrawable
 import android.widget.*
+import com.example.twilliodemo.SavedPreferences.mGoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import io.socket.client.IO
@@ -26,7 +27,7 @@ import kotlin.concurrent.schedule
 
 class CallPage : AppCompatActivity() {
     val constants = Constants()
-    lateinit var mGoogleSignInClient: GoogleSignInClient
+//    lateinit var mGoogleSignInClient: GoogleSignInClient
 
     lateinit var phoneNumber:String
     lateinit var questionString: String
@@ -241,7 +242,6 @@ class CallPage : AppCompatActivity() {
                 dialingStatusText.setTypeface(null, Typeface.BOLD);
                 dialingStatusText.setTextColor(getResources().getColor(R.color.black))
             }
-
         }
         when(questionArrayObject["status"].toString()) {
             "Asking", "Prompting" -> {

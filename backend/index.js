@@ -569,6 +569,10 @@ io.on("connection", (socket) => {
 		// 	});
 	});
 
+	socket.on("disconnect", () => {
+        console.info(`Client gone [id=${socket.id}]`);
+    });
+
 	socket.on("others", function (data) {
 		console.log(data);
 	});

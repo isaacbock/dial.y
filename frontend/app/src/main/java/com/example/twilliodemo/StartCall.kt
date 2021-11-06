@@ -76,6 +76,7 @@ class StartCall : AppCompatActivity() {
 
     }
 
+    //Code to call alert dialog
     fun alertDialog(title: String, message: String, positiveText: String){
         AlertDialog.Builder(this)
             .setTitle(title)
@@ -85,6 +86,7 @@ class StartCall : AppCompatActivity() {
             .show()
     }
 
+    //Create new activity by passing in phone number and question string
     private fun onCallButton(phoneNumber: String, question: String) {
         val intent = Intent(this, CallPage::class.java).apply{
             putExtra("PHONE_NUMBER", phoneNumber)
