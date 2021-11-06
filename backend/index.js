@@ -519,7 +519,7 @@ app.post("/callHistory", async (req, res) => {
 
 // Socket.io: receive new connections
 io.on("connection", (socket) => {
-	console.log("A user connected.");
+	console.info(`Client connected! [id=${socket.id}]`);
 	socket.emit("news", { hello: "world" });
 
 	socket.on("call", function (data) {
