@@ -551,20 +551,20 @@ io.on("connection", (socket) => {
 	});
 });
 
-// setInterval(() => {
-// 	if (socketClients.size != 0){
-// 		for (const[client, callId] of socketClients.entries()){
-// 			const callSID = req.body.id;
-// 			const callRef = db.collection("calls").doc(callSID);
-// 			// const call = await callRef.get();
-// 			const call = callRef.get();
+setInterval(() => {
+	if (socketClients.size != 0){
+		for (const[client, callId] of socketClients.entries()){
+			const callSID = req.body.id;
+			const callRef = db.collection("calls").doc(callSID);
+			// const call = await callRef.get();
+			const call = callRef.get();
 
-// 			if (!call.exists) {
-// 				console.log("Call " + callSID + " not found in database.");
-// 			} else {
-// 			let data = call.data();
-// 			client.emit("status", data);
-// 			}
-// 		}
-// 	}
-// }, 3000);
+			if (!call.exists) {
+				console.log("Call " + callSID + " not found in database.");
+			} else {
+			let data = call.data();
+			client.emit("status", data);
+			}
+		}
+	}
+}, 3000);
