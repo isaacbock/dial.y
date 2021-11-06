@@ -554,7 +554,7 @@ io.on("connection", (socket) => {
 setInterval(() => {
 	if (socketClients.size != 0){
 		for (const[client, callId] of socketClients.entries()){
-			const callSID = req.body.id;
+			const callSID = callId;
 			const callRef = db.collection("calls").doc(callSID);
 			// const call = await callRef.get();
 			const call = callRef.get();
