@@ -146,6 +146,9 @@ class CallPage : AppCompatActivity() {
                 Response.Listener { response ->
                     Log.i("Call ID From Twilio", response.toString())
                     callId = response.toString()
+                    val callIdJson = JSONObject()
+                    callIdJson.put("phoneId", callId)
+                    mSocket.emit("callId", callIdJson)
                     makeStatusRequest()
                 },
                 Response.ErrorListener { error ->

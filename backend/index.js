@@ -523,6 +523,14 @@ io.on("connection", (socket) => {
 	console.info(`Client connected! [id=${socket.id}]`);
 	socket.emit("news", { hello: "world" });
 
+	// const doc = db.collection('calls').doc('SF');
+
+	// const observer = doc.onSnapshot(docSnapshot => {
+  	// 	console.log(`Received doc snapshot: ${docSnapshot}`);
+	// }, err => {
+  	// 	console.log(`Encountered error: ${err}`);
+	// });
+
 	socket.on("call", function (data) {
 		console.log("callData below");
 		console.log(data);
@@ -561,8 +569,8 @@ setInterval(() => {
 			if (!call.exists) {
 				console.log("Call " + callSID + " not found in database.");
 			} else {
-			let data = call.data();
-			client.emit("status", data);
+				let data = call.data();
+				client.emit("status", data);
 			}
 		}
 	}
