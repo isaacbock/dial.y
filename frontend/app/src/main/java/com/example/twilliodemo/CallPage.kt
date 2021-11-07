@@ -112,7 +112,11 @@ class CallPage : AppCompatActivity() {
         mSocket.on("status") { args ->
             if (args[0] != null){
                 val jsonObject = args[0] as JSONObject
-                Log.e("I", jsonObject.toString())
+                Log.e("status from socket", jsonObject.toString())
+                callData = jsonObject
+                runOnUiThread{
+                    updateUI()
+                }
             }
         }
 
@@ -149,7 +153,7 @@ class CallPage : AppCompatActivity() {
                     val callIdJson = JSONObject()
                     callIdJson.put("phoneId", callId)
                     mSocket.emit("callId", callIdJson)
-                    makeStatusRequest()
+//                    makeStatusRequest()
                 },
                 Response.ErrorListener { error ->
                     Log.i("POST ERROR", "Error :" + error.toString())
@@ -232,11 +236,11 @@ class CallPage : AppCompatActivity() {
         }
 
         // If the call is still in progress, continue requesting future updates
-        if(callData["status"].toString()!="Completed" && callData["status"].toString()!="Hung Up" && callData["status"].toString()!="No Answer") {
-            Timer().schedule(2000) {
-                makeStatusRequest()
-            }
-        }
+//        if(callData["status"].toString()!="Completed" && callData["status"].toString()!="Hung Up" && callData["status"].toString()!="No Answer") {
+//            Timer().schedule(2000) {
+//                makeStatusRequest()
+//            }
+//        }
 
         // When the call is ongoing, update the progress visualization accordingly.
         if (callData["status"].toString() == "Dialing") {
