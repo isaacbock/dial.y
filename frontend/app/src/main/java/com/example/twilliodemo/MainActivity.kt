@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
@@ -20,13 +19,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.json.JSONArray
 import org.json.JSONObject
 
-import android.widget.LinearLayout
-
-import android.widget.RelativeLayout
-
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
+import android.widget.*
 import com.google.android.flexbox.FlexboxLayout
 
 
@@ -43,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
 
-        var callButton = findViewById<CardView>(R.id.createNewCall)
+        var callButton = findViewById<Button>(R.id.createNewCall)
         callButton.setOnClickListener(){
             val intent = Intent(this, StartCall::class.java)
             startActivity(intent)

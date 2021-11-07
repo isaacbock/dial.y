@@ -558,13 +558,13 @@ io.on("connection", (socket) => {
 	});
 });
 
-setInterval(() => {
+setInterval(async () => {
 	if (socketClients.size != 0){
 		for (const[client, callId] of socketClients.entries()){
 			const callSID = callId;
 			const callRef = db.collection("calls").doc(callSID);
 			// const call = await callRef.get();
-			const call = callRef.get();
+			const call = await callRef.get();
 
 			if (!call.exists) {
 				console.log("Call " + callSID + " not found in database.");

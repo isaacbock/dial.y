@@ -16,7 +16,7 @@ object SavedPreferences {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
+    private fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
     }
 
