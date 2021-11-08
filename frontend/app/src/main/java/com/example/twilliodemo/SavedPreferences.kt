@@ -54,14 +54,19 @@ object SavedPreferences {
         mGoogleSignInClient = client
     }
     fun getIDToken(context: Context): String {
-        if (GoogleSignIn.getLastSignedInAccount(context).isExpired) {
-            Log.e("Token expired", "Logging out.")
+        //Sometimes app crashes because "GoogleSignIn.getLastSignedInAccount(context)" is null, so I added a if statement to check when it is null.
+        if (GoogleSignIn.getLastSignedInAccount(context) == null){
             return "Expired"
         }
-        else {
-            Log.v("Token", GoogleSignIn.getLastSignedInAccount(context).idToken)
-            return GoogleSignIn.getLastSignedInAccount(context).idToken
+        else{
+            if (GoogleSignIn.getLastSignedInAccount(context).isExpired) {
+                Log.e("Token expired", "Logging out.")
+                return "Expired"
+            }
+            else {
+                Log.v("Token", GoogleSignIn.getLastSignedInAccount(context).idToken)
+                return GoogleSignIn.getLastSignedInAccount(context).idToken
+            }
         }
     }
-
 }

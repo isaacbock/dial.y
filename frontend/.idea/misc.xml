@@ -16,8 +16,8 @@
         <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.32002782999909" />
         <entry key="app/src/main/res/layout/activity_login_screen.xml" value="0.23860549934295025" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2391509215686951" />
-        <entry key="app/src/main/res/layout/activity_start_call.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/previous_call.xml" value="0.2203125" />
+        <entry key="app/src/main/res/layout/activity_start_call.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/previous_call.xml" value="0.5" />
         <entry key="app/src/main/res/menu/activity_start_call_actions.xml" value="0.5546917584570532" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.2780708667038505" />
       </map>
