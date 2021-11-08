@@ -14,7 +14,7 @@
         <entry key="app/src/main/res/drawable/user_question.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/actionbar.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.32002782999909" />
-        <entry key="app/src/main/res/layout/activity_login_screen.xml" value="0.23860549934295025" />
+        <entry key="app/src/main/res/layout/activity_login_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2391509215686951" />
         <entry key="app/src/main/res/layout/activity_start_call.xml" value="0.25" />
         <entry key="app/src/main/res/layout/previous_call.xml" value="0.5" />

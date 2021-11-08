@@ -18,11 +18,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.*
 
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import com.google.android.flexbox.FlexboxLayout
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -92,6 +95,10 @@ class MainActivity : AppCompatActivity() {
                             val callTo = callObject["to"].toString()
                             val questionObject = JSONArray(callObject["questions"].toString())
                             val question = JSONObject(questionObject[0].toString())["question"].toString()
+                            val dateTimeJsonArray = JSONObject(callObject["date"].toString())
+                            val seconds = dateTimeJsonArray["_seconds"].toString()
+                            val dateTime = getDateTime(seconds)
+
                             Log.v("Call History", question)
 
                             runOnUiThread {
@@ -109,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 previousCallCard.findViewById<TextView>(R.id.previousCallNumber).text = callTo
                                 previousCallCard.findViewById<TextView>(R.id.previousCallQuestion).text = question
+                                previousCallCard.findViewById<TextView>(R.id.previousCallDateTime).text = dateTime
                                 callHistoryLayout.addView(previousCallCard)
 
                             }
@@ -130,6 +138,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             requestQueue!!.add(stringRequest!!)
+        }
+    }
+
+    private fun getDateTime(s: String): String? {
+        try {
+            val sdf = SimpleDateFormat("MM/dd/yyyy")
+            val netDate = Date(s.toLong() * 1000)
+            return sdf.format(netDate)
+        } catch (e: Exception) {
+            return e.toString()
         }
     }
 

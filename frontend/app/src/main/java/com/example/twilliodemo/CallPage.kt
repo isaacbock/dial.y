@@ -70,7 +70,7 @@ class CallPage : AppCompatActivity() {
         // if the call already occurred, display this previous data
         if (intent.getStringExtra("CALL")!=null) {
             callData = JSONObject(intent.getStringExtra("CALL"))
-            updateUI()
+            updateUI(true)
         }
 
         //else if the call is new, initiate the call
@@ -115,7 +115,7 @@ class CallPage : AppCompatActivity() {
                 Log.e("status from socket", jsonObject.toString())
                 callData = jsonObject
                 runOnUiThread{
-                    updateUI()
+                    updateUI(false)
                 }
             }
         }
@@ -193,7 +193,7 @@ class CallPage : AppCompatActivity() {
                         Log.e("CALL STATUS", jsonResponse["status"].toString())
 
                         callData = jsonResponse
-                        updateUI()
+                        updateUI(false)
                     },
                     Response.ErrorListener { error ->
                         Log.i("GET ERROR", "Error :" + error.toString())
@@ -217,7 +217,8 @@ class CallPage : AppCompatActivity() {
 
     }
 
-    fun updateUI() {
+    fun updateUI(isHistory: Boolean) {
+        
         val questionArray = JSONArray(callData["questions"].toString())
         val questionArrayObject = JSONObject(questionArray[0].toString())
 

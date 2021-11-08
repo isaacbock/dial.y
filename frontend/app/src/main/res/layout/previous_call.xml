@@ -2,20 +2,20 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="85dp"
+    android:layout_width="330dp"
     android:layout_height="100dp"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
     android:layout_marginBottom="10dp"
-    android:maxWidth="85dp"
+    android:maxWidth="330dp"
     android:maxHeight="100dp"
-    android:minWidth="85dp"
+    android:minWidth="50dp"
     android:minHeight="100dp"
     app:cardBackgroundColor="@color/purple_200"
-    app:cardCornerRadius="25dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="3dp"
     app:layout_maxHeight="100dp"
-    app:layout_maxWidth="85dp">
+    app:layout_maxWidth="330dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,20 +26,49 @@
         android:paddingEnd="10dp"
         android:paddingBottom="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/previousCallNumber"
+                android:layout_width="99dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="2dp"
+                android:text="(XXX) XXX-XXX"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/previousCallDateTime"
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:text="Nov 8, 8:45PM"
+                android:textAlignment="textEnd"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/previousCallNumber"
+            android:id="@+id/previousCallQuestionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="2dp"
-            android:text="(XXX) XXX-XXX"
-            android:textColor="@color/white"
-            android:textSize="8sp" />
+            android:layout_marginLeft="5sp"
+            android:layout_marginBottom="3sp"
+            android:text="Question:"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/previousCallQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
             android:ellipsize="end"
             android:maxLines="4"
             android:text="Question."
