@@ -61,7 +61,6 @@ class StartCall : AppCompatActivity() {
         if(translate)
         {
             languageString = intent.getStringExtra("LANGUAGE_STRING")!!
-            findViewById<TextView>(R.id.languageText).text = languageString
         }
 
         if (phoneNumber != null) {
@@ -89,7 +88,6 @@ class StartCall : AppCompatActivity() {
                 if(translate)
                 {
                     languageString = intent.getStringExtra("LANGUAGE_STRING")!!
-                    findViewById<TextView>(R.id.languageText).text = languageString
                 }
 
                 onCallButton(phoneNumberString, questionTextString, languageString)

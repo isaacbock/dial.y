@@ -29,7 +29,6 @@ class ChooseLanguage : AppCompatActivity() {
         setContentView(R.layout.settings_activity)
 
         var returnButton = findViewById<Button>(R.id.returnButton)
-        var radioGroup = findViewById<View>(R.id.radioGroup)
         var translateLanguage = "en"
 
 
