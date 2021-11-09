@@ -76,7 +76,6 @@ class CallPage : AppCompatActivity() {
 
         //else if the call is new, initiate the call
         if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null && intent.getStringExtra("LANGUAGE_STRING")!=null) {
-            Log.e("making new call to ", phoneNumber)
 
             phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
             questionString = intent.getStringExtra("QUESTION_STRING")!!
