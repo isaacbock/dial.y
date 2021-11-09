@@ -134,9 +134,8 @@
 
     <Button
         android:id="@+id/returnButton"
-        android:layout_width="104dp"
-        android:layout_height="104dp"
-        android:layout_marginTop="18dp"
+        android:layout_width="92dp"
+        android:layout_height="102dp"
         android:layout_marginBottom="16dp"
         android:textSize="12sp"
         app:cornerRadius="52sp"
@@ -146,7 +145,8 @@
         app:iconSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

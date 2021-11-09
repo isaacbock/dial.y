@@ -470,6 +470,11 @@ app.post("/saveRecording", async (req, res) => {
 										questionsUpdate[0].answerTranscript =
 										transcription + " // " + translations[0];
 									}
+									else
+									{
+										questionsUpdate[0].answerTranscript =
+										transcription;
+									}
 									
 									callRef
 										.update({
