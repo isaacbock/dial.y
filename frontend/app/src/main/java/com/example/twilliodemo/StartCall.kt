@@ -51,6 +51,7 @@ class StartCall : AppCompatActivity() {
         mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
 
         var callButton = findViewById<Button>(R.id.callButton)
+        var languageButton = findViewById<Button>(R.id.languageButton)
         var phoneNumber = findViewById<TextView>(R.id.phoneNumber)
         var questionTextEdit = findViewById<TextView>(R.id.questionTextEdit)
 
@@ -68,6 +69,7 @@ class StartCall : AppCompatActivity() {
 
             val phoneNumberString = phoneNumber.text.toString()
             val questionTextString = questionTextEdit.text.toString()
+            val languageString = "en"
             Log.e("number", phoneNumberString)
 
             //TODO: Check if it is number only
@@ -76,8 +78,13 @@ class StartCall : AppCompatActivity() {
             } else if (questionTextString == "") {
                 alertDialog("Sorry...", "Please ask a question.", "Okay")
             } else {
-                onCallButton(phoneNumberString, questionTextString)
+                onCallButton(phoneNumberString, questionTextString, languageString)
             }
+        }
+
+        languageButton.setOnClickListener(){
+            val intent = Intent(this, ChooseLanguage::class.java)
+            startActivity(intent)
         }
 
     }
@@ -93,10 +100,12 @@ class StartCall : AppCompatActivity() {
     }
 
     //Create new activity by passing in phone number and question string
-    private fun onCallButton(phoneNumber: String, question: String) {
+    private fun onCallButton(phoneNumber: String, question: String, language: String) {
         val intent = Intent(this, CallPage::class.java).apply{
             putExtra("PHONE_NUMBER", phoneNumber)
             putExtra("QUESTION_STRING", question)
+            putExtra("LANGUAGE_STRING", language)
+
         }
         startActivity(intent)
     }

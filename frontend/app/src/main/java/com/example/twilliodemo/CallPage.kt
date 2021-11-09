@@ -32,6 +32,7 @@ class CallPage : AppCompatActivity() {
     lateinit var phoneNumber:String
     lateinit var questionString: String
     lateinit var idToken: String
+    lateinit var language:String
 
     lateinit var callId: String
 
@@ -77,6 +78,8 @@ class CallPage : AppCompatActivity() {
         if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null) {
             phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
             questionString = intent.getStringExtra("QUESTION_STRING")!!
+            language = intent.getStringExtra("LANGUAGE_STRING")!!
+
 
             setTitle(phoneNumber);
             findViewById<TextView>(R.id.questionText).text = questionString
@@ -142,6 +145,8 @@ class CallPage : AppCompatActivity() {
             jsonBody.put("phoneNumber", phoneNumber)
             jsonBody.put("questions", jsonArray)
             jsonBody.put("userToken", idToken)
+            jsonBody.put("language", language)
+
             val requestBody = jsonBody.toString().toByteArray()
 
             val stringRequest = object : StringRequest(

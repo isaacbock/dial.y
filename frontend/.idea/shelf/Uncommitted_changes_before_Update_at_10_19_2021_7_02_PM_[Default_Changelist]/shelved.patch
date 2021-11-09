@@ -1,0 +1,167 @@
+Index: app/src/main/java/com/example/twilliodemo/CallPage.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.twilliodemo\r\n\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport android.widget.TextView\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport com.android.volley.*\r\nimport com.android.volley.Request\r\nimport com.android.volley.Response\r\nimport com.android.volley.toolbox.HttpHeaderParser\r\nimport com.android.volley.toolbox.StringRequest\r\nimport com.android.volley.toolbox.Volley\r\nimport com.squareup.okhttp.*\r\nimport org.json.JSONArray\r\nimport org.json.JSONException\r\nimport org.json.JSONObject\r\nimport org.w3c.dom.Text\r\n\r\n\r\nclass CallPage : AppCompatActivity() {\r\n    val constants = Constants()\r\n    lateinit var phoneNumber:String\r\n    lateinit var questionString: String\r\n\r\n    lateinit var callId: String\r\n    lateinit var callStatus: TextView\r\n\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_call_page)\r\n\r\n        phoneNumber = intent.getStringExtra(\"PHONE_NUMBER\")!!\r\n        questionString = intent.getStringExtra(\"QUESTION_STRING\")!!\r\n        Log.e(\"Number got from home\", phoneNumber)\r\n\r\n        findViewById<TextView>(R.id.inProgressNumber).text = phoneNumber\r\n        findViewById<TextView>(R.id.questionText).text = \"Question:\\n$questionString\"\r\n\r\n        callStatus = findViewById<TextView>(R.id.callStatus)\r\n\r\n        makeFirstRequest()\r\n\r\n    }\r\n\r\n\r\n    fun makeFirstRequest(){\r\n        var jsonArray = JSONArray()\r\n        jsonArray.put(questionString)\r\n\r\n        try{\r\n            val requestQueue: RequestQueue = Volley.newRequestQueue(this)\r\n            val URL = constants.herokuappUrl\r\n            val jsonBody = JSONObject()\r\n            jsonBody.put(\"phoneNumber\", phoneNumber)\r\n            jsonBody.put(\"questions\", jsonArray)\r\n            val requestBody = jsonBody.toString().toByteArray()\r\n\r\n            val stringRequest = object : StringRequest(Request.Method.POST, URL, Response.Listener { response ->\r\n                runOnUiThread {\r\n                    var callStatus = findViewById<TextView>(R.id.callStatus)\r\n                    callStatus.text = \"Call in progress\"\r\n                }\r\n                Log.i(\"Call ID From Twilio\", response.toString())\r\n                callId = response.toString()\r\n            }, Response.ErrorListener { error ->\r\n                Log.i(\"POST ERROR\", \"Error :\" + error.toString())\r\n            }){\r\n                override fun getBodyContentType(): String {\r\n                    return \"application/json\"\r\n                }\r\n\r\n                @Throws(AuthFailureError::class)\r\n                override fun getBody(): ByteArray {\r\n                    return requestBody\r\n                }\r\n            }\r\n\r\n            requestQueue!!.add(stringRequest!!)\r\n        }catch (e: JSONException){\r\n\r\n        }\r\n//        val body = MultipartBuilder()\r\n//                .type(MultipartBuilder.FORM)\r\n//                .addFormDataPart(\"phoneNumber\", phoneNumber)\r\n//                .addFormDataPart(\"questions\", \"[$questionString]\")\r\n//                .build()\r\n//\r\n//        val client = OkHttpClient()\r\n//        val request = Request.Builder()\r\n//                .header(\"Content-Type\", \"application/json\")\r\n//                .url(constants.herokuappUrl)\r\n//                .post(body)\r\n//                .build()\r\n//\r\n//        client.newCall(request).enqueue(object:Callback{\r\n//            override fun onFailure(request: Request?, e: IOException?) {\r\n//                Log.e(\"POST\", \"FAILED!!!!\")\r\n//                Log.e(\"FAIL MESSAGE\", e.toString())\r\n//            }\r\n//\r\n//            override fun onResponse(response: Response?) {\r\n//                Log.e(\"POST\", \"SUCCESS!!!\")\r\n//                Log.e(\"response\", response.toString())\r\n//            }\r\n//        })\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/twilliodemo/CallPage.kt b/app/src/main/java/com/example/twilliodemo/CallPage.kt
+--- a/app/src/main/java/com/example/twilliodemo/CallPage.kt	(revision ca9bd1752df814f4e53d31f727e14184dea79262)
++++ b/app/src/main/java/com/example/twilliodemo/CallPage.kt	(date 1634682751029)
+@@ -44,6 +44,7 @@
+     }
+ 
+ 
++
+     fun makeFirstRequest(){
+         var jsonArray = JSONArray()
+         jsonArray.put(questionString)
+@@ -105,4 +106,9 @@
+ //            }
+ //        })
+     }
+-}
+\ No newline at end of file
++
++    }
++
++
++
++
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"GRADLE\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"1.8 (2)\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision ca9bd1752df814f4e53d31f727e14184dea79262)
++++ b/.idea/gradle.xml	(date 1634682536151)
+@@ -7,7 +7,7 @@
+         <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleJvm" value="1.8 (2)" />
++        <option name="gradleJvm" value="11" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision ca9bd1752df814f4e53d31f727e14184dea79262)
++++ b/.idea/misc.xml	(date 1634682536139)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: ../.env.example
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>TWILIO_ACCOUNT_SID=\r\nTWILIO_AUTH_TOKEN=\r\nGOOGLE_APPLICATION_CREDENTIALS=
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.env.example b/../.env.example
+--- a/../.env.example	(revision ca9bd1752df814f4e53d31f727e14184dea79262)
++++ b/../.env.example	(date 1634682277489)
+@@ -1,3 +1,3 @@
+-TWILIO_ACCOUNT_SID=
+-TWILIO_AUTH_TOKEN=
+-GOOGLE_APPLICATION_CREDENTIALS=
+\ No newline at end of file
++TWILIO_ACCOUNT_SID=ACe40dc0c6bc23bc4d12b60b154582ea33
++TWILIO_AUTH_TOKEN=b2183d8837f58dbf2e0443ad54200052
++GOOGLE_APPLICATION_CREDENTIALS={"type":"service_account","project_id":"phone-app-806de","private_key_id":"ac836ef102d9d203ed69e0878a034ef24c0aacc4","private_key":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDXmB8tlrGgijWw\nrOH64LKJeR7NatRHvQOST1QpETuBGvJszlwjtpBBkLvS1T5szhCs+gdz2P4XbpNh\nal1pNSN\/19bvUWSDKyRW7nEgU3a\/RnuVPZgZKrYK0tvget+zfiI4k6MJGn1xska7\nd+IPjmqSM4JR\/F2QZf1FldN+PC558JAxQnqt9rP+DemkdM\/VgXScsy\/O6Bxh+INm\n\/zZuqC5S8C\/\/yUQ7h2QGIjO\/JiLsJsSsYlISLeNgUfc43oSE\/gd+GpAKU3iNt8S8\nqK\/kcxtpKCGHw8tTHVKbSFj9+oBYk9kp7A+5B0wMAHatTZf2jKbwa\/iv7US1NcqS\nrdlYek1NAgMBAAECggEAIl7OGaZ8iut9w7zMCgLoc6IrlvQBA67OcvTSpflpUxvI\nqi\/74HWqacl5KBN28EGpxunVZlKhr3qhZFZgrfUaw7bVPTHspDysfm9k+ZJUzAmg\nihpXtStp+i\/DffYY07S4H+zpgPoIJagWPqzODUzXEJfFnuxsviiESCOqo+VUQ3wb\nX6ZMyGYwy\/sB\/nl8Ju5OQiTfMBGsmjhf5Ql4aalkUw\/Njmt\/fvDM6WbjYgQRNQLx\nlHSpOq+UY9v9z3r6Si6enR8vwxXVaXOaYCFhrtWzyCdNFB2mtKO5NfgyCotflZPp\n4nyiRdwHTa6cqOMo5wNPcJngtA\/aLtjoKmICdG3WAQKBgQD9vnlye7Iw23iPsnvW\n2tqFIupCVS6m\/YbDpJc1nndTlLDtAzP02fFRJmnrjvkR6Q32jtdBk64FFw4IIPhZ\nlOlXamodm1ErJ4AgR1lw78nuWsLWW1Hv5FKyaXMeu5w7hf9ZC9paWxqrwJdsfmbp\nGP78kQpN6kfTXS6jPcq1d5bzFQKBgQDZgtFaKfZFiDlFuA\/XpVLplYr0BOBaDOXv\nprv2Jsln9plqO98QZkiNVNiB\/dATJFF9LK4DLk7i6AfpUuGdrZu5lxNRDgnvU\/Z4\ndWncKDqOudYScMnM3wzuwa0LJdAadZTn2bHvU8XiT5PpEYC1rD\/iVodFSPcHhprH\nmBF6XF9fWQKBgHejOzfTQqzujeWSzfj7r1Repf0olJp\/pu7Px8usL67kyJa3j+O+\nbp1Ic2BxRNZBAChkKPHuY3pa6G7EvNPf9jUVI3taI+co9KxDd9Rb+uW7PWo8HGHz\nUVp1haXT51HZWA\/wGr\/HfMfGQp8Q6gy1kGQdLrKV58+se7TUCaOOA0oRAoGASfBE\nRkgZZU2HWoHVMNMMOkcRcx3tPe9AgpTFNEm\/EU4snIY5r5N1ekWrS5UCFF+2K7zy\ncjZdrph9h\/0aoMUROKd4c4c4LVj3Yb9X+vTZ4wadFKuujawM82R29GEoOrZZpe7E\no7xwehvfBc1jWV5yYPhVB2JkRvSkzNCOsG+SJBECgYEAxZ3kNV7HZ4d7EO9nM9TO\nrnvYlAUXzfl0k7QHHANb99sM2kcFeiXYxgijuR38Yagw7QuwONHg8qN\/sKMdYh5z\nkbltao+aqAbctNp68UAQkyFXzLlNGVA0dX5xJabXxIBThgetuCIOQdRPgMa+\/PsL\nYcWUMn1TrKHmaxWsgP9r2P0=\n-----END PRIVATE KEY-----\n","client_email":"firebase-adminsdk-d5i3r@phone-app-806de.iam.gserviceaccount.com","client_id":"108504707146149002783","auth_uri":"https:\/\/accounts.google.com\/o\/oauth2\/auth","token_uri":"https:\/\/oauth2.googleapis.com\/token","auth_provider_x509_cert_url":"https:\/\/www.googleapis.com\/oauth2\/v1\/certs","client_x509_cert_url":"https:\/\/www.googleapis.com\/robot\/v1\/metadata\/x509\/firebase-adminsdk-d5i3r%40phone-app-806de.iam.gserviceaccount.com"}
+Index: ../.idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/vcs.xml b/../.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1634495535475)
++++ b/../.idea/vcs.xml	(date 1634495535475)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: ../.idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/modules.xml b/../.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1634495535438)
++++ b/../.idea/modules.xml	(date 1634495535438)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/text-to-call-app.iml" filepath="$PROJECT_DIR$/.idea/text-to-call-app.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: ../.gradle/buildOutputCleanup/cache.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+diff --git a/../.gradle/buildOutputCleanup/cache.properties b/../.gradle/buildOutputCleanup/cache.properties
+new file mode 100644
+--- /dev/null	(date 1634497068623)
++++ b/../.gradle/buildOutputCleanup/cache.properties	(date 1634497068623)
+@@ -0,0 +1,2 @@
++#Sun Oct 17 13:57:48 CDT 2021
++gradle.version=4.4.1
+Index: ../.idea/text-to-call-app.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/text-to-call-app.iml b/../.idea/text-to-call-app.iml
+new file mode 100644
+--- /dev/null	(date 1634510544032)
++++ b/../.idea/text-to-call-app.iml	(date 1634510544032)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
++  </component>
++</module>
+\ No newline at end of file
+Index: ../.idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/.gitignore b/../.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1634495450180)
++++ b/../.idea/.gitignore	(date 1634495450180)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml

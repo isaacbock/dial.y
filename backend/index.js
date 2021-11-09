@@ -68,6 +68,7 @@ app.post("/call", async (req, res) => {
 	let toPhoneNumber = "+1" + req.body.phoneNumber;
 	let questions = req.body.questions;
 	let userToken = req.body.userToken;
+	let translationLanguage = req.body.language;
 
 	try {
 		// Authenticate user logged into Android app by converting their userToken into their actual user ID
@@ -425,7 +426,7 @@ app.post("/saveRecording", async (req, res) => {
 
 								// Translate results to target language
 								const text = transcription;
-								const target = "ko";
+								const target = translationLanguage;
 								async function translateText() {
 									// Translates the text into the target language. "text" can be a string for
 									// translating a single piece of text, or an array of strings for translating
