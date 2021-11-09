@@ -129,7 +129,6 @@ class CallPage : AppCompatActivity() {
         jsonArray.put(questionString)
         val jsonBody = JSONObject()
         jsonBody.put("phoneNumber", phoneNumber)
-        jsonBody.put("language", language)
         jsonBody.put("questions", jsonArray)
         mSocket.emit("call", jsonBody)
 

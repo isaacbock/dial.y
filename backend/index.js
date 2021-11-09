@@ -110,6 +110,7 @@ app.post("/call", async (req, res) => {
 			status: "Dialing",
 			date: new Date(),
 			questions: callQuestions,
+			language: translationLanguage,
 		};
 
 		// Save call to Firebase
@@ -426,7 +427,7 @@ app.post("/saveRecording", async (req, res) => {
 
 								// Translate results to target language
 								const text = transcription;
-								const target = translationLanguage;
+								let target = call.data().language;
 								async function translateText() {
 									// Translates the text into the target language. "text" can be a string for
 									// translating a single piece of text, or an array of strings for translating
