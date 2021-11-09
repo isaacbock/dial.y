@@ -207,33 +207,57 @@ app.post("/askQuestion", async (req, res) => {
 			
 				// Update call in database to include translation results
 				question = translations[0];
+
+				let questionsUpdate = call.data().questions;
+
+				questionsUpdate[0].status = "Asking";
+				callRef.update({ questions: questionsUpdate }).then(() => {
+					console.log("Call " + callSID + "-- Asking: " + question);
+
+					// Return question script
+					const response = new VoiceResponse();
+					response.pause({ length: 1 });
+					response.say("They're wondering,");
+					response.say(question);
+					response.pause({ length: 1 });
+					response.say(
+						"When you're ready, I can record your answer to this question and send it to the customer."
+					);
+					response.pause({ length: 1 });
+					response.redirect({ method: "POST" }, "/promptListener");
+
+					let twiml = response.toString();
+					res.header("Content-Type", "application/xml");
+					res.send(twiml);
+				});
 			}
+
 			translateQuestion();
 		}
+		else
+		{
+			let questionsUpdate = call.data().questions;
+			questionsUpdate[0].status = "Asking";
+			callRef.update({ questions: questionsUpdate }).then(() => {
+				console.log("Call " + callSID + "-- Asking: " + question);
 
-		
+				// Return question script
+				const response = new VoiceResponse();
+				response.pause({ length: 1 });
+				response.say("They're wondering,");
+				response.say(question);
+				response.pause({ length: 1 });
+				response.say(
+					"When you're ready, I can record your answer to this question and send it to the customer."
+				);
+				response.pause({ length: 1 });
+				response.redirect({ method: "POST" }, "/promptListener");
 
-		let questionsUpdate = call.data().questions;
-		questionsUpdate[0].status = "Asking";
-		callRef.update({ questions: questionsUpdate }).then(() => {
-			console.log("Call " + callSID + "-- Asking: " + question);
-
-			// Return question script
-			const response = new VoiceResponse();
-			response.pause({ length: 1 });
-			response.say("They're wondering,");
-			response.say(question);
-			response.pause({ length: 1 });
-			response.say(
-				"When you're ready, I can record your answer to this question and send it to the customer."
-			);
-			response.pause({ length: 1 });
-			response.redirect({ method: "POST" }, "/promptListener");
-
-			let twiml = response.toString();
-			res.header("Content-Type", "application/xml");
-			res.send(twiml);
-		});
+				let twiml = response.toString();
+				res.header("Content-Type", "application/xml");
+				res.send(twiml);
+			});
+		}	
 	}
 });
 
