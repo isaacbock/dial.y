@@ -32,7 +32,7 @@ class CallPage : AppCompatActivity() {
     lateinit var phoneNumber:String
     lateinit var questionString: String
     lateinit var idToken: String
-    lateinit var language:String
+    lateinit var language: String
 
     lateinit var callId: String
 
@@ -75,7 +75,9 @@ class CallPage : AppCompatActivity() {
         }
 
         //else if the call is new, initiate the call
-        if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null) {
+        if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null && intent.getStringExtra("LANGUAGE_STRING")!=null) {
+            Log.e("making new call to ", phoneNumber)
+
             phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
             questionString = intent.getStringExtra("QUESTION_STRING")!!
             language = intent.getStringExtra("LANGUAGE_STRING")!!
@@ -128,6 +130,7 @@ class CallPage : AppCompatActivity() {
         jsonArray.put(questionString)
         val jsonBody = JSONObject()
         jsonBody.put("phoneNumber", phoneNumber)
+        jsonBody.put("language", language)
         jsonBody.put("questions", jsonArray)
         mSocket.emit("call", jsonBody)
 

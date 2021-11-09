@@ -425,8 +425,10 @@ app.post("/saveRecording", async (req, res) => {
 								questionsUpdate[0].status = "Completed";
 
 								// Translate results to target language
+								const translationLang = req.body.language;
+
 								const text = transcription;
-								const target = translationLanguage;
+								const target = translationLang;
 								async function translateText() {
 									// Translates the text into the target language. "text" can be a string for
 									// translating a single piece of text, or an array of strings for translating

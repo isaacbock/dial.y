@@ -7,214 +7,136 @@
     android:layout_gravity="center"
     tools:context=".ChooseLanguage">
 
-    <View
-        android:id="@+id/view2"
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:checkedButton="@+id/enButton"
+
         android:layout_width="370dp"
-        android:layout_height="695dp"
+        android:layout_height="580dp"
         android:layout_marginTop="13dp"
         android:background="@color/purple_200"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <CheckBox
-        android:id="@+id/arButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="628dp"
-        android:buttonTint="@color/background"
-        android:text="Arabic"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/arButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Arabic"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/koButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="628dp"
-        android:buttonTint="@color/background"
-        android:text="Korean"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/koButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Korean"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/frButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="540dp"
-        android:buttonTint="@color/background"
-        android:text="French"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/enButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="English"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/zhButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="540dp"
-        android:buttonTint="@color/background"
-        android:text="Mandarin"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/zhButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Chinese"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/ptButton"
-        android:layout_width="150dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="456dp"
-        android:buttonTint="@color/background"
-        android:text="Portuguese"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.839"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/ptButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Portuguese"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/ruButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="376dp"
-        android:buttonTint="@color/background"
-        android:text="Russian"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/ruButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Russian"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/esButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="292dp"
-        android:buttonTint="@color/background"
-        android:text="Spanish"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/esButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Spanish"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/swButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="208dp"
-        android:buttonTint="@color/background"
-        android:text="Swahili"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/swButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Swahili"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/deButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="460dp"
-        android:buttonTint="@color/background"
-        android:text="German"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/frButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="French"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/hiButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="372dp"
-        android:buttonTint="@color/background"
-        android:text="Hindi"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/hiButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Hindi"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/itButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="292dp"
-        android:buttonTint="@color/background"
-        android:text="Italian"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/itButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Italian"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/jaButton"
-        android:layout_width="127dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="208dp"
-        android:buttonTint="@color/background"
-        android:text="Japanese"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/jaButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Japanese"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/returnButton"
         android:layout_width="104dp"
         android:layout_height="104dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="16dp"
         android:textSize="12sp"
         app:cornerRadius="52sp"
         app:icon="@drawable/check"
@@ -223,8 +145,8 @@
         app:iconSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.543"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

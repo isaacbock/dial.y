@@ -36,7 +36,7 @@ import android.widget.EditText
 
 
 
-
+var translate = false
 
 class StartCall : AppCompatActivity() {
 
@@ -54,6 +54,15 @@ class StartCall : AppCompatActivity() {
         var languageButton = findViewById<Button>(R.id.languageButton)
         var phoneNumber = findViewById<TextView>(R.id.phoneNumber)
         var questionTextEdit = findViewById<TextView>(R.id.questionTextEdit)
+        //languageString = findViewById<TextView>(R.id.languageText)
+
+        var languageString = "en"
+
+        if(translate)
+        {
+            languageString = intent.getStringExtra("LANGUAGE_STRING")!!
+            findViewById<TextView>(R.id.languageText).text = languageString
+        }
 
         if (phoneNumber != null) {
             phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -69,7 +78,6 @@ class StartCall : AppCompatActivity() {
 
             val phoneNumberString = phoneNumber.text.toString()
             val questionTextString = questionTextEdit.text.toString()
-            val languageString = "en"
             Log.e("number", phoneNumberString)
 
             //TODO: Check if it is number only
@@ -78,6 +86,12 @@ class StartCall : AppCompatActivity() {
             } else if (questionTextString == "") {
                 alertDialog("Sorry...", "Please ask a question.", "Okay")
             } else {
+                if(translate)
+                {
+                    languageString = intent.getStringExtra("LANGUAGE_STRING")!!
+                    findViewById<TextView>(R.id.languageText).text = languageString
+                }
+
                 onCallButton(phoneNumberString, questionTextString, languageString)
             }
         }
@@ -85,6 +99,8 @@ class StartCall : AppCompatActivity() {
         languageButton.setOnClickListener(){
             val intent = Intent(this, ChooseLanguage::class.java)
             startActivity(intent)
+            translate = true
+
         }
 
     }
@@ -101,6 +117,8 @@ class StartCall : AppCompatActivity() {
 
     //Create new activity by passing in phone number and question string
     private fun onCallButton(phoneNumber: String, question: String, language: String) {
+        Log.e("will translate call to ", language)
+
         val intent = Intent(this, CallPage::class.java).apply{
             putExtra("PHONE_NUMBER", phoneNumber)
             putExtra("QUESTION_STRING", question)
