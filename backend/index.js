@@ -184,6 +184,35 @@ app.post("/askQuestion", async (req, res) => {
 	} else {
 		const question = call.data().questions[0].question;
 
+
+		// Translate question to english
+		const text = question;
+		let questionLanguage = call.data().language;
+		if (questionLanguage != "en")
+		{
+			const target = "en"
+			async function translateQuestion() {
+				// Translates the text into the target language. "text" can be a string for
+				// translating a single piece of text, or an array of strings for translating
+				// multiple texts.
+				let [translations] = await translate.translate(text, target);
+				translations = Array.isArray(translations)
+					? translations
+					: [translations];
+				console.log("Translations:");
+				translations.forEach((translation, i) => {
+					console.log(`${text[i]} => (${target}) ${translation}`);
+				});
+				
+			
+				// Update call in database to include translation results
+				question = translations[0];
+			}
+			translateQuestion();
+		}
+
+		
+
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Asking";
 		callRef.update({ questions: questionsUpdate }).then(() => {
