@@ -182,65 +182,32 @@ app.post("/askQuestion", async (req, res) => {
 	if (!call.exists) {
 		console.log("Call " + callSID + " not found in database.");
 	} else {
-		const question = call.data().questions[0].question;
-
+		let question = call.data().questions[0].question;
 
 		// Translate question to english
 		const text = question;
-		let questionLanguage = call.data().language;
-		if (questionLanguage != "en")
-		{
-			const target = "en"
-			async function translateQuestion() {
-				// Translates the text into the target language. "text" can be a string for
-				// translating a single piece of text, or an array of strings for translating
-				// multiple texts.
-				let [translations] = await translate.translate(text, target);
-				translations = Array.isArray(translations)
-					? translations
-					: [translations];
-				console.log("Translations:");
-				translations.forEach((translation, i) => {
-					console.log(`${text[i]} => (${target}) ${translation}`);
-				});
-				
+		const target = "en"
+		async function translateQuestion() {
+			// Translates the text into the target language. "text" can be a string for
+			// translating a single piece of text, or an array of strings for translating
+			// multiple texts.
+			let [translations] = await translate.translate(text, target);
+			translations = Array.isArray(translations)
+				? translations
+				: [translations];
+			console.log("Translations:");
+			translations.forEach((translation, i) => {
+				console.log(`${text[i]} => (${target}) ${translation}`);
+			});
 			
-				// Update call in database to include translation results
-				question = translations[0];
+			// Update call in database to include translation results
+			question = translations[0];
 
-				let questionsUpdate = call.data().questions;
-
-				questionsUpdate[0].status = "Asking";
-				callRef.update({ questions: questionsUpdate }).then(() => {
-					console.log("Call " + callSID + "-- Asking: " + question);
-
-					// Return question script
-					const response = new VoiceResponse();
-					response.pause({ length: 1 });
-					response.say("They're wondering,");
-					response.say(question);
-					response.pause({ length: 1 });
-					response.say(
-						"When you're ready, I can record your answer to this question and send it to the customer."
-					);
-					response.pause({ length: 1 });
-					response.redirect({ method: "POST" }, "/promptListener");
-
-					let twiml = response.toString();
-					res.header("Content-Type", "application/xml");
-					res.send(twiml);
-				});
-			}
-
-			translateQuestion();
-		}
-		else
-		{
 			let questionsUpdate = call.data().questions;
 			questionsUpdate[0].status = "Asking";
 			callRef.update({ questions: questionsUpdate }).then(() => {
 				console.log("Call " + callSID + "-- Asking: " + question);
-
+	
 				// Return question script
 				const response = new VoiceResponse();
 				response.pause({ length: 1 });
@@ -252,12 +219,15 @@ app.post("/askQuestion", async (req, res) => {
 				);
 				response.pause({ length: 1 });
 				response.redirect({ method: "POST" }, "/promptListener");
-
+	
 				let twiml = response.toString();
 				res.header("Content-Type", "application/xml");
 				res.send(twiml);
 			});
-		}	
+
+		}
+		translateQuestion();
+
 	}
 });
 
