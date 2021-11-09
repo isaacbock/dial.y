@@ -89,6 +89,10 @@ class StartCall : AppCompatActivity() {
                 {
                     languageString = intent.getStringExtra("LANGUAGE_STRING")!!
                 }
+                else
+                {
+                    languageString = "en"
+                }
 
                 onCallButton(phoneNumberString, questionTextString, languageString)
             }
