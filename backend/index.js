@@ -465,8 +465,12 @@ app.post("/saveRecording", async (req, res) => {
 									});
 
 									// Update call in database to include translation results
-									questionsUpdate[0].answerTranscript =
+									if(target != "en")
+									{
+										questionsUpdate[0].answerTranscript =
 										transcription + " // " + translations[0];
+									}
+									
 									callRef
 										.update({
 											status: "Completed",

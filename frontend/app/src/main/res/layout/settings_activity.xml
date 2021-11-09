@@ -10,12 +10,12 @@
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:checkedButton="@+id/enButton"
-
         android:layout_width="370dp"
+
         android:layout_height="580dp"
         android:layout_marginTop="13dp"
         android:background="@color/purple_200"
+        android:checkedButton="@+id/enButton"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -27,16 +27,16 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
-            android:text="Arabic"
+            android:text="Arabic // اللغة العربية"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/koButton"
+            android:id="@+id/zhButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
-            android:text="Korean"
+            android:text="Chinese // 中文"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
@@ -50,56 +50,11 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/zhButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Chinese"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-        <RadioButton
-            android:id="@+id/ptButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Portuguese"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-        <RadioButton
-            android:id="@+id/ruButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Russian"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-        <RadioButton
-            android:id="@+id/esButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Spanish"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-        <RadioButton
-            android:id="@+id/swButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Swahili"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-        <RadioButton
             android:id="@+id/frButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
-            android:text="French"
+            android:text="French // français"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
@@ -108,7 +63,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
-            android:text="Hindi"
+            android:text="Hindi // हिंदी"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
@@ -117,7 +72,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
-            android:text="Italian"
+            android:text="Italian // italiano"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
@@ -126,9 +81,55 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
-            android:text="Japanese"
+            android:text="Japanese // 日本語"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/koButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Korean // 한국인"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/ptButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Portuguese // português"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/ruButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Russian // русский"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/esButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Spanish // español"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/swButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/background"
+            android:text="Swahili // kiswahili"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
     </RadioGroup>
 
     <Button
@@ -145,8 +146,7 @@
         app:iconSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
