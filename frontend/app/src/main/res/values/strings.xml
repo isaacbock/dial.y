@@ -1,19 +1,23 @@
 <resources>
-    <string name="app_name">Text-to-Call</string>
-    <string name="title_activity_choose_language">choose_language</string>
+    <string name="app_name" translatable="false">Dial-y</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="ringing">Ringing</string>
+    <string name="asking">Asking question</string>
+    <string name="recording">Recording answer</string>
+    <string name="sign_in">Sign in with Google</string>
+    <string name="make_a_new_call">Make a new call</string>
+    <string name="call_history">Call History</string>
+    <string name="ask_any_question">Ask any question</string>
+    <string name="well_call_for_you">We\'ll call for you and get the answer!</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="question">Question</string>
+    <string name="ask_now">Ask now!</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="hi">Hi</string>
+    <string name="transcription_not_availiable">Sorry, transcription is not available for this call.</string>
+    <string name="no_answer">Sorry, nobody answered the phone. Try again later!</string>
+    <string name="hung_up">Sorry, nobody had an answer for your question and the call was ended.</string>
+    <string name="log_out">Log Out</string>
+    <string name="session_expired">Session expired.</string>
+    <string name="logging_out">Logging Out</string>
 </resources>

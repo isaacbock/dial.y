@@ -12,7 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 object SavedPreferences {
 
     const val EMAIL = "email"
-    const val DISPLAYNAME ="displayName"
+    const val DISPLAYNAME = "displayName"
+    const val LOCALE = "en"
+    const val LANGUAGEUPDATED = "false"
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -47,6 +49,29 @@ object SavedPreferences {
             context,
             DISPLAYNAME,
             displayName
+        )
+    }
+
+    fun getLocale(context: Context) = getSharedPreference(
+        context
+    )?.getString(LOCALE,"")
+    fun setLocale(context: Context, locale:String){
+        Log.v("Locale", locale)
+        editor(
+            context,
+            LOCALE,
+            locale
+        )
+    }
+
+    fun languageUpdated(context: Context) = getSharedPreference(
+        context
+    )?.getString(LANGUAGEUPDATED,"")
+    fun setLanguageUpdated(context: Context, updated:String){
+        editor(
+            context,
+            LANGUAGEUPDATED,
+            updated
         )
     }
 

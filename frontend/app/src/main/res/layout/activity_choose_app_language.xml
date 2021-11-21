@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context=".ChooseLanguage">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/arButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Arabic // اللغة العربية" />
+
+            <Button
+                android:id="@+id/zhButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chinese // 中文" />
+
+            <Button
+                android:id="@+id/enButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="English" />
+
+            <Button
+                android:id="@+id/frButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="French // français" />
+
+            <Button
+                android:id="@+id/hiButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hindi // हिंदी" />
+
+            <Button
+                android:id="@+id/itButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Italian // italiano" />
+
+            <Button
+                android:id="@+id/jaButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Japanese // 日本語" />
+
+            <Button
+                android:id="@+id/koButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Korean // 한국인" />
+
+            <Button
+                android:id="@+id/ptButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Portuguese // português" />
+
+            <Button
+                android:id="@+id/ruButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Russian // русский" />
+
+            <Button
+                android:id="@+id/esButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Spanish // español" />
+
+            <Button
+                android:id="@+id/swButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Swahili // kiswahili" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.widget.*
 import com.example.twilliodemo.SavedPreferences.mGoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -54,6 +55,18 @@ class CallPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Localization via https://stackoverflow.com/a/9173571
+        val config = resources.configuration
+        val lang = SavedPreferences.getLocale(this)
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            config.setLocale(locale)
+        else
+            config.locale = locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            createConfigurationContext(config)
+        resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.activity_call_page)
 
         mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
@@ -89,7 +102,7 @@ class CallPage : AppCompatActivity() {
             if (idToken=="Expired") {
                 mGoogleSignInClient.signOut().addOnCompleteListener {
                     val intent= Intent(this, LoginScreen::class.java)
-                    Toast.makeText(this,"Session expired.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,getResources().getString(R.string.session_expired), Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                     finish()
                 }
@@ -242,13 +255,6 @@ class CallPage : AppCompatActivity() {
             findViewById<TextView>(R.id.questionText).text = questionString
         }
 
-        // If the call is still in progress, continue requesting future updates
-//        if(callData["status"].toString()!="Completed" && callData["status"].toString()!="Hung Up" && callData["status"].toString()!="No Answer") {
-//            Timer().schedule(2000) {
-//                makeStatusRequest()
-//            }
-//        }
-
         // When the call is ongoing, update the progress visualization accordingly.
         if (callData["status"].toString() == "Dialing") {
             runOnUiThread {
@@ -331,7 +337,7 @@ class CallPage : AppCompatActivity() {
                 }
                 callResult.setVisibility(View.VISIBLE)
                 if (answerTranscript == "") {
-                    callResult.text = "Sorry, transcription is not available for this call."
+                    callResult.text = getResources().getString(R.string.transcription_not_availiable)
                 }
                 else {
                     callResult.text = answerTranscript
@@ -342,7 +348,7 @@ class CallPage : AppCompatActivity() {
         // If the call was hung up or was not answered, tell the user.
         if (callData["status"].toString() == "No Answer") {
             callResult.setVisibility(View.VISIBLE)
-            callResult.text = "Sorry, nobody answered the phone. Try again later!"
+            callResult.text = getResources().getString(R.string.no_answer)
 
             dialingStatus.setImageResource(R.drawable.dialing_complete)
             dialingStatusText.setTypeface(null, Typeface.NORMAL);
@@ -350,7 +356,7 @@ class CallPage : AppCompatActivity() {
         }
         else if (callData["status"].toString() == "Hung Up") {
             callResult.setVisibility(View.VISIBLE)
-            callResult.text = "Sorry, nobody had an answer for your question and the call was ended."
+            callResult.text = getResources().getString(R.string.hung_up)
 
             dialingStatus.setImageResource(R.drawable.dialing_complete)
             dialingStatusText.setTypeface(null, Typeface.NORMAL)

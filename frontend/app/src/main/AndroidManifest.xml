@@ -17,6 +17,9 @@
             android:name=".ChooseLanguage"
             android:exported="true" />
         <activity
+            android:name=".ChooseAppLanguage"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity android:name=".LoginScreen">

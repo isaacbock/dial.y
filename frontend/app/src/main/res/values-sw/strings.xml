@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in">Ingia kwa kutumia Google</string>
+    <string name="make_a_new_call">Piga simu mpya</string>
+    <string name="call_history">Historia ya Simu</string>
+    <string name="ask_any_question">Uliza swali lolote</string>
+    <string name="well_call_for_you">Tutapiga simu kwa niaba yako na kupata jibu!</string>
+    <string name="phone_number">Nambari ya simu</string>
+    <string name="question">Swali</string>
+    <string name="ask_now">Uliza sasa!</string>
+    <string name="choose_language">Chagua Lugha</string>
+    <string name="ringing">Kupiga simu</string>
+    <string name="asking">Kuuliza swali</string>
+    <string name="recording">Kurekodi jibu</string>
+    <string name="hi">Habari</string>
+    <string name="transcription_not_availiable">Samahani, unukuzi haupatikani kwa simu hii.</string>
+    <string name="no_answer">Samahani, hakuna mtu aliyejibu simu. Jaribu tena baadae!</string>
+    <string name="hung_up">Samahani, hakuna mtu aliyekuwa na jibu la swali lako na simu ilikatwa.</string>
+    <string name="log_out">Toka nje</string>
+    <string name="session_expired">Kipindi kimekwisha.</string>
+    <string name="logging_out">Kuingia nje</string>
+</resources>

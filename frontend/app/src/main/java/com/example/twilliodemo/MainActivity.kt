@@ -1,6 +1,7 @@
 package com.example.twilliodemo
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,11 +36,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Localization via https://stackoverflow.com/a/9173571
+        val config = resources.configuration
+        val lang = SavedPreferences.getLocale(this)
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            config.setLocale(locale)
+        else
+            config.locale = locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            createConfigurationContext(config)
+        resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.activity_main)
 
         mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
 
-        setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
+        var hi = getResources().getString(R.string.hi)
+        var name = SavedPreferences.getDisplayName(this)?.substringBefore(" ")
+        if (lang=="ar") {
+            setTitle("!" + name + " " + hi)
+        }
+        else {
+            setTitle(hi + " " + name +"!");
+        }
 
         var callButton = findViewById<Button>(R.id.createNewCall)
         callButton.setOnClickListener(){
@@ -65,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         if (idToken=="Expired") {
             mGoogleSignInClient.signOut().addOnCompleteListener {
                 val intent= Intent(this, LoginScreen::class.java)
-                Toast.makeText(this,"Session expired.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getResources().getString(R.string.session_expired), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 finish()
             }
@@ -159,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         R.id.log_out -> {
             mGoogleSignInClient.signOut().addOnCompleteListener {
                 val intent= Intent(this, LoginScreen::class.java)
-                Toast.makeText(this,"Logging Out", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getResources().getString(R.string.logging_out), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 finish()
             }

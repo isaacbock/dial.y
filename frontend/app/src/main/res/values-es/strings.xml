@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">Llamando al teléfono</string>
+    <string name="asking">Haciendo la pregunta</string>
+    <string name="recording">Grabando la respuesta</string>
+    <string name="sign_in">Inicia sesión con Google</string>
+    <string name="make_a_new_call">Hacer una nueva llamada</string>
+    <string name="call_history">Historial de llamadas</string>
+    <string name="ask_any_question">Haz cualquier pregunta</string>
+    <string name="well_call_for_you">¡Llamaremos en su nombre y obtendremos la respuesta!</string>
+    <string name="phone_number">Número de teléfono</string>
+    <string name="question">Pregunta</string>
+    <string name="ask_now">¡Pregunta ahora!</string>
+    <string name="choose_language">Elige lengua</string>
+    <string name="hi">¡Hola</string>
+    <string name="transcription_not_availiable">Lo sentimos, la transcripción no está disponible para esta llamada.</string>
+    <string name="no_answer">Lo siento, nadie respondió el teléfono. ¡Vuelve a intentarlo más tarde!</string>
+    <string name="hung_up">Lo siento, nadie tuvo una respuesta para tu pregunta y se terminó la llamada.</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="session_expired">Sesión expirada.</string>
+    <string name="logging_out">Saliendo de tu cuenta</string>
+</resources>

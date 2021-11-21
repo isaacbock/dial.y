@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">फ़ोन कॉल करना</string>
+    <string name="asking">सवाल पूछ रहे हैं</string>
+    <string name="recording">उत्तर रिकॉर्ड करना</string>
+    <string name="sign_in">Google के साथ साइन इन करें</string>
+    <string name="make_a_new_call">एक नया कॉल करें</string>
+    <string name="call_history">कॉल इतिहास</string>
+    <string name="ask_any_question">कोई भी प्रश्न पूछें</string>
+    <string name="well_call_for_you">हम आपको कॉल करेंगे और उत्तर प्राप्त करेंगे!</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="question">प्रश्न</string>
+    <string name="ask_now">अब पूछो!</string>
+    <string name="choose_language">भाषा चुनें</string>
+    <string name="hi">नमस्ते</string>
+    <string name="transcription_not_availiable">क्षमा करें, इस कॉल के लिए ट्रांसक्रिप्शन उपलब्ध नहीं है।</string>
+    <string name="no_answer">क्षमा करें, किसी ने फोन का जवाब नहीं दिया। बाद में पुन: प्रयास!</string>
+    <string name="hung_up">क्षमा करें, किसी के पास आपके प्रश्न का उत्तर नहीं था और कॉल समाप्त हो गई थी।</string>
+    <string name="log_out">लॉग आउट</string>
+    <string name="session_expired">सत्र समाप्त हुआ।</string>
+    <string name="logging_out">लॉग आउट कर रहा हूं</string>
+</resources>

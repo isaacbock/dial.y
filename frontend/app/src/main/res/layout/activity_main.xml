@@ -26,7 +26,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Make a new call"
+            android:text="@string/make_a_new_call"
             android:textAlignment="center" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
-            android:text="Call History"
+            android:text="@string/call_history"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="#535353"
             android:textSize="30sp" />

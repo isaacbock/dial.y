@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">Appeler le téléphone</string>
+    <string name="asking">Poser la question</string>
+    <string name="recording">Enregistrement de la réponse</string>
+    <string name="sign_in">Connectez-vous avec Google</string>
+    <string name="make_a_new_call">Faire un nouvel appel</string>
+    <string name="call_history">Historique des appels</string>
+    <string name="ask_any_question">Posez n\'importe quelle question</string>
+    <string name="well_call_for_you">Nous vous appellerons et obtiendrons la réponse !</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="question">Question</string>
+    <string name="ask_now">Demande maintenant!</string>
+    <string name="choose_language">Choisissez la langue</string>
+    <string name="hi">Salut</string>
+    <string name="transcription_not_availiable">Désolé, la transcription n\'est pas disponible pour cet appel.</string>
+    <string name="no_answer">Désolé, personne n\'a répondu au téléphone. Réessayez plus tard!</string>
+    <string name="hung_up">Désolé, personne n\'a eu de réponse à votre question et l\'appel a été terminé.</string>
+    <string name="log_out">Se déconnecter</string>
+    <string name="session_expired">La session a expiré.</string>
+    <string name="logging_out">Déconnecter</string>
+</resources>

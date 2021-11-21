@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">전화 걸기</string>
+    <string name="asking">질문하기</string>
+    <string name="recording">답변 녹음</string>
+    <string name="sign_in">Google로 로그인</string>
+    <string name="make_a_new_call">새 전화 걸기</string>
+    <string name="call_history">통화 기록</string>
+    <string name="ask_any_question">무엇이든 물어보세요</string>
+    <string name="well_call_for_you">전화주시면 답변드리겠습니다!</string>
+    <string name="phone_number">전화 번호</string>
+    <string name="question">질문</string>
+    <string name="ask_now">지금 물어보세요!</string>
+    <string name="choose_language">언어 선택</string>
+    <string name="hi">안녕하세요</string>
+    <string name="transcription_not_availiable">죄송합니다. 이 통화에는 텍스트 변환을 사용할 수 없습니다.</string>
+    <string name="no_answer">죄송합니다. 아무도 전화를 받지 않았습니다. 나중에 다시 시도하십시오!</string>
+    <string name="hung_up">죄송합니다. 아무도 귀하의 질문에 답변하지 않았고 통화가 종료되었습니다.</string>
+    <string name="log_out">로그 아웃</string>
+    <string name="session_expired">세션이 만료되었습니다.</string>
+    <string name="logging_out">로그 아웃하다</string>
+</resources>

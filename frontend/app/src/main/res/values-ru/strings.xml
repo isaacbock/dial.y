@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">Звонок на телефон</string>
+    <string name="asking">Задавая вопрос</string>
+    <string name="recording">Запись ответа</string>
+    <string name="sign_in">Войти через Google</string>
+    <string name="make_a_new_call">Сделать новый звонок</string>
+    <string name="call_history">История звонков</string>
+    <string name="ask_any_question">Задайте любой вопрос</string>
+    <string name="well_call_for_you">Мы перезвоним и ответим!</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="question">Вопрос</string>
+    <string name="ask_now">Спросите прямо сейчас!</string>
+    <string name="choose_language">Выберите язык</string>
+    <string name="hi">Привет</string>
+    <string name="transcription_not_availiable">Извините, транскрипция этого звонка недоступна.</string>
+    <string name="no_answer">Извините, никто не ответил на звонок. Попробуйте позже!</string>
+    <string name="hung_up">Извините, никто не ответил на ваш вопрос, и звонок был прерван.</string>
+    <string name="log_out">Выйти</string>
+    <string name="session_expired">Срок действия сеанса истек.</string>
+    <string name="logging_out">Выход из системы</string>
+</resources>

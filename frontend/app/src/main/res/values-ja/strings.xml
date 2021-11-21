@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">電話をかける</string>
+    <string name="asking">質問をする</string>
+    <string name="recording">答えを記録する</string>
+    <string name="sign_in">Googleでサインイン</string>
+    <string name="make_a_new_call">新しい電話をかける</string>
+    <string name="call_history">通話履歴</string>
+    <string name="ask_any_question">質問をする</string>
+    <string name="well_call_for_you">私たちはあなたを呼んで答えを得ます！</string>
+    <string name="phone_number">電話番号</string>
+    <string name="question">質問</string>
+    <string name="ask_now">今すぐ聞いてください！</string>
+    <string name="choose_language">言語を選択</string>
+    <string name="hi">こんにちは</string>
+    <string name="transcription_not_availiable">申し訳ありませんが、この通話では音声文字変換は利用できません。</string>
+    <string name="no_answer">申し訳ありませんが、誰も電話に出ませんでした。 あとでもう一度試してみてください！</string>
+    <string name="hung_up">申し訳ありませんが、あなたの質問に対する回答は誰にもありませんでした。通話は終了しました。</string>
+    <string name="log_out">ログアウト</string>
+    <string name="session_expired">セッションの有効期限が切れ。</string>
+    <string name="logging_out">ログアウト</string>
+</resources>

@@ -15,7 +15,7 @@
         android:layout_height="580dp"
         android:layout_marginTop="13dp"
         android:background="@color/purple_200"
-        android:checkedButton="@+id/enButton"
+        android:checkedButton="@+id/enButtonRadio"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/arButton"
+            android:id="@+id/arButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -32,7 +32,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/zhButton"
+            android:id="@+id/zhButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -41,7 +41,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/enButton"
+            android:id="@+id/enButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -50,7 +50,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/frButton"
+            android:id="@+id/frButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -59,7 +59,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/hiButton"
+            android:id="@+id/hiButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -68,7 +68,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/itButton"
+            android:id="@+id/itButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -77,7 +77,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/jaButton"
+            android:id="@+id/jaButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -86,7 +86,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/koButton"
+            android:id="@+id/koButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -95,7 +95,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/ptButton"
+            android:id="@+id/ptButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -104,7 +104,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/ruButton"
+            android:id="@+id/ruButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -113,7 +113,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/esButton"
+            android:id="@+id/esButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"
@@ -122,7 +122,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/swButton"
+            android:id="@+id/swButtonRadio"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/background"

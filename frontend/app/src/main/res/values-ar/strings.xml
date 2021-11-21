@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">استدعاء الهاتف</string>
+    <string name="asking">طرح السؤال</string>
+    <string name="recording">تسجيل الجواب</string>
+    <string name="sign_in">الدخول مع جوجل</string>
+    <string name="make_a_new_call">قم بإجراء مكالمة جديدة</string>
+    <string name="call_history">سجل المكالمات</string>
+    <string name="ask_any_question">اسأل أي سؤال</string>
+    <string name="well_call_for_you">سوف نتصل بك ونحصل على الجواب!</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="question">سؤال</string>
+    <string name="ask_now">اسأل الآن!</string>
+    <string name="choose_language">اختر اللغة</string>
+    <string name="hi">مرحبا</string>
+    <string name="transcription_not_availiable">عذرا ، النسخ غير متوفر لهذه المكالمة.</string>
+    <string name="no_answer">آسف ، لم يرد أحد على الهاتف. حاول مرة أخرى في وقت لاحق!</string>
+    <string name="hung_up">معذرةً ، لم يكن لدى أحد إجابة عن سؤالك وتم إنهاء المكالمة.</string>
+    <string name="log_out">تسجيل خروج</string>
+    <string name="session_expired">انتهت الجلسة.</string>
+    <string name="logging_out">تسجيل الخروج</string>
+</resources>

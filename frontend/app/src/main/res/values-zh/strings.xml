@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ringing">打电话</string>
+    <string name="asking">问问题</string>
+    <string name="recording">记录答案</string>
+    <string name="sign_in">使用 Google 登录</string>
+    <string name="make_a_new_call">拨打新电话</string>
+    <string name="call_history">通话记录</string>
+    <string name="ask_any_question">问任何问题</string>
+    <string name="well_call_for_you">我们会打电话给您并得到答复！</string>
+    <string name="phone_number">电话号码</string>
+    <string name="question">题</string>
+    <string name="ask_now">现在问！</string>
+    <string name="choose_language">选择语言</string>
+    <string name="hi">你好！</string>
+    <string name="transcription_not_availiable">抱歉，此通话无法转录。</string>
+    <string name="no_answer">对不起，没有人接电话。 稍后再试！</string>
+    <string name="hung_up">抱歉，没有人回答您的问题，电话已结束。</string>
+    <string name="log_out">登出</string>
+    <string name="session_expired">会话已过期。</string>
+    <string name="logging_out">注销</string>
+</resources>

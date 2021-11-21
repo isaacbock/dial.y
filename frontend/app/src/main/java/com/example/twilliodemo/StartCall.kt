@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +34,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-
+import java.util.*
 
 
 var translate = false
@@ -44,6 +45,18 @@ class StartCall : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Localization via https://stackoverflow.com/a/9173571
+        val config = resources.configuration
+        val lang = SavedPreferences.getLocale(this)
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            config.setLocale(locale)
+        else
+            config.locale = locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            createConfigurationContext(config)
+        resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.activity_start_call)
 
         setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
