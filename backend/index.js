@@ -722,10 +722,43 @@ let speechStrings = {
 		recordingSaved:
 			"Su grabación ha sido guardada y enviada al cliente. ¡Gracias!",
 	},
+	fr: {
+		hi: "Salut! J'appelle au nom d'un client avec une question.",
+		wondering: "Il se demande,",
+		whenReady:
+			"Lorsque vous êtes prêt, je peux enregistrer votre réponse à cette question et l'envoyer au client.",
+		record: "Pour commencer à enregistrer votre réponse, appuyez sur 1.",
+		repeat: "Pour répéter à nouveau leur question, appuyez sur 2.",
+		hangUp: "Pour raccrocher sans enregistrer de réponse, appuyez sur 3.",
+		noInput: "Désolé, nous n'avons reçu aucune entrée. Au revoir!",
+		recordAfterBeep:
+			"Veuillez enregistrer votre réponse après la tonalité. Lorsque vous avez terminé l'enregistrement, raccrochez ou appuyez sur 1 pour mettre fin à l'appel.",
+		goodbye: "D'accord! Au revoir!",
+		sorry: "Désolé, je n'ai pas compris.",
+		recordingSaved:
+			"Votre enregistrement a été sauvegardé et envoyé au client. Merci!",
+	},
+	pt: {
+		hi: "Oi! Estou ligando em nome de um cliente com uma pergunta.",
+		wondering: "Ele está se perguntando",
+		whenReady:
+			"Quando você estiver pronto, posso registrar sua resposta a esta pergunta e enviá-la ao cliente.",
+		record: "Para começar a registrar sua resposta, pressione 1.",
+		repeat: "Para repetir a pergunta novamente, pressione 2.",
+		hangUp: "Para desligar sem gravar uma resposta, pressione 3.",
+		noInput: "Desculpe, não recebemos nenhuma entrada. Adeus!",
+		recordAfterBeep:
+			"Grave sua resposta após o bipe. Quando terminar a gravação, desligue ou pressione 1 para encerrar a chamada.",
+		goodbye: "OK! Adeus!",
+		sorry: "Desculpe, eu não entendi isso.",
+		recordingSaved: "Sua gravação foi salva e enviada ao cliente. Obrigado!",
+	},
 };
 
 function localizeLanguage(language) {
 	if (language == "en") return "en-US";
 	else if (language == "es") return "es-US";
+	else if (language == "fr") return "fr-FR";
+	else if (language == "pt") return "pt-BR";
 	else return language;
 }
