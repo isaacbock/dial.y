@@ -512,7 +512,7 @@ app.post("/saveRecording", async (req, res) => {
 							const encoding = "LINEAR16";
 							const sampleRateHertz = 8000;
 							const languageCode = localizeLanguage(businessLanguage);
-							const config = {
+							let config = {
 								encoding: encoding,
 								languageCode: languageCode,
 								sampleRateHertz: sampleRateHertz,
@@ -520,6 +520,15 @@ app.post("/saveRecording", async (req, res) => {
 								useEnhanced: true,
 								model: "phone_call",
 							};
+							if (["hi"].includes(businessLanguage)) {
+								config = {
+									encoding: encoding,
+									languageCode: languageCode,
+									sampleRateHertz: sampleRateHertz,
+									enableAutomaticPunctuation: true,
+									model: "Default",
+								};
+							}
 							const audio = {
 								content: fs.readFileSync(path).toString("base64"),
 							};
