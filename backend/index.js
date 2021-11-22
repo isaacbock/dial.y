@@ -439,6 +439,7 @@ app.post("/recordAnswer", async (req, res) => {
 		}
 	}
 	// Else prompt the user to re-input their choice
+	// TO DO: CRASH FIX: BUSINESS LANGUAGE NOT DEFINED HERE!!!!!
 	else {
 		const response = new VoiceResponse();
 		response.say(
@@ -753,6 +754,22 @@ let speechStrings = {
 		sorry: "Desculpe, eu não entendi isso.",
 		recordingSaved: "Sua gravação foi salva e enviada ao cliente. Obrigado!",
 	},
+	hi: {
+		hi: "नमस्ते! मैं एक ग्राहक की ओर से एक प्रश्न के साथ कॉल कर रहा हूं।",
+		wondering: "वे पूछ रहे हैं,",
+		whenReady:
+			"जब आप तैयार हों, तो मैं इस प्रश्न का आपका उत्तर रिकॉर्ड कर सकता हूं और ग्राहक को भेज सकता हूं।",
+		record: "अपना जवाब रिकॉर्ड करना शुरू करने के लिए, 1 दबाएं।",
+		repeat: "उनके प्रश्न को फिर से दोहराने के लिए, 2 दबाएँ।",
+		hangUp: "रिकॉर्डिंग छोड़े बिना हैंग करने के लिए, 3 दबाएं।",
+		noInput: "क्षमा करें, हमें कोई इनपुट प्राप्त नहीं हुआ। अलविदा!",
+		recordAfterBeep:
+			"कृपया स्वर के बाद अपनी प्रतिक्रिया दर्ज करें। जब आप रिकॉर्डिंग पूरी कर लें, तब हैंग करें, या कॉल समाप्त करने के लिए 1 दबाएं।",
+		goodbye: "ठीक! अलविदा!",
+		sorry: "क्षमा करें, मुझे यह समझ में नहीं आया।",
+		recordingSaved:
+			"आपकी रिकॉर्डिंग सहेज ली गई है और ग्राहक को भेज दी गई है। शुक्रिया!",
+	},
 };
 
 function localizeLanguage(language) {
@@ -760,5 +777,6 @@ function localizeLanguage(language) {
 	else if (language == "es") return "es-US";
 	else if (language == "fr") return "fr-FR";
 	else if (language == "pt") return "pt-BR";
+	else if (language == "hi") return "hi-IN";
 	else return language;
 }
