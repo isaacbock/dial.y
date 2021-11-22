@@ -520,7 +520,7 @@ app.post("/saveRecording", async (req, res) => {
 								useEnhanced: true,
 								model: "phone_call",
 							};
-							if (["hi"].includes(businessLanguage)) {
+							if (["hi", "it", "ko"].includes(businessLanguage)) {
 								config = {
 									encoding: encoding,
 									languageCode: languageCode,
@@ -779,6 +779,53 @@ let speechStrings = {
 		recordingSaved:
 			"आपकी रिकॉर्डिंग सहेज ली गई है और ग्राहक को भेज दी गई है। शुक्रिया!",
 	},
+	it: {
+		hi: "Ciao! Chiamo per conto di un cliente con una domanda.",
+		wondering: "Sta chiedendo,",
+		whenReady:
+			"Quando sei pronto, posso registrare la tua risposta a questa domanda e inviarla al cliente.",
+		record: "Per iniziare a registrare la tua risposta, premi 1.",
+		repeat: "Per ripetere di nuovo la domanda, premi 2.",
+		hangUp: "Per riagganciare senza registrare una risposta, premere 3.",
+		noInput: "Spiacenti, non abbiamo ricevuto alcun input. Arrivederci!",
+		recordAfterBeep:
+			"Si prega di registrare la risposta dopo il segnale. Al termine della registrazione, riaggancia o premi 1 per terminare la chiamata.",
+		goodbye: "Va bene! Arrivederci!",
+		sorry: "Scusa, non l'ho capito.",
+		recordingSaved:
+			"La tua registrazione è stata salvata e inviata al cliente. Grazie!",
+	},
+	ja: {
+		hi: "やあ！ お客様に代わって質問をします。",
+		wondering: "彼は尋ねています、",
+		whenReady:
+			"準備ができたら、この質問に対する回答を記録して、お客様に送信します。",
+		record: "応答の記録を開始するには、1を押します。",
+		repeat: "もう一度質問を繰り返すには、2を押します。",
+		hangUp: "応答を記録せずに電話を切るには、3を押します。",
+		noInput: "申し訳ありませんが、入力がありませんでした。 さよなら！",
+		recordAfterBeep:
+			"トーンの後にあなたの応答を記録してください。 録音が終了したら、電話を切るか、1を押して通話を終了します。",
+		goodbye: "わかった！ さよなら！",
+		sorry: "すみません、わかりませんでした。",
+		recordingSaved:
+			"録音が保存され、顧客に送信されました。 ありがとうございました！",
+	},
+	ko: {
+		hi: "그는 묻는다,",
+		wondering: "그는 묻는다,",
+		whenReady:
+			"준비가 되면 이 질문에 대한 답변을 녹음하여 고객에게 보낼 수 있습니다.",
+		record: "응답 녹음을 시작하려면 1을 누르십시오.",
+		repeat: "질문을 다시 반복하려면 2를 누르십시오.",
+		hangUp: "응답을 녹음하지 않고 전화를 끊으려면 3을 누릅니다.",
+		noInput: "죄송합니다. 입력을 받지 못했습니다. 안녕!",
+		recordAfterBeep:
+			"신호음 후에 응답을 녹음하십시오. 녹음이 끝나면 전화를 끊거나 1을 눌러 통화를 종료합니다.",
+		goodbye: "괜찮아! 안녕!",
+		sorry: "죄송합니다. 이해하지 못했습니다.",
+		recordingSaved: "녹음이 저장되어 고객에게 전송되었습니다. 감사합니다!",
+	},
 };
 
 function localizeLanguage(language) {
@@ -787,5 +834,8 @@ function localizeLanguage(language) {
 	else if (language == "fr") return "fr-FR";
 	else if (language == "pt") return "pt-BR";
 	else if (language == "hi") return "hi-IN";
+	else if (language == "it") return "it-IT";
+	else if (language == "ja") return "ja-JP";
+	else if (language == "ko") return "ko-KR";
 	else return language;
 }
