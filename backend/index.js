@@ -70,6 +70,8 @@ app.post("/call", async (req, res) => {
 	let userToken = req.body.userToken;
 	let callerLanguage = req.body.callerLanguage;
 	let businessLanguage = req.body.businessLanguage;
+	if (businessLanguage == "en") businessLanguage = "en-US";
+	else if (businessLanguage == "es") businessLanguage = "es-US";
 
 	try {
 		// Authenticate user logged into Android app by converting their userToken into their actual user ID
@@ -151,7 +153,7 @@ app.post("/start", async (req, res) => {
 					{
 						language: businessLanguage,
 					},
-					translations[businessLanguage]["hi"]
+					speechStrings[businessLanguage]["hi"]
 				);
 				response.redirect({ method: "POST" }, "/askQuestion");
 
@@ -225,7 +227,7 @@ app.post("/askQuestion", async (req, res) => {
 					{
 						language: businessLanguage,
 					},
-					translations[businessLanguage]["wondering"]
+					speechStrings[businessLanguage]["wondering"]
 				);
 				response.say(
 					{
@@ -238,7 +240,7 @@ app.post("/askQuestion", async (req, res) => {
 					{
 						language: businessLanguage,
 					},
-					translations[businessLanguage]["whenReady"]
+					speechStrings[businessLanguage]["whenReady"]
 				);
 				response.pause({ length: 1 });
 				response.redirect({ method: "POST" }, "/promptListener");
@@ -283,19 +285,19 @@ app.post("/promptListener", async (req, res) => {
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["record"]
+				speechStrings[businessLanguage]["record"]
 			);
 			gather.say(
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["repeat"]
+				speechStrings[businessLanguage]["repeat"]
 			);
 			gather.say(
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["hangUp"]
+				speechStrings[businessLanguage]["hangUp"]
 			);
 			gather.pause({ length: 5 });
 
@@ -303,19 +305,19 @@ app.post("/promptListener", async (req, res) => {
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["record"]
+				speechStrings[businessLanguage]["record"]
 			);
 			gather.say(
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["repeat"]
+				speechStrings[businessLanguage]["repeat"]
 			);
 			gather.say(
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["hangUp"]
+				speechStrings[businessLanguage]["hangUp"]
 			);
 			gather.pause({ length: 10 });
 
@@ -323,19 +325,19 @@ app.post("/promptListener", async (req, res) => {
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["record"]
+				speechStrings[businessLanguage]["record"]
 			);
 			gather.say(
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["repeat"]
+				speechStrings[businessLanguage]["repeat"]
 			);
 			gather.say(
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["hangUp"]
+				speechStrings[businessLanguage]["hangUp"]
 			);
 			gather.pause({ length: 10 });
 
@@ -343,7 +345,7 @@ app.post("/promptListener", async (req, res) => {
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["noInput"]
+				speechStrings[businessLanguage]["noInput"]
 			);
 			response.redirect({ method: "POST" }, "/recordAnswer");
 
@@ -392,7 +394,7 @@ app.post("/recordAnswer", async (req, res) => {
 					{
 						language: businessLanguage,
 					},
-					translations[businessLanguage]["recordAfterBeep"]
+					speechStrings[businessLanguage]["recordAfterBeep"]
 				);
 				response.pause({ length: 1 });
 				response.record({
@@ -430,7 +432,7 @@ app.post("/recordAnswer", async (req, res) => {
 					{
 						language: businessLanguage,
 					},
-					translations[businessLanguage]["goodbye"]
+					speechStrings[businessLanguage]["goodbye"]
 				);
 				let twiml = response.toString();
 				res.header("Content-Type", "application/xml");
@@ -445,7 +447,7 @@ app.post("/recordAnswer", async (req, res) => {
 			{
 				language: businessLanguage,
 			},
-			translations[businessLanguage]["sorry"]
+			speechStrings[businessLanguage]["sorry"]
 		);
 		response.redirect({ method: "POST" }, "promptListener");
 
@@ -482,7 +484,7 @@ app.post("/saveRecording", async (req, res) => {
 				{
 					language: businessLanguage,
 				},
-				translations[businessLanguage]["recordingSaved"]
+				speechStrings[businessLanguage]["recordingSaved"]
 			);
 			let twiml = response.toString();
 			res.header("Content-Type", "application/xml");
@@ -511,8 +513,6 @@ app.post("/saveRecording", async (req, res) => {
 							const encoding = "LINEAR16";
 							const sampleRateHertz = 8000;
 							const languageCode = businessLanguage;
-							if (businessLanguage == "en") languageCode = "en-US";
-							if (businessLanguage == "es") languageCode = "es-US";
 							const config = {
 								encoding: encoding,
 								languageCode: languageCode,
@@ -691,8 +691,8 @@ setInterval(async () => {
 	}
 }, 3000);
 
-let translations = {
-	en: {
+let speechStrings = {
+	"en-US": {
 		hi: "Hi! I'm calling on behalf of a customer with a question.",
 		wondering: "They're wondering,",
 		whenReady:
@@ -708,7 +708,7 @@ let translations = {
 		recordingSaved:
 			"Your recording has been saved and sent to the customer. Thank you!",
 	},
-	es: {
+	"es-US": {
 		hi: "¡Hola! Llamo en nombre de un cliente con una pregunta.",
 		wondering: "Se pregunta,",
 		whenReady:
