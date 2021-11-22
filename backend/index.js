@@ -520,7 +520,7 @@ app.post("/saveRecording", async (req, res) => {
 								useEnhanced: true,
 								model: "phone_call",
 							};
-							if (["hi", "it", "ko"].includes(businessLanguage)) {
+							if (["hi", "it", "ko", "zh"].includes(businessLanguage)) {
 								config = {
 									encoding: encoding,
 									languageCode: languageCode,
@@ -812,7 +812,7 @@ let speechStrings = {
 			"録音が保存され、顧客に送信されました。 ありがとうございました！",
 	},
 	ko: {
-		hi: "그는 묻는다,",
+		hi: "안녕하세요! 고객을 대신하여 질문이 있습니다.",
 		wondering: "그는 묻는다,",
 		whenReady:
 			"준비가 되면 이 질문에 대한 답변을 녹음하여 고객에게 보낼 수 있습니다.",
@@ -826,9 +826,38 @@ let speechStrings = {
 		sorry: "죄송합니다. 이해하지 못했습니다.",
 		recordingSaved: "녹음이 저장되어 고객에게 전송되었습니다. 감사합니다!",
 	},
+	ru: {
+		hi: "Привет! Я звоню от имени клиента с вопросом.",
+		wondering: "Он спрашивает,",
+		whenReady:
+			"Когда вы будете готовы, я могу записать ваш ответ на этот вопрос и отправить его заказчику.",
+		record: "Чтобы начать запись своего ответа, нажмите 1.",
+		repeat: "Чтобы повторить вопрос еще раз, нажмите 2.",
+		hangUp: "Чтобы повесить трубку без записи ответа, нажмите 3.",
+		noInput: "К сожалению, мы не получили никаких данных. Прощай!",
+		recordAfterBeep:
+			"Запишите свой ответ после сигнала. Закончив запись, положите трубку или нажмите 1, чтобы завершить вызов.",
+		goodbye: "Хорошо! Прощай!",
+		sorry: "Извините, я этого не понял.",
+		recordingSaved: "Ваша запись сохранена и отправлена заказчику. Спасибо!",
+	},
+	zh: {
+		hi: "你好！ 我代表一位客户打电话询问问题。",
+		wondering: "他在问，",
+		whenReady: "当您准备好后，我可以记录您对此问题的回答并将其发送给客户。",
+		record: "要开始记录您的回复，请按 1。",
+		repeat: "要再次重复他们的问题，请按 2。",
+		hangUp: "要挂断而不记录响应，请按 3。",
+		noInput: "抱歉，我们没有收到任何输入。 再见！",
+		recordAfterBeep:
+			"请在提示音后记录您的回答。 完成录音后，挂断电话或按 1 结束通话。",
+		goodbye: "好的！ 再见！",
+		sorry: "对不起，我没看懂。",
+		recordingSaved: "您的录音已保存并发送给客户。 谢谢！",
+	},
 };
 
-function localizeLanguage(language) {
+function localizeLanguage(language, transcription = false) {
 	if (language == "en") return "en-US";
 	else if (language == "es") return "es-US";
 	else if (language == "fr") return "fr-FR";
@@ -837,5 +866,8 @@ function localizeLanguage(language) {
 	else if (language == "it") return "it-IT";
 	else if (language == "ja") return "ja-JP";
 	else if (language == "ko") return "ko-KR";
+	else if (language == "ru") return "ru-RU";
+	else if (language == "zh" && !transcription) return "zh-CN";
+	else if (language == "zh" && transcription) return "zh (cmn-Hans-CN)";
 	else return language;
 }
