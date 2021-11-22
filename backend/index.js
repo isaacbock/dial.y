@@ -70,8 +70,6 @@ app.post("/call", async (req, res) => {
 	let userToken = req.body.userToken;
 	let callerLanguage = req.body.callerLanguage;
 	let businessLanguage = req.body.businessLanguage;
-	if (businessLanguage == "en") businessLanguage = "en-US";
-	else if (businessLanguage == "es") businessLanguage = "es-US";
 
 	try {
 		// Authenticate user logged into Android app by converting their userToken into their actual user ID
@@ -114,7 +112,7 @@ app.post("/call", async (req, res) => {
 			date: new Date(),
 			questions: callQuestions,
 			callerLanguage: callerLanguage,
-			businessLanguage: businessLanguage,
+			businessLanguage: localizeLanguage(businessLanguage),
 		};
 
 		// Save call to Firebase
@@ -151,7 +149,7 @@ app.post("/start", async (req, res) => {
 				// response.pause({ length: 2 });
 				response.say(
 					{
-						language: businessLanguage,
+						language: localizeLanguage(businessLanguage),
 					},
 					speechStrings[businessLanguage]["hi"]
 				);
@@ -225,20 +223,20 @@ app.post("/askQuestion", async (req, res) => {
 				response.pause({ length: 1 });
 				response.say(
 					{
-						language: businessLanguage,
+						language: localizeLanguage(businessLanguage),
 					},
 					speechStrings[businessLanguage]["wondering"]
 				);
 				response.say(
 					{
-						language: businessLanguage,
+						language: localizeLanguage(businessLanguage),
 					},
 					question
 				);
 				response.pause({ length: 1 });
 				response.say(
 					{
-						language: businessLanguage,
+						language: localizeLanguage(businessLanguage),
 					},
 					speechStrings[businessLanguage]["whenReady"]
 				);
@@ -283,19 +281,19 @@ app.post("/promptListener", async (req, res) => {
 			});
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["record"]
 			);
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["repeat"]
 			);
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["hangUp"]
 			);
@@ -303,19 +301,19 @@ app.post("/promptListener", async (req, res) => {
 
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["record"]
 			);
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["repeat"]
 			);
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["hangUp"]
 			);
@@ -323,19 +321,19 @@ app.post("/promptListener", async (req, res) => {
 
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["record"]
 			);
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["repeat"]
 			);
 			gather.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["hangUp"]
 			);
@@ -343,7 +341,7 @@ app.post("/promptListener", async (req, res) => {
 
 			response.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["noInput"]
 			);
@@ -392,7 +390,7 @@ app.post("/recordAnswer", async (req, res) => {
 				const response = new VoiceResponse();
 				response.say(
 					{
-						language: businessLanguage,
+						language: localizeLanguage(businessLanguage),
 					},
 					speechStrings[businessLanguage]["recordAfterBeep"]
 				);
@@ -430,7 +428,7 @@ app.post("/recordAnswer", async (req, res) => {
 				const response = new VoiceResponse();
 				response.say(
 					{
-						language: businessLanguage,
+						language: localizeLanguage(businessLanguage),
 					},
 					speechStrings[businessLanguage]["goodbye"]
 				);
@@ -445,7 +443,7 @@ app.post("/recordAnswer", async (req, res) => {
 		const response = new VoiceResponse();
 		response.say(
 			{
-				language: businessLanguage,
+				language: localizeLanguage(businessLanguage),
 			},
 			speechStrings[businessLanguage]["sorry"]
 		);
@@ -482,7 +480,7 @@ app.post("/saveRecording", async (req, res) => {
 			const response = new VoiceResponse();
 			response.say(
 				{
-					language: businessLanguage,
+					language: localizeLanguage(businessLanguage),
 				},
 				speechStrings[businessLanguage]["recordingSaved"]
 			);
@@ -512,7 +510,7 @@ app.post("/saveRecording", async (req, res) => {
 							const client = new speech.SpeechClient();
 							const encoding = "LINEAR16";
 							const sampleRateHertz = 8000;
-							const languageCode = businessLanguage;
+							const languageCode = localizeLanguage(businessLanguage);
 							const config = {
 								encoding: encoding,
 								languageCode: languageCode,
@@ -692,7 +690,7 @@ setInterval(async () => {
 }, 3000);
 
 let speechStrings = {
-	"en-US": {
+	en: {
 		hi: "Hi! I'm calling on behalf of a customer with a question.",
 		wondering: "They're wondering,",
 		whenReady:
@@ -708,7 +706,7 @@ let speechStrings = {
 		recordingSaved:
 			"Your recording has been saved and sent to the customer. Thank you!",
 	},
-	"es-US": {
+	es: {
 		hi: "¡Hola! Llamo en nombre de un cliente con una pregunta.",
 		wondering: "Se pregunta,",
 		whenReady:
@@ -725,3 +723,9 @@ let speechStrings = {
 			"Su grabación ha sido guardada y enviada al cliente. ¡Gracias!",
 	},
 };
+
+function localizeLanguage(language) {
+	if (language == "en") return "en-US";
+	else if (language == "es") return "es-US";
+	else return language;
+}
