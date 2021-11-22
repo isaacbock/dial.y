@@ -68,7 +68,8 @@ app.post("/call", async (req, res) => {
 	let toPhoneNumber = "+1" + req.body.phoneNumber;
 	let questions = req.body.questions;
 	let userToken = req.body.userToken;
-	let translationLanguage = req.body.language;
+	let callerLanguage = req.body.callerLanguage;
+	let businessLanguage = req.body.businessLanguage;
 
 	try {
 		// Authenticate user logged into Android app by converting their userToken into their actual user ID
@@ -110,7 +111,8 @@ app.post("/call", async (req, res) => {
 			status: "Dialing",
 			date: new Date(),
 			questions: callQuestions,
-			language: translationLanguage,
+			callerLanguage: callerLanguage,
+			businessLanguage: businessLanguage,
 		};
 
 		// Save call to Firebase
@@ -127,23 +129,29 @@ app.post("/call", async (req, res) => {
 });
 
 // API Call: Provide Twilio with the call introduction script
-app.post("/start", (req, res) => {
+app.post("/start", async (req, res) => {
 	const callSID = req.body.CallSid;
 	const answeredBy = req.body.AnsweredBy;
 
 	if (answeredBy == "human") {
 		// Find correct call in database & update status
-		db.collection("calls")
-			.doc(callSID)
-			.update({ status: "In Progress" })
-			.then(() => {
+		const callRef = db.collection("calls").doc(callSID);
+		const call = await callRef.get();
+		if (!call.exists) {
+			console.log("Call " + callSID + " not found in database.");
+		} else {
+			let businessLanguage = call.data().businessLanguage;
+			callRef.update({ status: "In Progress" }).then(() => {
 				console.log("Call " + callSID + " in progress — Answered by human.");
 
 				// Return starting script
 				const response = new VoiceResponse();
 				// response.pause({ length: 2 });
 				response.say(
-					"Hi! I'm calling on behalf of a customer with a question."
+					{
+						language: businessLanguage,
+					},
+					translations[businessLanguage]["hi"]
 				);
 				response.redirect({ method: "POST" }, "/askQuestion");
 
@@ -151,6 +159,7 @@ app.post("/start", (req, res) => {
 				res.header("Content-Type", "application/xml");
 				res.send(twiml);
 			});
+		}
 	}
 	// If answered by machine, end the call.
 	else {
@@ -183,10 +192,11 @@ app.post("/askQuestion", async (req, res) => {
 		console.log("Call " + callSID + " not found in database.");
 	} else {
 		let question = call.data().questions[0].question;
+		let businessLanguage = call.data().businessLanguage;
 
-		// Translate question to english
+		// Translate question to business Language
 		const text = question;
-		const target = "en"
+		const target = businessLanguage;
 		async function translateQuestion() {
 			// Translates the text into the target language. "text" can be a string for
 			// translating a single piece of text, or an array of strings for translating
@@ -199,7 +209,7 @@ app.post("/askQuestion", async (req, res) => {
 			translations.forEach((translation, i) => {
 				console.log(`${text[i]} => (${target}) ${translation}`);
 			});
-			
+
 			// Update call in database to include translation results
 			question = translations[0];
 
@@ -207,27 +217,38 @@ app.post("/askQuestion", async (req, res) => {
 			questionsUpdate[0].status = "Asking";
 			callRef.update({ questions: questionsUpdate }).then(() => {
 				console.log("Call " + callSID + "-- Asking: " + question);
-	
+
 				// Return question script
 				const response = new VoiceResponse();
 				response.pause({ length: 1 });
-				response.say("They're wondering,");
-				response.say(question);
+				response.say(
+					{
+						language: businessLanguage,
+					},
+					translations[businessLanguage]["wondering"]
+				);
+				response.say(
+					{
+						language: businessLanguage,
+					},
+					question
+				);
 				response.pause({ length: 1 });
 				response.say(
-					"When you're ready, I can record your answer to this question and send it to the customer."
+					{
+						language: businessLanguage,
+					},
+					translations[businessLanguage]["whenReady"]
 				);
 				response.pause({ length: 1 });
 				response.redirect({ method: "POST" }, "/promptListener");
-	
+
 				let twiml = response.toString();
 				res.header("Content-Type", "application/xml");
 				res.send(twiml);
 			});
-
 		}
 		translateQuestion();
-
 	}
 });
 
@@ -241,6 +262,7 @@ app.post("/promptListener", async (req, res) => {
 	if (!call.exists) {
 		console.log("Call " + callSID + " not found in database.");
 	} else {
+		let businessLanguage = call.data().businessLanguage;
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Prompting";
 		callRef.update({ questions: questionsUpdate }).then(() => {
@@ -257,22 +279,72 @@ app.post("/promptListener", async (req, res) => {
 				timeout: "6",
 				input: "dtmf",
 			});
-			gather.say("To start recording your response, press 1.");
-			gather.say("To repeat their question again, press 2.");
-			gather.say("To hang up without recording a response, press 3.");
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["record"]
+			);
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["repeat"]
+			);
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["hangUp"]
+			);
 			gather.pause({ length: 5 });
 
-			gather.say("To start recording your response, press 1.");
-			gather.say("To repeat their question again, press 2.");
-			gather.say("To hang up without recording a response, press 3.");
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["record"]
+			);
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["repeat"]
+			);
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["hangUp"]
+			);
 			gather.pause({ length: 10 });
 
-			gather.say("To start recording your response, press 1.");
-			gather.say("To repeat their question again, press 2.");
-			gather.say("To hang up without recording a response, press 3.");
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["record"]
+			);
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["repeat"]
+			);
+			gather.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["hangUp"]
+			);
 			gather.pause({ length: 10 });
 
-			response.say("Sorry, we didn't receive any input. Goodbye!");
+			response.say(
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["noInput"]
+			);
 			response.redirect({ method: "POST" }, "/recordAnswer");
 
 			let twiml = response.toString();
@@ -309,6 +381,7 @@ app.post("/recordAnswer", async (req, res) => {
 		if (!call.exists) {
 			console.log("Call " + callSID + " not found in database.");
 		} else {
+			let businessLanguage = call.data().businessLanguage;
 			let questionsUpdate = call.data().questions;
 			questionsUpdate[0].status = "Recording";
 			callRef.update({ questions: questionsUpdate }).then(() => {
@@ -316,7 +389,10 @@ app.post("/recordAnswer", async (req, res) => {
 
 				const response = new VoiceResponse();
 				response.say(
-					"Please record your response after the beep. When you're done recording, hang up, or press 1 to end the call."
+					{
+						language: businessLanguage,
+					},
+					translations[businessLanguage]["recordAfterBeep"]
 				);
 				response.pause({ length: 1 });
 				response.record({
@@ -345,11 +421,17 @@ app.post("/recordAnswer", async (req, res) => {
 		if (!call.exists) {
 			console.log("Call " + callSID + " not found in database.");
 		} else {
+			let businessLanguage = call.data().businessLanguage;
 			callRef.update({ status: "Hung Up" }).then(() => {
 				console.log("Call " + callSID + "-- Hung up by listener.");
 
 				const response = new VoiceResponse();
-				response.say("Okay! Goodbye!");
+				response.say(
+					{
+						language: businessLanguage,
+					},
+					translations[businessLanguage]["goodbye"]
+				);
 				let twiml = response.toString();
 				res.header("Content-Type", "application/xml");
 				res.send(twiml);
@@ -359,7 +441,12 @@ app.post("/recordAnswer", async (req, res) => {
 	// Else prompt the user to re-input their choice
 	else {
 		const response = new VoiceResponse();
-		response.say("Sorry, I didn't understand that.");
+		response.say(
+			{
+				language: businessLanguage,
+			},
+			translations[businessLanguage]["sorry"]
+		);
 		response.redirect({ method: "POST" }, "promptListener");
 
 		let twiml = response.toString();
@@ -379,6 +466,8 @@ app.post("/saveRecording", async (req, res) => {
 		console.log("Call " + callSID + " not found in database.");
 		res.end();
 	} else {
+		let businessLanguage = call.data().businessLanguage;
+		let callerLanguage = call.data().callerLanguage;
 		let questionsUpdate = call.data().questions;
 		questionsUpdate[0].status = "Transcribing";
 		questionsUpdate[0].answerAudio = req.body.RecordingUrl;
@@ -390,7 +479,10 @@ app.post("/saveRecording", async (req, res) => {
 			// Provide call ending script
 			const response = new VoiceResponse();
 			response.say(
-				"Your recording has been saved and sent to the customer. Thank you!"
+				{
+					language: businessLanguage,
+				},
+				translations[businessLanguage]["recordingSaved"]
 			);
 			let twiml = response.toString();
 			res.header("Content-Type", "application/xml");
@@ -418,7 +510,9 @@ app.post("/saveRecording", async (req, res) => {
 							const client = new speech.SpeechClient();
 							const encoding = "LINEAR16";
 							const sampleRateHertz = 8000;
-							const languageCode = "en-US";
+							const languageCode = businessLanguage;
+							if (businessLanguage == "en") languageCode = "en-US";
+							if (businessLanguage == "es") languageCode = "es-US";
 							const config = {
 								encoding: encoding,
 								languageCode: languageCode,
@@ -450,7 +544,7 @@ app.post("/saveRecording", async (req, res) => {
 
 								// Translate results to target language
 								const text = transcription;
-								let target = call.data().language;
+								let target = callerLanguage;
 								async function translateText() {
 									// Translates the text into the target language. "text" can be a string for
 									// translating a single piece of text, or an array of strings for translating
@@ -465,17 +559,13 @@ app.post("/saveRecording", async (req, res) => {
 									});
 
 									// Update call in database to include translation results
-									if(target != "en")
-									{
+									if (callerLanguage != businessLanguage) {
 										questionsUpdate[0].answerTranscript =
-										transcription + " // " + translations[0];
+											transcription + " // " + translations[0];
+									} else {
+										questionsUpdate[0].answerTranscript = transcription;
 									}
-									else
-									{
-										questionsUpdate[0].answerTranscript =
-										transcription;
-									}
-									
+
 									callRef
 										.update({
 											status: "Completed",
@@ -567,17 +657,16 @@ io.on("connection", (socket) => {
 		let questions = data.questions;
 		console.log("Questions from socket");
 		console.log(questions);
-
 	});
 
-	socket.on("callId", function (data){
+	socket.on("callId", function (data) {
 		socketClients.set(socket, data.phoneId);
 	});
 
-	socket.on("disconnect", ()=> {
+	socket.on("disconnect", () => {
 		socketClients.delete(socket);
-        console.info(`Client gone [id=${socket.id}]`);
-    });
+		console.info(`Client gone [id=${socket.id}]`);
+	});
 
 	socket.on("others", function (data) {
 		console.log(data);
@@ -585,8 +674,8 @@ io.on("connection", (socket) => {
 });
 
 setInterval(async () => {
-	if (socketClients.size != 0){
-		for (const[client, callId] of socketClients.entries()){
+	if (socketClients.size != 0) {
+		for (const [client, callId] of socketClients.entries()) {
 			const callSID = callId;
 			const callRef = db.collection("calls").doc(callSID);
 			// const call = await callRef.get();
@@ -601,3 +690,38 @@ setInterval(async () => {
 		}
 	}
 }, 3000);
+
+let translations = {
+	en: {
+		hi: "Hi! I'm calling on behalf of a customer with a question.",
+		wondering: "They're wondering,",
+		whenReady:
+			"When you're ready, I can record your answer to this question and send it to the customer.",
+		record: "To start recording your response, press 1.",
+		repeat: "To repeat their question again, press 2.",
+		hangUp: "To hang up without recording a response, press 3.",
+		noInput: "Sorry, we didn't receive any input. Goodbye!",
+		recordAfterBeep:
+			"Please record your response after the beep. When you're done recording, hang up, or press 1 to end the call.",
+		goodbye: "Okay! Goodbye!",
+		sorry: "Sorry, I didn't understand that.",
+		recordingSaved:
+			"Your recording has been saved and sent to the customer. Thank you!",
+	},
+	es: {
+		hi: "¡Hola! Llamo en nombre de un cliente con una pregunta.",
+		wondering: "Se pregunta,",
+		whenReady:
+			"Cuando esté listo, puedo registrar su respuesta a esta pregunta y enviársela al cliente.",
+		record: "Para comenzar a grabar su respuesta, presione 1.",
+		repeat: "Para repetir la pregunta nuevamente, presione 2.",
+		hangUp: "Para colgar sin grabar una respuesta, presione 3.",
+		noInput: "Lo sentimos, no recibimos ninguna entrada. ¡Adiós!",
+		recordAfterBeep:
+			"Grabe su respuesta después del tono. Cuando termine de grabar, cuelgue, o presione 1 para finalizar la llamada.",
+		goodbye: "¡Okey! ¡Adiós!",
+		sorry: "Lo siento, no entendí eso.",
+		recordingSaved:
+			"Su grabación ha sido guardada y enviada al cliente. ¡Gracias!",
+	},
+};
