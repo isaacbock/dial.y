@@ -112,7 +112,7 @@ app.post("/call", async (req, res) => {
 			date: new Date(),
 			questions: callQuestions,
 			callerLanguage: callerLanguage,
-			businessLanguage: localizeLanguage(businessLanguage),
+			businessLanguage: businessLanguage,
 		};
 
 		// Save call to Firebase
