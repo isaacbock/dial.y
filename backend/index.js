@@ -526,7 +526,7 @@ app.post("/saveRecording", async (req, res) => {
 								useEnhanced: true,
 								model: "phone_call",
 							};
-							if (["hi", "it", "ko", "zh"].includes(businessLanguage)) {
+							if (["hi", "it", "ko", "zh", "ar"].includes(businessLanguage)) {
 								config = {
 									encoding: encoding,
 									languageCode: languageCode,
