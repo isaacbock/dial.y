@@ -439,20 +439,26 @@ app.post("/recordAnswer", async (req, res) => {
 		}
 	}
 	// Else prompt the user to re-input their choice
-	// TO DO: CRASH FIX: BUSINESS LANGUAGE NOT DEFINED HERE!!!!!
 	else {
-		const response = new VoiceResponse();
-		response.say(
-			{
-				language: localizeLanguage(businessLanguage),
-			},
-			speechStrings[businessLanguage]["sorry"]
-		);
-		response.redirect({ method: "POST" }, "promptListener");
+		const callRef = db.collection("calls").doc(callSID);
+		const call = await callRef.get();
+		if (!call.exists) {
+			console.log("Call " + callSID + " not found in database.");
+		} else {
+			let businessLanguage = call.data().businessLanguage;
+			const response = new VoiceResponse();
+			response.say(
+				{
+					language: localizeLanguage(businessLanguage),
+				},
+				speechStrings[businessLanguage]["sorry"]
+			);
+			response.redirect({ method: "POST" }, "promptListener");
 
-		let twiml = response.toString();
-		res.header("Content-Type", "application/xml");
-		res.send(twiml);
+			let twiml = response.toString();
+			res.header("Content-Type", "application/xml");
+			res.send(twiml);
+		}
 	}
 });
 
@@ -855,6 +861,21 @@ let speechStrings = {
 		sorry: "对不起，我没看懂。",
 		recordingSaved: "您的录音已保存并发送给客户。 谢谢！",
 	},
+	ar: {
+		hi: "أهلا! أنا أتصل نيابة عن أحد العملاء لطرح سؤال.",
+		wondering: "يسأل ،",
+		whenReady:
+			"عندما تكون جاهزًا ، يمكنني تسجيل إجابتك على هذا السؤال وإرسالها إلى العميل.",
+		record: "لبدء تسجيل ردك ، اضغط 1.",
+		repeat: "لتكرار السؤال مرة أخرى ، اضغط 2.",
+		hangUp: "لإنهاء المكالمة بدون تسجيل رد ، اضغط 3.",
+		noInput: "عذرا ، لم نتلق أي مدخلات. وداعا!",
+		recordAfterBeep:
+			"يرجى تسجيل ردك بعد النغمة. عندما تنتهي من التسجيل ، أغلق المكالمة أو اضغط على 1 لإنهاء المكالمة.",
+		goodbye: "تمام! وداعا!",
+		sorry: "آسف ، لم أفهم ذلك.",
+		recordingSaved: "تم حفظ التسجيل الخاص بك وإرساله إلى العميل. شكرا لك!",
+	},
 };
 
 function localizeLanguage(language, transcription = false) {
@@ -869,5 +890,7 @@ function localizeLanguage(language, transcription = false) {
 	else if (language == "ru") return "ru-RU";
 	else if (language == "zh" && !transcription) return "zh-CN";
 	else if (language == "zh" && transcription) return "zh (cmn-Hans-CN)";
+	else if (language == "ar" && !transcription) return "arb";
+	else if (language == "ar" && transcription) return "ar-EG";
 	else return language;
 }
