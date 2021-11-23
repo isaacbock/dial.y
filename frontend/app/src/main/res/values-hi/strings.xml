@@ -19,4 +19,6 @@
     <string name="log_out">लॉग आउट</string>
     <string name="session_expired">सत्र समाप्त हुआ।</string>
     <string name="logging_out">लॉग आउट कर रहा हूं</string>
+    <string name="I_speak">मैं हिंदी बोलते हैं। वे</string>
+    <string name="I_speak_second_half">बोलते हैं।</string>
 </resources>

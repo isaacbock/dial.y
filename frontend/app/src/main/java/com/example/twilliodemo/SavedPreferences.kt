@@ -15,6 +15,9 @@ object SavedPreferences {
     const val DISPLAYNAME = "displayName"
     const val LOCALE = "en"
     const val LANGUAGEUPDATED = "false"
+    // Note: BUSINESSLANG must be initialized to an empty string to prevent localization bug
+    const val BUSINESSLANG = ""
+    const val BUSINESSLANGUPDATED = "false"
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -63,7 +66,6 @@ object SavedPreferences {
             locale
         )
     }
-
     fun languageUpdated(context: Context) = getSharedPreference(
         context
     )?.getString(LANGUAGEUPDATED,"")
@@ -71,6 +73,28 @@ object SavedPreferences {
         editor(
             context,
             LANGUAGEUPDATED,
+            updated
+        )
+    }
+
+    fun getBusinessLanguage(context: Context) = getSharedPreference(
+        context
+    )?.getString(BUSINESSLANG,"")
+    fun setBusinessLanguage(context: Context, language:String){
+        Log.v("Business language", language)
+        editor(
+            context,
+            BUSINESSLANG,
+            language
+        )
+    }
+    fun businessLanguageUpdated(context: Context) = getSharedPreference(
+        context
+    )?.getString(BUSINESSLANGUPDATED,"")
+    fun setBusinessLanguageUpdated(context: Context, updated:String){
+        editor(
+            context,
+            BUSINESSLANGUPDATED,
             updated
         )
     }

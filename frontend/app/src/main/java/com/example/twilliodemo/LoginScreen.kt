@@ -75,7 +75,8 @@ class LoginScreen : AppCompatActivity() {
             val intent = Intent(this, ChooseAppLanguage::class.java)
             startActivity(intent)
         }
-        if (lang==null) {
+        if (lang=="") {
+            SavedPreferences.setLocale(this, "en")
             lang = "en"
         }
         when (lang) {

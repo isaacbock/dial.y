@@ -89,13 +89,12 @@ class CallPage : AppCompatActivity() {
         }
 
         //else if the call is new, initiate the call
-        if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null && intent.getStringExtra("LANGUAGE_STRING")!=null) {
+        if (intent.getStringExtra("PHONE_NUMBER")!=null && intent.getStringExtra("QUESTION_STRING")!=null) {
 
             phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
             questionString = intent.getStringExtra("QUESTION_STRING")!!
             callerLanguage = SavedPreferences.getLocale(this)!!
-            businessLanguage = "es"
-            // businessLanguage = intent.getStringExtra("LANGUAGE_STRING")!!
+            businessLanguage = SavedPreferences.getBusinessLanguage(this)!!
 
 
             setTitle(phoneNumber);
@@ -176,7 +175,6 @@ class CallPage : AppCompatActivity() {
                     val callIdJson = JSONObject()
                     callIdJson.put("phoneId", callId)
                     mSocket.emit("callId", callIdJson)
-//                    makeStatusRequest()
                 },
                 Response.ErrorListener { error ->
                     Log.i("POST ERROR", "Error :" + error.toString())
@@ -195,49 +193,6 @@ class CallPage : AppCompatActivity() {
         }catch (e: JSONException){
             Log.e("JSONException", e.toString())
         }
-    }
-
-    fun makeStatusRequest(){
-        if (::callId.isInitialized){
-            try{
-                val requestQueue: RequestQueue = Volley.newRequestQueue(this)
-                val URL = constants.herokuappStatusUrl
-                val jsonObject = JSONObject()
-                jsonObject.put("id", callId)
-                val requestBody = jsonObject.toString().toByteArray()
-                Log.e("jsonObject", jsonObject.toString())
-
-                val stringRequest = object : StringRequest(
-                    Request.Method.POST,
-                    URL,
-                    Response.Listener { response ->
-                        Log.i("Response from GET", response.toString())
-                        val jsonResponse = JSONObject(response.toString())
-                        Log.e("CALL STATUS", jsonResponse["status"].toString())
-
-                        callData = jsonResponse
-                        updateUI(false)
-                    },
-                    Response.ErrorListener { error ->
-                        Log.i("GET ERROR", "Error :" + error.toString())
-                    }){
-                    override fun getBodyContentType(): String {
-                        return "application/json"
-                    }
-
-                    @Throws(AuthFailureError::class)
-                    override fun getBody(): ByteArray {
-                        return requestBody
-                    }
-                }
-
-                requestQueue!!.add(stringRequest!!)
-
-            }catch (e: JSONException){
-                Log.e("JSONException", e.toString())
-            }
-        }
-
     }
 
     fun updateUI(isHistory: Boolean) {

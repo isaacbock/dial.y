@@ -19,4 +19,6 @@
     <string name="log_out">Disconnettersi</string>
     <string name="session_expired">Sessione scaduta.</string>
     <string name="logging_out">Disconnessione</string>
+    <string name="I_speak">Io parlo italiano. Essi parlano</string>
+    <string name="I_speak_second_half">.</string>
 </resources>

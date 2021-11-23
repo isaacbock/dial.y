@@ -8,145 +8,106 @@
     tools:context=".ChooseLanguage">
 
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="370dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        android:layout_height="580dp"
-        android:layout_marginTop="13dp"
-        android:background="@color/purple_200"
-        android:checkedButton="@+id/enButtonRadio"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RadioButton
-            android:id="@+id/arButtonRadio"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Arabic // اللغة العربية"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/zhButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Chinese // 中文"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/enButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="English"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/I_speak"
+                    android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/frButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="French // français"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-        <RadioButton
-            android:id="@+id/hiButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Hindi // हिंदी"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/arButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Arabic // اللغة العربية" />
 
-        <RadioButton
-            android:id="@+id/itButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Italian // italiano"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/zhButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chinese // 中文" />
 
-        <RadioButton
-            android:id="@+id/jaButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Japanese // 日本語"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/enButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="English" />
 
-        <RadioButton
-            android:id="@+id/koButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Korean // 한국인"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/frButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="French // français" />
 
-        <RadioButton
-            android:id="@+id/ptButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Portuguese // português"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/hiButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hindi // हिंदी" />
 
-        <RadioButton
-            android:id="@+id/ruButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Russian // русский"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/itButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Italian // italiano" />
 
-        <RadioButton
-            android:id="@+id/esButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Spanish // español"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/jaButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Japanese // 日本語" />
 
-        <RadioButton
-            android:id="@+id/swButtonRadio"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/background"
-            android:text="Swahili // kiswahili"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/koButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Korean // 한국인" />
 
-    </RadioGroup>
+            <Button
+                android:id="@+id/ptButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Portuguese // português" />
 
-    <Button
-        android:id="@+id/returnButton"
-        android:layout_width="92dp"
-        android:layout_height="102dp"
-        android:layout_marginBottom="16dp"
-        android:textSize="12sp"
-        app:cornerRadius="52sp"
-        app:icon="@drawable/check"
-        app:iconGravity="textStart"
-        app:iconPadding="0sp"
-        app:iconSize="100sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+            <Button
+                android:id="@+id/ruButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Russian // русский" />
+
+            <Button
+                android:id="@+id/esButtonBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Spanish // español" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

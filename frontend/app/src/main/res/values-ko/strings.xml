@@ -19,4 +19,6 @@
     <string name="log_out">로그 아웃</string>
     <string name="session_expired">세션이 만료되었습니다.</string>
     <string name="logging_out">로그 아웃하다</string>
+    <string name="I_speak">나는 한국말을 해요. 그들은</string>
+    <string name="I_speak_second_half">를한다.</string>
 </resources>

@@ -34,10 +34,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.cardview.widget.CardView
 import java.util.*
 
-
-var translate = false
 
 class StartCall : AppCompatActivity() {
 
@@ -58,23 +57,22 @@ class StartCall : AppCompatActivity() {
             createConfigurationContext(config)
         resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.activity_start_call)
+        SavedPreferences.setBusinessLanguageUpdated(this, "false")
 
-        setTitle("Hi " + SavedPreferences.getDisplayName(this) +"!");
+        var hi = getResources().getString(R.string.hi)
+        var name = SavedPreferences.getDisplayName(this)?.substringBefore(" ")
+        if (lang=="ar") {
+            setTitle("!" + name + " " + hi)
+        }
+        else {
+            setTitle(hi + " " + name +"!");
+        }
 
         mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
 
         var callButton = findViewById<Button>(R.id.callButton)
-        var languageButton = findViewById<Button>(R.id.languageButton)
         var phoneNumber = findViewById<TextView>(R.id.phoneNumber)
         var questionTextEdit = findViewById<TextView>(R.id.questionTextEdit)
-        //languageString = findViewById<TextView>(R.id.languageText)
-
-        var languageString = "en"
-
-        if(translate)
-        {
-            languageString = intent.getStringExtra("LANGUAGE_STRING")!!
-        }
 
         if (phoneNumber != null) {
             phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -98,26 +96,42 @@ class StartCall : AppCompatActivity() {
             } else if (questionTextString == "") {
                 alertDialog("Sorry...", "Please ask a question.", "Okay")
             } else {
-                if(translate)
-                {
-                    languageString = intent.getStringExtra("LANGUAGE_STRING")!!
-                }
-                else
-                {
-                    languageString = "en"
-                }
-
-                onCallButton(phoneNumberString, questionTextString, languageString)
+                onCallButton(phoneNumberString, questionTextString)
             }
         }
 
-        languageButton.setOnClickListener(){
+        var businessLanguage = SavedPreferences.getBusinessLanguage(this)
+        var languageButton = findViewById(R.id.business_language) as TextView
+        languageButton.setOnClickListener {
             val intent = Intent(this, ChooseLanguage::class.java)
             startActivity(intent)
-            translate = true
-
+        }
+        if (businessLanguage=="") {
+            SavedPreferences.setBusinessLanguage(this, "en")
+            businessLanguage = "en"
+        }
+        when (businessLanguage) {
+            "ar" -> languageButton.text = "عربي"
+            "fr" -> languageButton.text = "Français"
+            "en" -> languageButton.text = "English"
+            "hi" -> languageButton.text = "हिंदी"
+            "it" -> languageButton.text = "Italiano"
+            "ja" -> languageButton.text = "日本語"
+            "ko" -> languageButton.text = "한국인"
+            "zh" -> languageButton.text = "中文"
+            "pt" -> languageButton.text = "Português"
+            "ru" -> languageButton.text = "русский"
+            "es" -> languageButton.text = "Español"
+            "sw" -> languageButton.text = "Kiswahili"
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (SavedPreferences.businessLanguageUpdated(this)=="true") {
+            recreate()
+        }
     }
 
     //Code to call alert dialog
@@ -131,17 +145,14 @@ class StartCall : AppCompatActivity() {
     }
 
     //Create new activity by passing in phone number and question string
-    private fun onCallButton(phoneNumber: String, question: String, language: String) {
-        Log.e("will translate call to ", language)
-
+    private fun onCallButton(phoneNumber: String, question: String) {
         val intent = Intent(this, CallPage::class.java).apply{
             putExtra("PHONE_NUMBER", phoneNumber)
             putExtra("QUESTION_STRING", question)
-            putExtra("LANGUAGE_STRING", language)
-
         }
         startActivity(intent)
     }
+
 
     //Remove focus from TextEdit field when blank space is touched
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {

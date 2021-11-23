@@ -19,4 +19,6 @@
     <string name="log_out">تسجيل خروج</string>
     <string name="session_expired">انتهت الجلسة.</string>
     <string name="logging_out">تسجيل الخروج</string>
+    <string name="I_speak">أنا أتحدث العربية. يتحدثون</string>
+    <string name="I_speak_second_half">.</string>
 </resources>

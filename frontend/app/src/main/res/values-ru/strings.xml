@@ -19,4 +19,6 @@
     <string name="log_out">Выйти</string>
     <string name="session_expired">Срок действия сеанса истек.</string>
     <string name="logging_out">Выход из системы</string>
+    <string name="I_speak">Я говорю по-русски. Они говорят по-</string>
+    <string name="I_speak_second_half">.</string>
 </resources>

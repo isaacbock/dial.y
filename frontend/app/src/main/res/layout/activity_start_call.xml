@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="50dp"
         android:ems="10"
         android:gravity="center_horizontal|center_vertical"
@@ -29,7 +29,7 @@
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toBottomOf="@id/language" />
 
     <EditText
         android:id="@+id/questionTextEdit"
@@ -53,7 +53,7 @@
         android:id="@+id/callButton"
         android:layout_width="300dp"
         android:layout_height="70dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:text="@string/ask_now"
         app:cornerRadius="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,20 +79,52 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/languageButton"
-        android:layout_width="104dp"
-        android:layout_height="104dp"
-        android:layout_marginTop="236dp"
-        android:text="@string/choose_language"
-        android:textSize="12sp"
-        app:cornerRadius="52sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:id="@+id/language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/questionTextEdit"
-        app:layout_constraintVertical_bias="0.056" />
+        app:layout_constraintTop_toBottomOf="@id/view2">
+
+        <ImageView
+            android:id="@+id/language_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:tint="#939393"
+            app:srcCompat="@drawable/globe" />
+
+        <TextView
+            android:id="@+id/current_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/I_speak"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/business_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Spanish" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/I_speak_second_half" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView5"
