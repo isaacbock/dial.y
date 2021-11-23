@@ -33,7 +33,8 @@ class CallPage : AppCompatActivity() {
     lateinit var phoneNumber:String
     lateinit var questionString: String
     lateinit var idToken: String
-    lateinit var language: String
+    lateinit var callerLanguage: String
+    lateinit var businessLanguage: String
 
     lateinit var callId: String
 
@@ -92,7 +93,9 @@ class CallPage : AppCompatActivity() {
 
             phoneNumber = intent.getStringExtra("PHONE_NUMBER")!!
             questionString = intent.getStringExtra("QUESTION_STRING")!!
-            language = intent.getStringExtra("LANGUAGE_STRING")!!
+            callerLanguage = SavedPreferences.getLocale(this)!!
+            businessLanguage = "es"
+            // businessLanguage = intent.getStringExtra("LANGUAGE_STRING")!!
 
 
             setTitle(phoneNumber);
@@ -159,7 +162,8 @@ class CallPage : AppCompatActivity() {
             jsonBody.put("phoneNumber", phoneNumber)
             jsonBody.put("questions", jsonArray)
             jsonBody.put("userToken", idToken)
-            jsonBody.put("language", language)
+            jsonBody.put("callerLanguage", callerLanguage)
+            jsonBody.put("businessLanguage", businessLanguage)
 
             val requestBody = jsonBody.toString().toByteArray()
 
