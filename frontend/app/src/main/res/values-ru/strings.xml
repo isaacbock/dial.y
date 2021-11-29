@@ -21,4 +21,16 @@
     <string name="logging_out">Выход из системы</string>
     <string name="I_speak">Я говорю по-русски. Они говорят по-</string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">арабский</string>
+    <string name="chinese">китайский язык</string>
+    <string name="english">английский</string>
+    <string name="french">французкий язык</string>
+    <string name="hindi">хинди</string>
+    <string name="italian">Итальянский</string>
+    <string name="japanese">Японский</string>
+    <string name="korean">корейский язык</string>
+    <string name="portuguese">португальский</string>
+    <string name="russian">русский</string>
+    <string name="spanish">испанский</string>
+    <string name="swahili">суахили</string>
 </resources>

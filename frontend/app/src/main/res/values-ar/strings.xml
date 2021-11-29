@@ -21,4 +21,16 @@
     <string name="logging_out">تسجيل الخروج</string>
     <string name="I_speak">أنا أتحدث العربية. يتحدثون</string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">عربي</string>
+    <string name="chinese">صينى</string>
+    <string name="english">إنجليزي</string>
+    <string name="french">فرنسي</string>
+    <string name="hindi">هندي</string>
+    <string name="italian">إيطالي</string>
+    <string name="japanese">اليابانية</string>
+    <string name="korean">الكورية</string>
+    <string name="portuguese">البرتغالية</string>
+    <string name="russian">الروسية</string>
+    <string name="spanish">الأسبانية</string>
+    <string name="swahili">السواحيلية</string>
 </resources>

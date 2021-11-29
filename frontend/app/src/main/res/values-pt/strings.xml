@@ -21,4 +21,16 @@
     <string name="logging_out">Sair</string>
     <string name="I_speak">Eu falo português. Eles falam</string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">árabe</string>
+    <string name="chinese">chinês</string>
+    <string name="english">inglês</string>
+    <string name="french">francês</string>
+    <string name="hindi">hindi</string>
+    <string name="italian">italiano</string>
+    <string name="japanese">japonês</string>
+    <string name="korean">coreano</string>
+    <string name="portuguese">português</string>
+    <string name="russian">russo</string>
+    <string name="spanish">espanhol</string>
+    <string name="swahili">Suaíli</string>
 </resources>

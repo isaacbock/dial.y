@@ -17,7 +17,9 @@ import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.view.MenuItem
 import android.widget.*
+import androidx.appcompat.app.ActionBar
 import com.example.twilliodemo.SavedPreferences.mGoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -50,6 +52,9 @@ class CallPage : AppCompatActivity() {
     lateinit var playButton: ImageButton
 
     lateinit var callResult: TextView
+    lateinit var callResultLayout: LinearLayout
+    lateinit var callResultTranslated: TextView
+    lateinit var translationSeparator: View
     lateinit var audioLink: String
 
     lateinit var mSocket: Socket;
@@ -70,6 +75,11 @@ class CallPage : AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.activity_call_page)
 
+        // Back button
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.setHomeButtonEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+
         mGoogleSignInClient = SavedPreferences.mGoogleSignInClient
 
         dialingStatus = findViewById<ImageView>(R.id.dialingStatus)
@@ -81,6 +91,9 @@ class CallPage : AppCompatActivity() {
 
         playButton = findViewById<ImageButton>(R.id.playButton)
         callResult = findViewById<TextView>(R.id.callResult)
+        callResultLayout = findViewById<LinearLayout>(R.id.callResultLayout)
+        callResultTranslated = findViewById<TextView>(R.id.callResultTranslated)
+        translationSeparator = findViewById<View>(R.id.translationSeparator)
 
         // if the call already occurred, display this previous data
         if (intent.getStringExtra("CALL")!=null) {
@@ -271,6 +284,7 @@ class CallPage : AppCompatActivity() {
                     playAudio();
                 }
                 callResult.setVisibility(View.VISIBLE)
+                callResultLayout.setVisibility(View.VISIBLE)
                 callResult.text = "..."
                 recordingStatusText.setTypeface(null, Typeface.NORMAL)
             }
@@ -295,11 +309,20 @@ class CallPage : AppCompatActivity() {
                     playAudio();
                 }
                 callResult.setVisibility(View.VISIBLE)
+                callResultLayout.setVisibility(View.VISIBLE)
                 if (answerTranscript == "") {
                     callResult.text = getResources().getString(R.string.transcription_not_availiable)
                 }
-                else {
+                else if (!answerTranscript.contains("//")){
                     callResult.text = answerTranscript
+                }
+                else {
+                    var originalResult = answerTranscript.substringBefore("//")
+                    var translatedResult = answerTranscript.substringAfter("// ")
+                    callResult.text = originalResult
+                    callResultTranslated.text = translatedResult
+                    callResultTranslated.setVisibility(View.VISIBLE)
+                    translationSeparator.setVisibility(View.VISIBLE)
                 }
             }
         }
@@ -307,6 +330,7 @@ class CallPage : AppCompatActivity() {
         // If the call was hung up or was not answered, tell the user.
         if (callData["status"].toString() == "No Answer") {
             callResult.setVisibility(View.VISIBLE)
+            callResultLayout.setVisibility(View.VISIBLE)
             callResult.text = getResources().getString(R.string.no_answer)
 
             dialingStatus.setImageResource(R.drawable.dialing_complete)
@@ -315,6 +339,7 @@ class CallPage : AppCompatActivity() {
         }
         else if (callData["status"].toString() == "Hung Up") {
             callResult.setVisibility(View.VISIBLE)
+            callResultLayout.setVisibility(View.VISIBLE)
             callResult.text = getResources().getString(R.string.hung_up)
 
             dialingStatus.setImageResource(R.drawable.dialing_complete)
@@ -347,5 +372,17 @@ class CallPage : AppCompatActivity() {
     override fun onBackPressed() {
         mSocket.disconnect()
         finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> {
+            mSocket.disconnect()
+            finish()
+            true
+        }
+        else -> {
+            // Else the user's action was not recognized.
+            super.onOptionsItemSelected(item)
+        }
     }
 }

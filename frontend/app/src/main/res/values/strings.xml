@@ -22,4 +22,16 @@
     <string name="logging_out">Logging Out</string>
     <string name="I_speak">I speak English. They speak </string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">Arabic</string>
+    <string name="chinese">Chinese</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+    <string name="hindi">Hindi</string>
+    <string name="italian">Italian</string>
+    <string name="japanese">Japanese</string>
+    <string name="korean">Korean</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="russian">Russian</string>
+    <string name="spanish">Spanish</string>
+    <string name="swahili">Swahili</string>
 </resources>

@@ -59,7 +59,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
-          android:layout_marginTop="40dp"
+          android:layout_marginTop="20dp"
           android:clickable="true"
           android:focusable="true"
           app:cardCornerRadius="20dp"
@@ -99,7 +99,7 @@
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
           android:layout_gravity="center"
-          android:layout_marginTop="20dp"
+          android:layout_marginTop="25dp"
           android:layout_marginBottom="40dp"
           android:orientation="horizontal">
 
@@ -117,7 +117,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:text="English" />
+            android:textColor="@color/purple_200"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="English" />
       </LinearLayout>
 
     </LinearLayout>

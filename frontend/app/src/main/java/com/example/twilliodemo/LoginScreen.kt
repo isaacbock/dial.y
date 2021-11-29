@@ -80,18 +80,18 @@ class LoginScreen : AppCompatActivity() {
             lang = "en"
         }
         when (lang) {
-            "ar" -> currentLanguage.text = "عربي"
-            "fr" -> currentLanguage.text = "Français"
-            "en" -> currentLanguage.text = "English"
-            "hi" -> currentLanguage.text = "हिंदी"
-            "it" -> currentLanguage.text = "Italiano"
-            "ja" -> currentLanguage.text = "日本語"
-            "ko" -> currentLanguage.text = "한국인"
-            "zh" -> currentLanguage.text = "中文"
-            "pt" -> currentLanguage.text = "Português"
-            "ru" -> currentLanguage.text = "русский"
-            "es" -> currentLanguage.text = "Español"
-            "sw" -> currentLanguage.text = "Kiswahili"
+            "ar" -> currentLanguage.text = getString(R.string.arabic)
+            "fr" -> currentLanguage.text = getString(R.string.french)
+            "en" -> currentLanguage.text = getString(R.string.english)
+            "hi" -> currentLanguage.text = getString(R.string.hindi)
+            "it" -> currentLanguage.text = getString(R.string.italian)
+            "ja" -> currentLanguage.text = getString(R.string.japanese)
+            "ko" -> currentLanguage.text = getString(R.string.korean)
+            "zh" -> currentLanguage.text = getString(R.string.chinese)
+            "pt" -> currentLanguage.text = getString(R.string.portuguese)
+            "ru" -> currentLanguage.text = getString(R.string.russian)
+            "es" -> currentLanguage.text = getString(R.string.spanish)
+            "sw" -> currentLanguage.text = getString(R.string.swahili)
         }
     }
 

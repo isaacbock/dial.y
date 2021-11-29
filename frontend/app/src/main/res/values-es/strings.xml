@@ -21,4 +21,16 @@
     <string name="logging_out">Saliendo de tu cuenta</string>
     <string name="I_speak">Yo hablo español. Ellos hablan</string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">Arábica</string>
+    <string name="chinese">Chino</string>
+    <string name="english">Inglés</string>
+    <string name="french">Francés</string>
+    <string name="hindi">Hindi</string>
+    <string name="italian">Italiano</string>
+    <string name="japanese">japonés</string>
+    <string name="korean">Coreano</string>
+    <string name="portuguese">Portugués</string>
+    <string name="russian">Ruso</string>
+    <string name="spanish">Español</string>
+    <string name="swahili">swahili</string>
 </resources>

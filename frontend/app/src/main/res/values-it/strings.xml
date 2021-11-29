@@ -21,4 +21,16 @@
     <string name="logging_out">Disconnessione</string>
     <string name="I_speak">Io parlo italiano. Essi parlano</string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">Arabo</string>
+    <string name="chinese">Cinese</string>
+    <string name="english">Inglese</string>
+    <string name="french">Francese</string>
+    <string name="hindi">Hindi</string>
+    <string name="italian">Italiano</string>
+    <string name="japanese">Giapponese</string>
+    <string name="korean">Coreano</string>
+    <string name="portuguese">Portoghese</string>
+    <string name="russian">Russo</string>
+    <string name="spanish">Spagnolo</string>
+    <string name="swahili">Swahili</string>
 </resources>

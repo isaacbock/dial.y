@@ -21,4 +21,16 @@
     <string name="logging_out">로그 아웃하다</string>
     <string name="I_speak">나는 한국말을 해요. 그들은</string>
     <string name="I_speak_second_half">를한다.</string>
+    <string name="arabic">아라비아 말</string>
+    <string name="chinese">중국인</string>
+    <string name="english">영어</string>
+    <string name="french">프랑스 국민</string>
+    <string name="hindi">힌디 어</string>
+    <string name="italian">이탈리아 사람</string>
+    <string name="japanese">일본어</string>
+    <string name="korean">한국인</string>
+    <string name="portuguese">포르투갈 인</string>
+    <string name="russian">러시아인</string>
+    <string name="spanish">스페인의</string>
+    <string name="swahili">스와힐리어</string>
 </resources>

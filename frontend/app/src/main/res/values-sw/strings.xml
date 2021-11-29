@@ -21,4 +21,16 @@
     <string name="logging_out">Kuingia nje</string>
     <string name="I_speak">Nazungumza kiswahili. Wanazungumza</string>
     <string name="I_speak_second_half">.</string>
+    <string name="arabic">Kiarabu</string>
+    <string name="chinese">Kichina</string>
+    <string name="english">Kiingereza</string>
+    <string name="french">Kifaransa</string>
+    <string name="hindi">Kihindi</string>
+    <string name="italian">Kiitaliano</string>
+    <string name="japanese">Kijapani</string>
+    <string name="korean">Kikorea</string>
+    <string name="portuguese">Kireno</string>
+    <string name="russian">Kirusi</string>
+    <string name="spanish">Kihispania</string>
+    <string name="swahili">kiswahili</string>
 </resources>

@@ -34,6 +34,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.appcompat.app.ActionBar
 import androidx.cardview.widget.CardView
 import java.util.*
 
@@ -58,6 +59,11 @@ class StartCall : AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.activity_start_call)
         SavedPreferences.setBusinessLanguageUpdated(this, "false")
+
+        // Back button
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.setHomeButtonEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         var hi = getResources().getString(R.string.hi)
         var name = SavedPreferences.getDisplayName(this)?.substringBefore(" ")
@@ -111,18 +117,18 @@ class StartCall : AppCompatActivity() {
             businessLanguage = "en"
         }
         when (businessLanguage) {
-            "ar" -> languageButton.text = "عربي"
-            "fr" -> languageButton.text = "Français"
-            "en" -> languageButton.text = "English"
-            "hi" -> languageButton.text = "हिंदी"
-            "it" -> languageButton.text = "Italiano"
-            "ja" -> languageButton.text = "日本語"
-            "ko" -> languageButton.text = "한국인"
-            "zh" -> languageButton.text = "中文"
-            "pt" -> languageButton.text = "Português"
-            "ru" -> languageButton.text = "русский"
-            "es" -> languageButton.text = "Español"
-            "sw" -> languageButton.text = "Kiswahili"
+            "ar" -> languageButton.text = getString(R.string.arabic)
+            "fr" -> languageButton.text = getString(R.string.french)
+            "en" -> languageButton.text = getString(R.string.english)
+            "hi" -> languageButton.text = getString(R.string.hindi)
+            "it" -> languageButton.text = getString(R.string.italian)
+            "ja" -> languageButton.text = getString(R.string.japanese)
+            "ko" -> languageButton.text = getString(R.string.korean)
+            "zh" -> languageButton.text = getString(R.string.chinese)
+            "pt" -> languageButton.text = getString(R.string.portuguese)
+            "ru" -> languageButton.text = getString(R.string.russian)
+            "es" -> languageButton.text = getString(R.string.spanish)
+            "sw" -> languageButton.text = getString(R.string.swahili)
         }
 
     }
@@ -180,11 +186,15 @@ class StartCall : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.log_out -> {
             mGoogleSignInClient.signOut().addOnCompleteListener {
-                val intent= Intent(this, LoginScreen::class.java)
-                Toast.makeText(this,"Logging Out",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, LoginScreen::class.java)
+                Toast.makeText(this, "Logging Out", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 finish()
             }
+            true
+        }
+        android.R.id.home -> {
+            finish()
             true
         }
         else -> {

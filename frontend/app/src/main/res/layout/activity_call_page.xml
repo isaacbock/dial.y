@@ -51,8 +51,8 @@
         app:layout_constraintWidth_percent=".75"
         tools:text="What are your hours today? What are your hours this weekend?" />
 
-    <TextView
-        android:id="@+id/callResult"
+    <LinearLayout
+        android:id="@+id/callResultLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -61,13 +61,36 @@
         android:background="@drawable/company_answer"
         android:elevation="15dp"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/audio"
         app:layout_constraintWidth_max="wrap"
-        app:layout_constraintWidth_percent=".75"
-        tools:text="..." />
+        app:layout_constraintWidth_percent=".75">
+
+        <TextView
+            android:id="@+id/callResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="Esta es la respuesta a su pregunta. Hola! Como estas?" />
+
+        <View
+            android:id="@+id/translationSeparator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/callResultTranslated"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:text="This is the answer to your question. Hi! How are you?" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/status"

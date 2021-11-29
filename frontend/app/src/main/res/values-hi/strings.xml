@@ -21,4 +21,16 @@
     <string name="logging_out">लॉग आउट कर रहा हूं</string>
     <string name="I_speak">मैं हिंदी बोलते हैं। वे</string>
     <string name="I_speak_second_half">बोलते हैं।</string>
+    <string name="arabic">अरबी</string>
+    <string name="chinese">चीनी</string>
+    <string name="english">अंग्रेज़ी</string>
+    <string name="french">फ्रेंच</string>
+    <string name="hindi">हिंदी</string>
+    <string name="italian">इतालवी</string>
+    <string name="japanese">जापानी</string>
+    <string name="korean">कोरियाई</string>
+    <string name="portuguese">पुर्तगाली</string>
+    <string name="russian">रूसी</string>
+    <string name="spanish">स्पेनिश</string>
+    <string name="swahili">swahili</string>
 </resources>

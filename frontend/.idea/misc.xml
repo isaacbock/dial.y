@@ -20,14 +20,14 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.23697916666666666" />
         <entry key="app/src/main/res/drawable/user_question.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/actionbar.xml" value="0.21979166666666666" />
-        <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.5229439217512492" />
-        <entry key="app/src/main/res/layout/activity_choose_app_language.xml" value="0.2171875" />
+        <entry key="app/src/main/res/layout/activity_call_page.xml" value="0.3886507846115737" />
+        <entry key="app/src/main/res/layout/activity_choose_app_language.xml" value="0.12353201574042472" />
         <entry key="app/src/main/res/layout/activity_login_screen.xml" value="0.4202967992172917" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2391509215686951" />
         <entry key="app/src/main/res/layout/activity_start_call.xml" value="0.32285404493534425" />
-        <entry key="app/src/main/res/layout/previous_call.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/settings_activity.xml" value="0.3174942851266715" />
-        <entry key="app/src/main/res/menu/activity_start_call_actions.xml" value="0.5546917584570532" />
+        <entry key="app/src/main/res/layout/previous_call.xml" value="0.12794277770028448" />
+        <entry key="app/src/main/res/layout/settings_activity.xml" value="0.12385360330072699" />
+        <entry key="app/src/main/res/menu/activity_start_call_actions.xml" value="0.5492027478394561" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.2780708667038505" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.21145833333333333" />
       </map>
