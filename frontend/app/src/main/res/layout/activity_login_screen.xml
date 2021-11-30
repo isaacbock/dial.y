@@ -12,7 +12,7 @@
       android:id="@+id/view"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:background="@color/purple_500"
+      android:background="@color/purple_200"
       app:layout_constraintHeight_percent="0.7"
       app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,9 @@
           android:layout_marginTop="20dp"
           android:text="@string/app_name"
           android:textAlignment="center"
-          android:textSize="32sp" />
+          android:textColor="#5C6BC0"
+          android:textSize="32sp"
+          android:textStyle="bold" />
 
       <androidx.cardview.widget.CardView
           android:id="@+id/sign_in_button"

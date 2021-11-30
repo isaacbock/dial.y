@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="330dp"
-    android:layout_height="100dp"
+    android:layout_height="95dp"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
     android:layout_marginBottom="10dp"
@@ -12,7 +12,7 @@
     android:maxHeight="100dp"
     android:minWidth="50dp"
     android:minHeight="100dp"
-    app:cardBackgroundColor="@color/purple_200"
+    app:cardBackgroundColor="#5C6BC0"
     app:cardCornerRadius="20dp"
     app:cardElevation="3dp"
     app:layout_maxHeight="100dp"
@@ -53,6 +53,13 @@
                 android:textSize="12sp"
                 tools:text="Nov 8, 8:45PM" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Question:"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/previousCallQuestion"

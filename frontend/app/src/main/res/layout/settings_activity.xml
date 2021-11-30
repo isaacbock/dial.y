@@ -47,67 +47,78 @@
                 android:id="@+id/arButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Arabic // اللغة العربية" />
+                android:text="Arabic // اللغة العربية"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/zhButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chinese // 中文" />
+                android:text="Chinese // 中文"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/enButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="English" />
+                android:text="English"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/frButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="French // français" />
+                android:text="French // français"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/hiButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hindi // हिंदी" />
+                android:text="Hindi // हिंदी"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/itButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Italian // italiano" />
+                android:text="Italian // italiano"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/jaButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Japanese // 日本語" />
+                android:text="Japanese // 日本語"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/koButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Korean // 한국인" />
+                android:text="Korean // 한국어"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/ptButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Portuguese // português" />
+                android:text="Portuguese // português"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/ruButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Russian // русский" />
+                android:text="Russian // русский"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/esButtonBusiness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Spanish // español" />
+                android:text="Spanish // español"
+                app:cornerRadius="10dp" />
 
         </LinearLayout>
     </ScrollView>

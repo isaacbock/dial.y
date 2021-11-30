@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
@@ -28,6 +29,11 @@ class ChooseLanguage : AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
         setContentView(R.layout.settings_activity)
 
+        val actionBar: ActionBar? = supportActionBar
+        if (actionBar != null) {
+            actionBar.setTitle("Choose language")
+        }
+
         fun changeLanguage(locale:String) {
             SavedPreferences.setBusinessLanguage(this, locale)
             SavedPreferences.setBusinessLanguageUpdated(this, "true")
@@ -40,7 +46,7 @@ class ChooseLanguage : AppCompatActivity() {
         findViewById<Button>(R.id.hiButtonBusiness).setText(getString(R.string.hindi) + " // " + "हिंदी")
         findViewById<Button>(R.id.itButtonBusiness).setText(getString(R.string.italian) + " // " + "italiano")
         findViewById<Button>(R.id.jaButtonBusiness).setText(getString(R.string.japanese) + " // " + "日本語")
-        findViewById<Button>(R.id.koButtonBusiness).setText(getString(R.string.korean) + " // " + "한국인")
+        findViewById<Button>(R.id.koButtonBusiness).setText(getString(R.string.korean) + " // " + "한국어")
         findViewById<Button>(R.id.zhButtonBusiness).setText(getString(R.string.chinese) + " // " + "中文")
         findViewById<Button>(R.id.ptButtonBusiness).setText(getString(R.string.portuguese) + " // " + "português")
         findViewById<Button>(R.id.ruButtonBusiness).setText(getString(R.string.russian) + " // " + "русский")
