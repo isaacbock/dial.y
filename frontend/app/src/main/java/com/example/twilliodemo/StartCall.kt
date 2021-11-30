@@ -81,7 +81,7 @@ class StartCall : AppCompatActivity() {
         var questionTextEdit = findViewById<TextView>(R.id.questionTextEdit)
 
         if (phoneNumber != null) {
-            phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+            phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher("US"))
         }
         if (questionTextEdit != null) {
             questionTextEdit.setHorizontallyScrolling(false);
