@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Dial-y</string>
+    <string name="app_name" translatable="false">Dial.y</string>
 
     <string name="ringing">Ringing</string>
     <string name="asking">Asking question</string>
