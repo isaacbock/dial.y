@@ -33,4 +33,5 @@
     <string name="russian">俄语</string>
     <string name="spanish">西班牙语</string>
     <string name="swahili">斯瓦希里语</string>
+    <string name="chooseLanguage">选择语言</string>
 </resources>

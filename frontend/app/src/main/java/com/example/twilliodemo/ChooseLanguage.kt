@@ -31,7 +31,7 @@ class ChooseLanguage : AppCompatActivity() {
 
         val actionBar: ActionBar? = supportActionBar
         if (actionBar != null) {
-            actionBar.setTitle("Choose language")
+            actionBar.setTitle(getString(R.string.chooseLanguage))
         }
 
         fun changeLanguage(locale:String) {

@@ -33,4 +33,5 @@
     <string name="russian">Russo</string>
     <string name="spanish">Spagnolo</string>
     <string name="swahili">Swahili</string>
+    <string name="chooseLanguage">Scegli la lingua</string>
 </resources>
