@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/maliv/OneDrive/Desktop/437S-Project/text-to-call-app/frontend/app/src/main/res/layout/activity_login_screen.xml" value="0.15830800405268491" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
 </project>
